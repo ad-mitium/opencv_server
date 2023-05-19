@@ -1,0 +1,26 @@
+
+
+    .row {
+        display: flex;
+    }
+    
+    .column {
+        flex: 33%;
+    }
+
+    .column2 {
+        text-align: center;
+        flex: 33%;
+    }
+
+    .column3 {
+        text-align: right;
+        flex: 33%;
+    }
+
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+    

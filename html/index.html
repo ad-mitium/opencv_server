@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FlaskApp</title>
+    <link rel="stylesheet" type= "text/css" href="{{ url_for('static',filename='styles/format.css') }}">
+</head>
+<script>
+    function timedRefresh(timeoutPeriod) {
+        setTimeout("location.reload(true);",timeoutPeriod);
+    }
+</script>
+<body onload='JavaScript:timedRefresh(360000)' style="background: #0e0e0e; height: 100%;">
+    <div class="row">
+        <div class="column">
+            <form method="post" action="/">
+                <button type="submit" name="action" value="1">Camera 1</button>
+                <button type="submit" name="action" value="2">Camera 2</button>
+                <button type="submit" name="action" value="3">Camera 3</button>
+                <button type="submit" name="action" value="stop">Stop stream</button>
+            </form>
+        </div>
+        <div class="column2">
+            <form method="post" action="/">
+                <button type="submit" name="wb_action" value="1">WB Sunny</button>
+            </form>
+        </div>
+        <div class="column3">
+            <form method="post" action="/">
+                <button type="submit" name="ae_action" value="1">+ Exposure</button>
+                <button type="submit" name="ae_action" value="0">Reset Exposure</button>
+                <button type="submit" name="ae_action" value="-1">- Exposure</button>
+            </form>
+        </div>
+    </div>
+    <img src="{{ url_for( 'video_feed' ) }}" width="100%" height="625">
+
+</body>
+</html>
