@@ -4,7 +4,9 @@ camera_list = {
     '3':'http://192.168.0.126:81/stream'
 }
 
-ae_level = ['-2','-1','0','1','2']
+# Only change these if your device supports it
+
+ae_level = ['-2','-1','0','1','2']  
 
 framesize = ['11','9']  # 1280x720, 800x600
 
