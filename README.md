@@ -76,5 +76,5 @@ Furthermore, this is not production level code, so I've decided to sidestep impl
 ## ToDo
 
 * Until the issue with ```GET``` requests is resolved, ```WB``` code isn't going to be implemented
-* Implement ```frame_size``` for resolution changes, also waiting on the ```Get``` request issue
+* Implement ```frame_size``` for resolution changes, also waiting on the ```GET``` request issue
 * TBD
