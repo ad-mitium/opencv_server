@@ -6,46 +6,7 @@ Playing around with some [ESP32 WiFi boards](https://arduino-esp8266.readthedocs
 
 I also noted that the video stream was being pushed out on port 81. It occurred to me that I could bypass the demo code and display it on another computer with a bit of Python and Flask.
 
-Additionally, the ESP32 seems to drop connection or send invalid data quite often.  That may be an issue with my wireless environment or it could be the ESP32 wasn't intended to be on 24/7.
-
-There are two things I have implemented to address the dropped connections and invalid data.  I made changes to the demo code and I added some javascript in ```index.html``` to reload the page every few minutes.
-
-That being said, while the code works, there are some issues sending ```GET``` requests to CameraWebServer. Furthermore, this is not production level code, so I've decided to sidestep implementing session handling with a Dict. Until I can determine where the issue lies with the ```GET``` requests, I'm putting the code up as is.
-
 It should be obvious, but it has to be put in writing, that you use this at your own risk.
-
-### Changes made to demo code
-
-For the sake of documenting all of the changes I made in one place, I made some modifications to the widely available demo [ESP32 code](https://github.com/espressif/arduino-esp32/tree/master/libraries/ESP32/examples/Camera/CameraWebServer). The modifications involved ensuring that the device would check every 5 minutes to see if it lost WiFi connection, and if it did, it would then attempt to reconnect.
-
-Below are the modifications made:
-
-    unsigned long previousMillis = 0;
-    unsigned long interval = 300000;
-
-    void loop() {
-        unsigned long currentMillis = millis();
-        if (currentMillis - previousMillis >=interval){
-            switch (WiFi.status()){
-            case WL_NO_SSID_AVAIL:
-                Serial.println("Configured SSID cannot be reached");
-                break;
-            case WL_CONNECTED:
-                Serial.println("Connection successfully established");
-                break;
-            case WL_CONNECT_FAILED:
-                Serial.println("Connection failed");
-                break;
-            case WL_CONNECTION_LOST:
-                Serial.println("Reconnecting");
-                WiFi.begin(ssid, password);
-                break;
-            }
-            Serial.printf("Connection status: %d\n", WiFi.status());
-            Serial.println("");
-            previousMillis = currentMillis;
-        }
-    }
 
 ## Usage
 
@@ -65,10 +26,22 @@ The script is configured by the files in the config folder.  Change the ```host[
 
 ## Issues
 
-* ```GET``` requests sent by the app do not work properly even while receiving status code 200. The same composited request sent from a browser works just fine.
+### Dropped WiFi connections and invalid data
+
+The ESP32 seems to drop connection or send invalid data quite often.  That may be an issue with my wireless environment or it could be the ESP32 wasn't intended to be on 24/7.
+
+There are two things I have implemented to address the dropped connections and invalid data.  I made changes to the demo code and I added some javascript in ```index.html``` to reload the page every few minutes.
+
+### ```GET``` Requests fail
+
+While the code works, there are some issues sending ```GET``` requests to CameraWebServer on the ESP32. Until I can determine where the issue lies with the ```GET``` requests, I'm putting the code up as is.
+
+### Session handling
+
+Furthermore, this is not production level code, so I've decided to sidestep implementing session handling with a Dict. You are free to implement it if you wish.
 
 ## ToDo
 
-* Until the issue with ```GET``` requests is resolved, WB changes aren't going to be implemented
-* Implement ```frame_size``` for resolution changes
+* Until the issue with ```GET``` requests is resolved, ```WB``` code isn't going to be implemented
+* Implement ```frame_size``` for resolution changes, also waiting on the ```Get``` request issue
 * TBD
