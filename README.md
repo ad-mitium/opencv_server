@@ -14,11 +14,11 @@ There are two ways to use this script.  The first method is to run the script in
 
     python3 ocv_server_single_form.py
 
+Waitress is not the only WGSI application out there, it is just the one I've tested my script on at this time.
+
 For example, using [Waitress](https://pypi.org/project/waitress/):
 
     waitress-serve --host <HOST IP> --port <HOST PORT> --call ocv_server_singelform:create_app
-
-This is not the only WGSI application out there, just the one I've tested at this time.
 
 ### Configuring the script
 
