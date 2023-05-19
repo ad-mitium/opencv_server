@@ -32,6 +32,39 @@ The ESP32 seems to drop connection or send invalid data quite often.  That may b
 
 There are two things I have implemented to address the dropped connections and invalid data.  I made changes to the demo code and I added some javascript in ```index.html``` to reload the page every few minutes.
 
+#### Changes made to demo code
+
+For the sake of documenting all of the changes I made in one place, I made some modifications to the widely available demo [ESP32 code](https://github.com/espressif/arduino-esp32/tree/master/libraries/ESP32/examples/Camera/CameraWebServer). The modifications involved ensuring that the device would check every 5 minutes to see if it lost WiFi connection, and if it did, it would then attempt to reconnect.
+
+Below are the modifications made:
+
+    unsigned long previousMillis = 0;
+    unsigned long interval = 300000;
+
+    void loop() {
+        unsigned long currentMillis = millis();
+        if (currentMillis - previousMillis >=interval){
+            switch (WiFi.status()){
+            case WL_NO_SSID_AVAIL:
+                Serial.println("Configured SSID cannot be reached");
+                break;
+            case WL_CONNECTED:
+                Serial.println("Connection successfully established");
+                break;
+            case WL_CONNECT_FAILED:
+                Serial.println("Connection failed");
+                break;
+            case WL_CONNECTION_LOST:
+                Serial.println("Reconnecting");
+                WiFi.begin(ssid, password);
+                break;
+            }
+            Serial.printf("Connection status: %d\n", WiFi.status());
+            Serial.println("");
+            previousMillis = currentMillis;
+        }
+    }
+
 ### ```GET``` Requests fail
 
 While the code works, there are some issues sending ```GET``` requests to CameraWebServer on the ESP32. Until I can determine where the issue lies with the ```GET``` requests, I'm putting the code up as is.
