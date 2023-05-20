@@ -49,17 +49,17 @@ def set_ae_exposure(ae_dir):
         # print(type(ae_val) , type(session['ae_level']))
         
         if str(ae_val) in ae_level:
-            exposure_adjust = url + '/control?var=ae_level&val='+str(ae_val)
+            exposure_adjust_url = url + '/control?var=ae_level&val='+str(ae_val)
             session['ae_level'] = str(ae_val)
-            print(exposure_adjust, session['ae_level'])
-            get_request = requests.get(url)
+            print(exposure_adjust_url, session['ae_level'])
+            get_request = requests.get(exposure_adjust_url)
             print (get_request.status_code)
         else:
             print ('Value out of range: ',ae_val)
 
         # print ("AE set to: ",ae_direction, url)
         print ("AE set to: ",ae_val)
-        sleep(2)
+        # sleep(2)
 
 def set_white_balance(wb_mode): 
     url = strip_url(cam_list[str(session['camera_id'])])
