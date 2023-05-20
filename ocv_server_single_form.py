@@ -146,6 +146,7 @@ def video_feed(id='1'):
 @app.route('/', methods=["GET", "POST"])
 def index():
     index_html= 'index.html'
+    stop_html = 'index_stop.html'
 
     if request.method == 'POST':
         if request.form.get('action') == '1':
@@ -160,7 +161,7 @@ def index():
         elif  request.form.get('action') == 'stop':
             session['camera_id']='stop'
             get_frames(session['camera_id'],True)
-            return render_template('index_stop.html')
+            return render_template(stop_html)
         elif request.form.get('fs_action') in ['9','11']:
             session['fs_size']=request.form.get('fs_action')
             set_frame_size(session['fs_size'])
