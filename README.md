@@ -65,18 +65,11 @@ Below are the modifications made:
         }
     }
 
-### ```GET``` Requests fail
-
-While the code works, there are some issues sending ```GET``` requests to CameraWebServer on the ESP32. The ```GET``` status code returns 200, but the request is not being honored by the ESP32.  Sending the composited request via the browser works just fine.
-
-Until I can determine where the issue lies with the ```GET``` requests, I'm putting the code up as is.
-
 ### Session handling
 
 Furthermore, this is not production level code, so I've decided to sidestep implementing session handling with a Dict. You are free to implement it if you wish.
 
 ## ToDo
 
-* Until the issue with ```GET``` requests is resolved, ```WB``` code isn't going to be implemented
-* Implement ```frame_size``` for resolution changes, also waiting on the ```GET``` request issue
+* Implement ```flip_image``` button toggling for flipping the image
 * TBD
