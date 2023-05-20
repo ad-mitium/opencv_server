@@ -10,4 +10,7 @@ ae_level = ['-2','-1','0','1','2']
 
 framesize = ['11','9']  # 1280x720, 800x600
 
-white_balance = ['1']   # Sunny white balance
+hor_mirror = ['1']   # Set horizontal mirror on
+vert_flip = ['1']   # Set vertical flip on
+black_point = ['1']   # Set black point correction on
+white_balance = ['1']   # Set to sunny white balance
