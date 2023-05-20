@@ -14,12 +14,15 @@ import cv2
 
 app = Flask(__name__, template_folder='html')
 
-version = (0,0,1)
+version = (0,0,2)
 
 session = {    # Not the safest method to pass data between routes
     'camera_id' : '1' ,
     'ae_level' : '0' ,
     'ae_direction' : '0' ,
+    'fs_size' : '11' ,
+    'flip' : '0' ,
+    'bpc' : '0' ,
     'white_balance' : '1'
 
 }
@@ -40,12 +43,12 @@ def set_ae_exposure(ae_dir):
 
         print('Curent ae_level: ',session['ae_level'],' direction: ', ae_dir)
         
-        if ae_dir == 0:
-            ae_val = 0
+        if ae_dir == '0':
+            ae_val = '0'
         else:
             ae_val = int(session['ae_level']) + int(ae_dir)
         
-        # print ('AE val: ',ae_val) 
+        print ('AE val: ',ae_val) 
         # print(type(ae_val) , type(session['ae_level']))
         
         if str(ae_val) in ae_level:
@@ -62,33 +65,37 @@ def set_ae_exposure(ae_dir):
         # sleep(2)
 
 def set_black_point(bpc_mode): 
-    url = strip_url(cam_list[str(session['camera_id'])])
-    bpc_adjust = url + '/control?var=bpc&val='+str(bpc_mode)
+    url_stripped = strip_url(cam_list[str(session['camera_id'])])
 
+    url = url_stripped + '/control?var=bpc&val='+str(bpc_mode)
     get_request = requests.get(url)
     print (get_request.status_code)
     print ("Black point correction set to: ",bpc_mode)
 
-def set_horizontal_mirror(mirror_mode): 
-    url = strip_url(cam_list[str(session['camera_id'])])
-    hmirror_adjust = url + '/control?var=hmirror&val='+str(mirror_mode)
+def set_flip_image(mirror_mode): 
+    url_stripped = strip_url(cam_list[str(session['camera_id'])])
 
+    hmirror_adjust = url_stripped + '/control?var=hmirror&val='+str(mirror_mode)
+    get_request = requests.get(hmirror_adjust)
+    print (get_request.status_code)
+
+    vfliup_adjust = url_stripped + '/control?var=vflip&val='+str(mirror_mode)
+    get_request = requests.get(vfliup_adjust)
+    print (get_request.status_code)
+    print ("Image mirror set to: ",mirror_mode)
+
+def set_frame_size(frame_size): 
+    url_stripped = strip_url(cam_list[str(session['camera_id'])])
+
+    url = url_stripped + '/control?var=framesize&val='+str(frame_size)
     get_request = requests.get(url)
     print (get_request.status_code)
-    print ("Horizontal mirror set to: ",mirror_mode)
+    print ("Frame size set to: ",frame_size)
 
 def set_white_balance(wb_mode): 
-    url = strip_url(cam_list[str(session['camera_id'])])
-    wb_adjust = url + '/control?var=wb_mode&val='+str(wb_mode)
+    url_stripped = strip_url(cam_list[str(session['camera_id'])])
 
-    get_request = requests.get(url)
-    print (get_request.status_code)
-    print ("WB set to: ",wb_mode)
-
-def set_white_balance(wb_mode): 
-    url = strip_url(cam_list[str(session['camera_id'])])
-    wb_adjust = url + '/control?var=wb_mode&val='+str(wb_mode)
-
+    url = url_stripped + '/control?var=wb_mode&val='+str(wb_mode)
     get_request = requests.get(url)
     print (get_request.status_code)
     print ("WB set to: ",wb_mode)
@@ -130,12 +137,6 @@ def video_feed(id='1'):
     else:
         id='1'  # Disallow injection
     
-    # print('ae',session['ae_level'],'wb',session['white_balance'])
-
-    # if session['ae_level'] == 3 :
-    #     set_ae_exposure(session['2'])
-    # set_white_balance(session['white_balance'])
-
     cvid_stream = get_frames(id)
     """Video streaming route. Put this in the src attribute of an img tag."""
 
@@ -160,7 +161,16 @@ def index():
             session['camera_id']='stop'
             get_frames(session['camera_id'],True)
             return render_template('index_stop.html')
-        elif request.form.get('wb_action') == '1':
+        elif request.form.get('fs_action') in ['9','11']:
+            session['fs_size']=request.form.get('fs_action')
+            set_frame_size(session['fs_size'])
+        elif request.form.get('flip_action') in ['0','1']:
+            session['flip']=request.form.get('flip_action')
+            set_flip_image(session['flip'])
+        elif request.form.get('bpc_action') == '1':
+            session['bpc']=request.form.get('bpc_action')
+            set_black_point(session['bpc'])
+        elif request.form.get('wb_action') in ['0','1']:
             session['white_balance']=request.form.get('wb_action')
             set_white_balance(session['white_balance'])
             print('WB  Cam_ID: ',session['camera_id'],session['ae_level'],session['white_balance'])

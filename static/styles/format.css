@@ -5,17 +5,22 @@
     }
     
     .column {
-        flex: 33%;
+        flex: 32%;
     }
 
     .column2 {
         text-align: center;
-        flex: 33%;
+        flex: 16%;
     }
 
     .column3 {
+        text-align: center;
+        flex: 30%;
+    }
+
+    .column4 {
         text-align: right;
-        flex: 33%;
+        flex: 22%;
     }
 
     .row:after {
@@ -23,4 +28,5 @@
         display: table;
         clear: both;
     }
+    
     
