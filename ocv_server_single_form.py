@@ -36,7 +36,7 @@ def set_ae_exposure(ae_dir):
     from time import sleep
 
     if not session['camera_id'] == 'stop':
-        url = strip_url(cam_list[str(session['camera_id'])])
+        url_stripped = strip_url(cam_list[str(session['camera_id'])])
 
         print('Curent ae_level: ',session['ae_level'],' direction: ', ae_dir)
         
@@ -49,10 +49,10 @@ def set_ae_exposure(ae_dir):
         # print(type(ae_val) , type(session['ae_level']))
         
         if str(ae_val) in ae_level:
-            exposure_adjust_url = url + '/control?var=ae_level&val='+str(ae_val)
+            url = url_stripped + '/control?var=ae_level&val='+str(ae_val)
             session['ae_level'] = str(ae_val)
-            print(exposure_adjust_url, session['ae_level'])
-            get_request = requests.get(exposure_adjust_url)
+            print(url, session['ae_level'])
+            get_request = requests.get(url)
             print (get_request.status_code)
         else:
             print ('Value out of range: ',ae_val)
@@ -61,8 +61,36 @@ def set_ae_exposure(ae_dir):
         print ("AE set to: ",ae_val)
         # sleep(2)
 
+def set_black_point(bpc_mode): 
+    url = strip_url(cam_list[str(session['camera_id'])])
+    bpc_adjust = url + '/control?var=bpc&val='+str(bpc_mode)
+
+    get_request = requests.get(url)
+    print (get_request.status_code)
+    print ("Black point correction set to: ",bpc_mode)
+
+def set_horizontal_mirror(mirror_mode): 
+    url = strip_url(cam_list[str(session['camera_id'])])
+    hmirror_adjust = url + '/control?var=hmirror&val='+str(mirror_mode)
+
+    get_request = requests.get(url)
+    print (get_request.status_code)
+    print ("Horizontal mirror set to: ",mirror_mode)
+
 def set_white_balance(wb_mode): 
     url = strip_url(cam_list[str(session['camera_id'])])
+    wb_adjust = url + '/control?var=wb_mode&val='+str(wb_mode)
+
+    get_request = requests.get(url)
+    print (get_request.status_code)
+    print ("WB set to: ",wb_mode)
+
+def set_white_balance(wb_mode): 
+    url = strip_url(cam_list[str(session['camera_id'])])
+    wb_adjust = url + '/control?var=wb_mode&val='+str(wb_mode)
+
+    get_request = requests.get(url)
+    print (get_request.status_code)
     print ("WB set to: ",wb_mode)
 
 def get_frames(cam_id,stop_capture=False): 
