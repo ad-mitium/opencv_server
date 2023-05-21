@@ -12,11 +12,21 @@ It should be obvious, but it has to be put in writing, that you use this at your
 
 There are two ways to use this script.  The first method is to run the script in a command line.  The second method involves using a WSGI capable application.
 
-    python3 ocv_server_single_form.py
+### Using command line
 
-Waitress is not the only WGSI application out there, it is just the one I've tested my script on at this time.
+    python3 ocv_server_single_form.py [-d,-ip,-h,-v]
 
-For example, using [Waitress](https://pypi.org/project/waitress/):
+When using this script in command line mode, several flags are accessible.
+
+    -d, --debug-level           Enable DEBUG mode, defaults to INFO
+    -ip, --host-ip              Shows the host IP address detected (or assigned by user) and designated PORT
+
+    -h, --help                  Shows the help dialogue
+    -v, --version               Shows the current version number
+
+### Using Waitress WSGI
+
+[Waitress](https://pypi.org/project/waitress/) is not the only WGSI application out there, it is just the one I've tested my script on at this time. It can be started by designating the ```HOST IP``` and ```PORT``` directly:
 
     waitress-serve --host <HOST IP> --port <HOST PORT> --call ocv_server_singelform:create_app
 
