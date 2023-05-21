@@ -8,6 +8,11 @@ host = {
     'host_ip': '0.0.0.0'    
 }
 
+debug_level = {
+    '0':'INFO' ,
+    '1':'DEBUG'
+}
+
 ethernet_device = 1
 iface = netifaces.interfaces()
 host_ip = netifaces.ifaddresses(iface[ethernet_device])[2][0]['addr']     # This bit of code assumes you are using the first ethernet device to host
