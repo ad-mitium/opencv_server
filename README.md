@@ -19,7 +19,8 @@ There are two ways to use this script.  The first method is to run the script in
 When using this script in command line mode, several flags are accessible.
 
     -d, --debug-level           Enable DEBUG mode, defaults to INFO
-    -ip, --host-ip              Shows the host IP address detected (or assigned by user) and designated PORT
+    -ip, --host-ip              Shows the host IP address detected (or assigned by 
+                                    user) and designated PORT
 
     -h, --help                  Shows the help dialogue
     -v, --version               Shows the current version number
