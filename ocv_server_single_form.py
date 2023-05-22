@@ -7,7 +7,8 @@ from time import strftime
 from flask import Flask, render_template, Response, request
 # from flask_session import Session     # This isn't production code, so not putting the effort to safely transfer variable data
 from config.cameras import camera_list as cam_list
-from config.cameras import ae_level, framesize, white_balance
+from config.cameras import ae_level as ae_level_range
+from config.cameras import framesize, white_balance
 from config.network import host
 from config.network import debug_level
 import config.network as network
@@ -55,21 +56,32 @@ def set_ae_exposure(ae_dir):
             # print ('AE val: ',ae_val) 
             # print(type(ae_val) , type(session['ae_level']))
         
-        if str(ae_val) in ae_level:
+        if str(ae_val) in ae_level_range:
             url = url_stripped + '/control?var=ae_level&val='+str(ae_val)
             session['ae_level'] = str(ae_val)
             # if verbose == 'DEBUG':
             #     print('URL: ',url,' level: ',session['ae_level'], end='')
             get_request = requests.get(url)
+            get_status_code = get_request.status_code
             # if verbose == 'DEBUG':
             #     print (' status code: ',get_request.status_code)
         else:
-            print ('Value out of range: ',ae_val)
+            print ('Value out of range: ',ae_val, end=' ')
+            url = 'No request made, AE value out of range ' # No url if you don't make a request
+            get_status_code = 'No request made, AE value out of range ' # No status code if you don't make a request
+            if ae_val > 2:      # Put ae_val back in range for DEBUG display purposes, wasn't changed in session['ae_level']
+                ae_val = 2
+            elif ae_val < -2:
+                ae_val = -2
+            if verbose == 'DEBUG':
+                print('AE level reset to: ',ae_val)
+            else:
+                print('')
+
 
         if verbose == 'DEBUG':
             # print ("AE set to: ",ae_dir, url)
-            print ("AE set to: ",ae_val,'URL: ',url,' level: ',session['ae_level'],
-                        ' status code: ',get_request.status_code)
+            print ("AE set to: ",ae_val,'URL: ',url, ' level: ',session['ae_level'],' status code: ',get_status_code) 
         # sleep(2)
 
 def set_black_point(bpc_mode): 
@@ -191,7 +203,7 @@ def index():
             set_white_balance(session['white_balance'])
             if verbose == 'DEBUG':
                 print('WB  Cam_ID: ',session['camera_id'],' level: ',session['ae_level'],' WB value: ',session['white_balance'])
-        elif request.form.get('ae_action') in ae_level: # Set exposure level
+        elif request.form.get('ae_action') in ae_level_range: # Set exposure level
             session['ae_direction']=request.form.get('ae_action')
             set_ae_exposure(session['ae_direction'])
             if verbose == 'DEBUG':
