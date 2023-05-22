@@ -201,7 +201,7 @@ def index():
             # session['camera_id']='1'
             pass # unknown camera ID, pass to video_feed()
     curr_time = strftime('%m-%d-%Y ') + strftime('%H:%M:%S')
-    if verbose == 'DEBUG':
+    if verbose == 'DEBUG' or verbose == 'INFO': 
         print('{}: Route render:'.format(curr_time),request.method,' Cam_ID: ',session['camera_id'],' AE level: ',session['ae_level'],' WB: ',session['white_balance'] )
     return render_template(index_html)
 
