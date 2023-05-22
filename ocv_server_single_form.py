@@ -17,7 +17,7 @@ import cv2
 
 app = Flask(__name__, template_folder='html')
 
-version_number = (0,0,3)
+version_number = (0,0,4)
 
 session = {    # Not the safest method to pass data between routes
     'camera_id' : '1' ,
