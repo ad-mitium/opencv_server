@@ -136,3 +136,6 @@ if __name__ == '__main__':
             print('INFO: Ready to serve camera streams')
         # app.run(debug=True)
         serve(app, host=network.host_address, port=host['host_port'])
+
+else:
+    verbose = check_debug_status()
