@@ -58,6 +58,9 @@ def index():
         elif  request.form.get('action') == '3':
             session['camera_id']=request.form.get('action')
             # print("Camera 3",session['camera_id'])
+        elif  request.form.get('action') == '4':
+            session['camera_id']=request.form.get('action')
+            # print("Camera 3",session['camera_id'])
         elif  request.form.get('action') == 'stop':
             session['camera_id']='stop'
             print('INFO: Stream has been stopped')
