@@ -80,6 +80,13 @@ Below are the modifications made:
 
 Furthermore, this is not production level code, so I've decided to sidestep implementing session handling with a Dict. You are free to implement it if you wish.
 
+## Required python libraries
+
+* flask
+* opencv-python-headless
+* numpy (required by opencv-python-headless)
+* waitress
+
 ## ToDo
 
 * Implement ```flip_image``` button toggling for flipping the image

@@ -89,6 +89,7 @@ def index():
     curr_time = strftime('%m-%d-%Y ') + strftime('%H:%M:%S')
     if verbose == 'DEBUG': 
         print('DEBUG: {}: Route render:'.format(curr_time),request.method,' Cam_ID: ',session['camera_id'],' AE level: ',session['ae_level'],' Frame Size: ',session['fs_size'],' WB: ',session['white_balance'] )
+        print(request.form)
     else:
         print('INFO: {}: Route render:'.format(curr_time),request.method,' Cam_ID: ',session['camera_id'],' AE level: ',session['ae_level'],' Frame Size: ',session['fs_size'],' WB: ',session['white_balance'] )
     return render_template(index_html)
