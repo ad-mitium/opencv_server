@@ -88,10 +88,10 @@ def index():
             pass # unknown camera ID, pass to video_feed()
     curr_time = strftime('%m-%d-%Y ') + strftime('%H:%M:%S')
     if verbose == 'DEBUG': 
-        print('DEBUG: {}: Route render:'.format(curr_time),request.method,' Cam_ID: ',session['camera_id'],' AE level: ',session['ae_level'],' Frame Size: ',session['fs_size'],' WB: ',session['white_balance'] )
+        print('DEBUG: {}: Route render:'.format(curr_time),request.method,' Cam_ID: ',session['camera_id'],' AE level: ',session['ae_level'],' Frame Size: ',session['fs_size'],' WB: ',session['white_balance'],' BPC: ',session['bpc'] )
         print('DEBUG: Request form: ',request.form)
     else:
-        print('INFO: {}: Route render:'.format(curr_time),request.method,' Cam_ID: ',session['camera_id'],' AE level: ',session['ae_level'],' Frame Size: ',session['fs_size'],' WB: ',session['white_balance'] )
+        print('INFO: {}: Route render:'.format(curr_time),request.method,' Cam_ID: ',session['camera_id'],' AE level: ',session['ae_level'],' Frame Size: ',session['fs_size'],' WB: ',session['white_balance'],' BPC: ',session['bpc'] )
     return render_template(index_html)
 
 def create_app():
@@ -129,7 +129,7 @@ if __name__ == '__main__':
         print ("Access server using this ip address and port: http://{}:{}".format(network.host_address,host['host_port']))
     else:
         if verbose == 'DEBUG':
-            print('DEBUG:  Route "/" defaults: Cam_ID: ',session['camera_id'],' AE level: ',session['ae_level'],' Frame Size: ',session['fs_size'],' WB: ',session['white_balance'])
+            print('DEBUG:  Route "/" defaults: Cam_ID: ',session['camera_id'],' AE level: ',session['ae_level'],' Frame Size: ',session['fs_size'],' WB: ',session['white_balance'],' BPC: ',session['bpc'])
             # print (strip_url(url))
             # print ('INFO:   Debug level set to ',verbose,' and session is: ',session['enabled_debug'])
             # print (check_debug_status())
