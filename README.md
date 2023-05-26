@@ -80,6 +80,10 @@ Below are the modifications made:
 
 Furthermore, this is not production level code, so I've decided to sidestep implementing session handling with a Dict. You are free to implement it if you wish.
 
+#### Exposure creep during camera change
+
+There is an issue where changing cameras causes the exposure to creep in the direction of last exposure direction change. This may require re-writing the ```set_ae_exposure()``` function. This is related to retaining session data from the previous camera. More testing is required before a code re-write.
+
 ## Required python libraries
 
 * flask

@@ -12,28 +12,12 @@ from config.network import debug_level
 import config.network as network
 from lib import version as ver
 from lib.sessions import session, sess_defaults
-from lib.functions import check_debug_status, get_frames, set_ae_exposure, set_black_point, set_flip_image, set_frame_size, set_white_balance
+from lib.functions import check_debug_status, get_frames, set_ae_exposure, set_black_point, set_flip_image, set_frame_size, set_white_balance, set_defaults
 
 app = Flask(__name__, template_folder='html')
 
 version_number = (0,1,1)
 
-
-def set_defaults(cam_id):
-    session.update(ae_direction=sess_defaults[cam_id][0],bpc=sess_defaults[cam_id][1],fs_size=sess_defaults[cam_id][2],
-        white_balance=sess_defaults[cam_id][3])  # Change all declared values to default values 
-    show_debug_info = check_debug_status(False)
-    if show_debug_info == 'DEBUG': 
-        print('DEBUG: Resetting stream to default values')
-        print (f'DEBUG:   Session data:\n         ',session)    # avoid importing print_session_data()
-    else:
-        print('INFO: Stream has been reset to default values')
-
-    set_ae_exposure(session['ae_direction'])
-    set_black_point(session['bpc'])
-    set_frame_size(session['fs_size'])
-    set_white_balance(session['white_balance'])
-    return show_debug_info
 
 @app.route('/video_feed/', methods=["GET"])
 @app.route('/video_feed/<string:id>/', methods=["GET"]) # Overload to get direct feed
@@ -68,28 +52,52 @@ def index():
     if request.method == 'POST':
         if request.form.get('action') == '1':
             # print("Request get: ",request.form.get('action'), type(request.form.get('action')), ' Camera ID: ', session['camera_id'] )
+            # print ('Request: 1 Cam ID: ',session['camera_id'])
             if not session['camera_id'] == request.form.get('action'):
-                set_defaults(request.form.get('action')) 
-            session['camera_id']=request.form.get('action')
+                session['camera_id']=request.form.get('action')
+                set_defaults(request.form.get('action'))
+            else:
+                session['camera_id']=request.form.get('action')
+            # print ('Requested: 1 Cam ID: ',session['camera_id'])
+            if verbose == 'DEBUG': 
+                print ('DEBUG:   Camera session data:    [{}]'.format(session['camera_id']),sess_defaults[session['camera_id']])
+                # print(f"Camera 1:\n         ",session,'\n',sess_defaults,'\n',sess_defaults[session['camera_id']])
             # print("Camera 1",session['camera_id'])
         elif  request.form.get('action') == '2':
             if not session['camera_id'] == request.form.get('action'):
-                set_defaults(request.form.get('action')) 
-            session['camera_id']=request.form.get('action')
+                session['camera_id']=request.form.get('action')
+                set_defaults(request.form.get('action'))
+            else:
+                session['camera_id']=request.form.get('action')
+            if verbose == 'DEBUG': 
+                print ('DEBUG:   Camera session data:    [{}]'.format(session['camera_id']),sess_defaults[session['camera_id']])
+                # print(f"Camera 2:\n         ",session,'\n',sess_defaults,'\n',sess_defaults[session['camera_id']])
             # print("Camera 2",session['camera_id'])
         elif  request.form.get('action') == '3':
+            print ('Request: 3 Cam ID: ',session['camera_id'])
             if not session['camera_id'] == request.form.get('action'):
+                session['camera_id']=request.form.get('action')
                 set_defaults(request.form.get('action')) 
-            session['camera_id']=request.form.get('action')
+            else:
+                session['camera_id']=request.form.get('action')
+            print ('Requested: 3 Cam ID: ',session['camera_id'])
+            if verbose == 'DEBUG':
+                print ('DEBUG:   Camera session data:    [{}]'.format(session['camera_id']),sess_defaults[session['camera_id']])
+                # print(f"Camera 3:\n         ",session,'\n',sess_defaults,'\n',sess_defaults[session['camera_id']])
+
             # print("Camera 3",session['camera_id'])
         elif  request.form.get('action') == '4':
             if not session['camera_id'] == request.form.get('action'):
+                session['camera_id']=request.form.get('action')
                 set_defaults(request.form.get('action')) 
             session['camera_id']=request.form.get('action')
-            # print("Camera 3",session['camera_id'])
+            if verbose == 'DEBUG': 
+                print ('DEBUG:   Camera session data:    [{}]'.format(session['camera_id']),sess_defaults[session['camera_id']])
+                # print(f"Camera 4:\n         ",session,'\n',sess_defaults,'\n',sess_defaults[session['camera_id']])
+            # print("Camera 4",session['camera_id'])
         elif  request.form.get('action') == 'reset':
             # session['camera_id']='reset'
-            set_defaults(session['camera_id'])
+            set_defaults(session['camera_id'],True)     # Send reset to set_defaults()
         elif  request.form.get('action') == 'stop':
             session['camera_id']='stop'
             print('INFO: Stream has been stopped')
@@ -103,7 +111,7 @@ def index():
             set_flip_image(session['flip'], verbose)
         elif request.form.get('bpc_action') == '1':
             session['bpc']=request.form.get('bpc_action')
-            set_black_point(session['bpc'])
+            set_black_point(session['bpc'], verbose)
         elif request.form.get('wb_action') in ['0','1']:
             session['white_balance']=request.form.get('wb_action')
             set_white_balance(session['white_balance'], verbose)
