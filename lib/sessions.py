@@ -12,3 +12,12 @@ session = {    # Not the safest method to pass data between routes
     'enabled_debug' : False
 
 }
+
+sess_defaults = {
+    # AE direction, BPC, FS_size, WB
+    '0':['0','0','9','0'] ,     # No camera id
+    '1':['0','0','9','0'] ,
+    '2':['0','0','11','1'] ,
+    '3':['0','0','11','1'] ,
+    '4':['0','0','9','0'] 
+}

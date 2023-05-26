@@ -11,7 +11,7 @@ from config.network import host
 from config.network import debug_level
 import config.network as network
 from lib import version as ver
-from lib.sessions import session
+from lib.sessions import session, sess_defaults
 from lib.functions import check_debug_status, get_frames, set_ae_exposure, set_black_point, set_flip_image, set_frame_size, set_white_balance
 
 app = Flask(__name__, template_folder='html')
@@ -19,8 +19,9 @@ app = Flask(__name__, template_folder='html')
 version_number = (0,1,1)
 
 
-def set_defaults():
-    session.update(ae_direction='0',bpc='0',fs_size='9',white_balance='0')  # Change all declared values to default values 
+def set_defaults(cam_id):
+    session.update(ae_direction=sess_defaults[cam_id][0],bpc=sess_defaults[cam_id][1],fs_size=sess_defaults[cam_id][2],
+        white_balance=sess_defaults[cam_id][3])  # Change all declared values to default values 
     show_debug_info = check_debug_status(False)
     if show_debug_info == 'DEBUG': 
         print('DEBUG: Resetting stream to default values')
@@ -68,27 +69,27 @@ def index():
         if request.form.get('action') == '1':
             # print("Request get: ",request.form.get('action'), type(request.form.get('action')), ' Camera ID: ', session['camera_id'] )
             if not session['camera_id'] == request.form.get('action'):
-                set_defaults() 
+                set_defaults(request.form.get('action')) 
             session['camera_id']=request.form.get('action')
             # print("Camera 1",session['camera_id'])
         elif  request.form.get('action') == '2':
             if not session['camera_id'] == request.form.get('action'):
-                set_defaults() 
+                set_defaults(request.form.get('action')) 
             session['camera_id']=request.form.get('action')
             # print("Camera 2",session['camera_id'])
         elif  request.form.get('action') == '3':
             if not session['camera_id'] == request.form.get('action'):
-                set_defaults() 
+                set_defaults(request.form.get('action')) 
             session['camera_id']=request.form.get('action')
             # print("Camera 3",session['camera_id'])
         elif  request.form.get('action') == '4':
             if not session['camera_id'] == request.form.get('action'):
-                set_defaults() 
+                set_defaults(request.form.get('action')) 
             session['camera_id']=request.form.get('action')
             # print("Camera 3",session['camera_id'])
         elif  request.form.get('action') == 'reset':
             # session['camera_id']='reset'
-            set_defaults()
+            set_defaults(session['camera_id'])
         elif  request.form.get('action') == 'stop':
             session['camera_id']='stop'
             print('INFO: Stream has been stopped')
@@ -127,7 +128,7 @@ def index():
 
 def create_app():
     print("App created")
-    set_defaults()
+    set_defaults('0')
     return app
 
 if __name__ == '__main__':
@@ -161,7 +162,7 @@ if __name__ == '__main__':
     if args.host_ip:
         print ("Access server using this ip address and port: http://{}:{}".format(network.host_address,host['host_port']))
     else:
-        verbose = set_defaults()
+        verbose = set_defaults('0')
         if verbose == 'DEBUG':
             print('DEBUG:  Route "/" defaults: Cam_ID: ',session['camera_id'],' AE level: ',session['ae_level'],' Frame Size: ',session['fs_size'],' WB: ',session['white_balance'],' BPC: ',session['bpc'])
             # print (strip_url(url))

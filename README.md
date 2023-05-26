@@ -89,6 +89,6 @@ Furthermore, this is not production level code, so I've decided to sidestep impl
 
 ## ToDo
 
-* Implement per Camera ID session handling
+* ~~Implement per Camera ID session handling~~ Completed
 * Implement ```flip_image``` button toggling for flipping the image
 * TBD
