@@ -3,7 +3,7 @@
  
 import requests
 
-def check_debug_status():
+def check_debug_status(print_session=True):
     if session['enabled_debug'] == False:
         verbose = debug_level['0']
         # print ('INFO: Debug level set to: ',verbose,' and session is: ',session['enabled_debug'])
@@ -11,14 +11,17 @@ def check_debug_status():
     else:
         verbose = debug_level['1']
         print ('DEBUG: Debug level set to ',verbose,' and session is: ',session['enabled_debug'])
-        print (f'DEBUG:   Session data:\n         ',session)
+        if print_session:
+            print_session_data()
     return verbose
 
+def print_session_data():
+    print (f'DEBUG:   Session data:\n         ',session)
 
-def strip_url(url): 
+def strip_url(url, verbose = False): 
     from urllib.parse import urlparse
 
-    verbose = check_debug_status()
+    # verbose = check_debug_status()
     # print (verbose, session['enabled_debug'])
 
     parts = urlparse(url)
@@ -27,10 +30,10 @@ def strip_url(url):
         print ('DEBUG: Camera IP address: ',domain_addr)
     return domain_addr
 
-def set_ae_exposure(ae_dir): 
+def set_ae_exposure(ae_dir, verbose = False): 
     from time import sleep
 
-    verbose = check_debug_status()
+    # verbose = check_debug_status()
     # print (verbose, session['enabled_debug'])
 
     if not session['camera_id'] == 'stop':
@@ -67,6 +70,7 @@ def set_ae_exposure(ae_dir):
                 ae_val = -2
             if verbose == 'DEBUG':
                 print(f'\nDEBUG:  AE level reset to: ',ae_val)
+                print_session_data()
             else:
                 print(' AE level reset to: ',ae_val)
 
@@ -75,10 +79,10 @@ def set_ae_exposure(ae_dir):
             print ("DEBUG: AE set to: ",ae_val,' URL: ',url, ' level: ',session['ae_level'],' status code: ',get_status_code) 
         # sleep(2)
 
-def set_black_point(bpc_mode): 
+def set_black_point(bpc_mode, verbose = False): 
     url_stripped = strip_url(cam_list[str(session['camera_id'])])
 
-    verbose = check_debug_status()
+    # verbose = check_debug_status()
     # print (verbose, session['enabled_debug'])
 
     url = url_stripped + '/control?var=bpc&val='+str(bpc_mode)
@@ -86,11 +90,12 @@ def set_black_point(bpc_mode):
     if verbose == 'DEBUG':
         print ("DEBUG: Black point correction set to: ",bpc_mode, end=' ')
         print (' status code: ',get_request.status_code)
+        print_session_data()
 
-def set_flip_image(mirror_mode): 
+def set_flip_image(mirror_mode, verbose = False): 
     url_stripped = strip_url(cam_list[str(session['camera_id'])])
 
-    verbose = check_debug_status()
+    # verbose = check_debug_status()
     # print (verbose, session['enabled_debug'])
 
     hmirror_adjust = url_stripped + '/control?var=hmirror&val='+str(mirror_mode)
@@ -103,27 +108,29 @@ def set_flip_image(mirror_mode):
     if verbose == 'DEBUG':
         print ('Vertical flip: ',get_request.status_code)
         print ("DEBUG: Image mirror set to: ",mirror_mode)
+        print_session_data()
 
-def set_frame_size(frame_size): 
+def set_frame_size(frame_size, verbose = False): 
     url_stripped = strip_url(cam_list[str(session['camera_id'])])
 
-    verbose = check_debug_status()
+    # verbose = check_debug_status()
     # print (verbose, session['enabled_debug'])
 
     url = url_stripped + '/control?var=framesize&val='+str(frame_size)
     get_request = requests.get(url)
     if verbose == 'DEBUG':
-        print ("DEBUG: Frame size set to: ",frame_size, "Resolution: ", end=' ')
+        print ("DEBUG: Frame size set to: ",frame_size, " Resolution: ", end=' ')
         if frame_size == '11':
             print('1280 x 720', end=' ')
         else:
             print('800 x 600', end=' ')
         print (' status code: ',get_request.status_code)
+        print_session_data()
 
-def set_white_balance(wb_mode): 
+def set_white_balance(wb_mode, verbose = False): 
     url_stripped = strip_url(cam_list[str(session['camera_id'])])
 
-    verbose = check_debug_status()
+    # verbose = check_debug_status()
     # print (verbose, session['enabled_debug'])
 
     url = url_stripped + '/control?var=wb_mode&val='+str(wb_mode)
@@ -131,6 +138,7 @@ def set_white_balance(wb_mode):
     if verbose == 'DEBUG':
         print ("DEBUG: WB set to: ",wb_mode, end=' ')
         print (' status code: ',get_request.status_code)
+        print_session_data()
 
 def get_frames(cam_id,stop_capture=False): 
     import cv2
@@ -176,6 +184,6 @@ else:
     from config.network import debug_level
     import config.network as network
 
-    verbose = check_debug_status()
+    # verbose = check_debug_status()
     # print (verbose, session['enabled_debug'])
     # print (verbose)

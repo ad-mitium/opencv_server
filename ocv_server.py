@@ -16,8 +16,23 @@ from lib.functions import check_debug_status, get_frames, set_ae_exposure, set_b
 
 app = Flask(__name__, template_folder='html')
 
-version_number = (0,1,0)
+version_number = (0,1,1)
 
+
+def set_defaults():
+    session.update(ae_direction='0',bpc='0',fs_size='9',white_balance='0')  # Change all declared values to default values 
+    show_debug_info = check_debug_status(False)
+    if show_debug_info == 'DEBUG': 
+        print('DEBUG: Resetting stream to default values')
+        print (f'DEBUG:   Session data:\n         ',session)    # avoid importing print_session_data()
+    else:
+        print('INFO: Stream has been reset to default values')
+
+    set_ae_exposure(session['ae_direction'])
+    set_black_point(session['bpc'])
+    set_frame_size(session['fs_size'])
+    set_white_balance(session['white_balance'])
+    return show_debug_info
 
 @app.route('/video_feed/', methods=["GET"])
 @app.route('/video_feed/<string:id>/', methods=["GET"]) # Overload to get direct feed
@@ -25,7 +40,7 @@ def video_feed(id='1'):
     id=session.get('camera_id')
 
     if verbose == 'DEBUG':
-       print('DEBUG:  Camera ID: ',id)
+       print('DEBUG:  Getting frames from Camera ID: ',id)
     if id.isdigit():
         id_int=int(id)
         if id_int==0:
@@ -46,43 +61,56 @@ def index():
     index_html= 'index.html'
     stop_html = 'index_stop.html'
 
+    # verbose = check_debug_status()
     # print (verbose)
 
     if request.method == 'POST':
         if request.form.get('action') == '1':
+            # print("Request get: ",request.form.get('action'), type(request.form.get('action')), ' Camera ID: ', session['camera_id'] )
+            if not session['camera_id'] == request.form.get('action'):
+                set_defaults() 
             session['camera_id']=request.form.get('action')
             # print("Camera 1",session['camera_id'])
         elif  request.form.get('action') == '2':
+            if not session['camera_id'] == request.form.get('action'):
+                set_defaults() 
             session['camera_id']=request.form.get('action')
             # print("Camera 2",session['camera_id'])
         elif  request.form.get('action') == '3':
+            if not session['camera_id'] == request.form.get('action'):
+                set_defaults() 
             session['camera_id']=request.form.get('action')
             # print("Camera 3",session['camera_id'])
         elif  request.form.get('action') == '4':
+            if not session['camera_id'] == request.form.get('action'):
+                set_defaults() 
             session['camera_id']=request.form.get('action')
             # print("Camera 3",session['camera_id'])
+        elif  request.form.get('action') == 'reset':
+            # session['camera_id']='reset'
+            set_defaults()
         elif  request.form.get('action') == 'stop':
             session['camera_id']='stop'
             print('INFO: Stream has been stopped')
-            get_frames(session['camera_id'],True)
+            get_frames(session['camera_id'],True)   # Send stop capture to break stream
             return render_template(stop_html)
         elif request.form.get('fs_action') in framesize:
             session['fs_size']=request.form.get('fs_action')
-            set_frame_size(session['fs_size'])
+            set_frame_size(session['fs_size'], verbose)
         elif request.form.get('flip_action') in ['0','1']:
             session['flip']=request.form.get('flip_action')
-            set_flip_image(session['flip'])
+            set_flip_image(session['flip'], verbose)
         elif request.form.get('bpc_action') == '1':
             session['bpc']=request.form.get('bpc_action')
             set_black_point(session['bpc'])
         elif request.form.get('wb_action') in ['0','1']:
             session['white_balance']=request.form.get('wb_action')
-            set_white_balance(session['white_balance'])
+            set_white_balance(session['white_balance'], verbose)
             if verbose == 'DEBUG':
                 print('DEBUG: WB  Cam_ID: ',session['camera_id'],' level: ',session['ae_level'],' WB value: ',session['white_balance'])
         elif request.form.get('ae_action') in ae_level_range: # Set exposure level
             session['ae_direction']=request.form.get('ae_action')
-            set_ae_exposure(session['ae_direction'])
+            set_ae_exposure(session['ae_direction'], verbose)
             if verbose == 'DEBUG':
                 print('DEBUG: AE  Cam_ID: ',session['camera_id'],' level: ',session['ae_level'],' direction: ',session['ae_direction'],session['white_balance'])
         else:
@@ -98,6 +126,8 @@ def index():
     return render_template(index_html)
 
 def create_app():
+    print("App created")
+    set_defaults()
     return app
 
 if __name__ == '__main__':
@@ -119,7 +149,7 @@ if __name__ == '__main__':
 
     # print('Server debug: ',session['enabled_debug'])
 
-    verbose = check_debug_status()
+    # verbose = check_debug_status()
     # if not session['enabled_debug']:
     #     verbose = debug_level['0']
     #     print ('Debug level set to ',verbose,' and session is: ',session['enabled_debug'])
@@ -131,6 +161,7 @@ if __name__ == '__main__':
     if args.host_ip:
         print ("Access server using this ip address and port: http://{}:{}".format(network.host_address,host['host_port']))
     else:
+        verbose = set_defaults()
         if verbose == 'DEBUG':
             print('DEBUG:  Route "/" defaults: Cam_ID: ',session['camera_id'],' AE level: ',session['ae_level'],' Frame Size: ',session['fs_size'],' WB: ',session['white_balance'],' BPC: ',session['bpc'])
             # print (strip_url(url))
