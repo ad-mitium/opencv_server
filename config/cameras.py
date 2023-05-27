@@ -17,3 +17,5 @@ black_point = ['1']   # Set black point correction on
 white_balance = ['1']   # Set to sunny white balance
 
 special_effect = ['0','2']  #Set special effect to None or Gray scale
+
+quality = ['4']
