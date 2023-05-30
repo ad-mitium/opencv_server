@@ -56,7 +56,7 @@ def index():
             # print ('Request: 1 Cam ID: ',session['camera_id'])
             if not session['camera_id'] == request.form.get('action'):
                 session['camera_id']=request.form.get('action')
-                update_cam(request.form.get('action'))
+                update_cam(request.form.get('action'),False,verbose)
             else:
                 session['camera_id']=request.form.get('action')
             # print ('Requested: 1 Cam ID: ',session['camera_id'])
@@ -68,7 +68,7 @@ def index():
         elif  request.form.get('action') == '2':
             if not session['camera_id'] == request.form.get('action'):
                 session['camera_id']=request.form.get('action')
-                update_cam(request.form.get('action'))
+                update_cam(request.form.get('action'),False,verbose)
             else:
                 session['camera_id']=request.form.get('action')
             # print ('Requested: 2 Cam ID: ',session['camera_id'])
@@ -81,7 +81,7 @@ def index():
             print ('Request: 3 Cam ID: ',session['camera_id'])
             if not session['camera_id'] == request.form.get('action'):
                 session['camera_id']=request.form.get('action')
-                update_cam(request.form.get('action')) 
+                update_cam(request.form.get('action'),False,verbose) 
             else:
                 session['camera_id']=request.form.get('action')
             # print ('Requested: 3 Cam ID: ',session['camera_id'])
@@ -93,7 +93,7 @@ def index():
         elif  request.form.get('action') == '4':
             if not session['camera_id'] == request.form.get('action'):
                 session['camera_id']=request.form.get('action')
-                update_cam(request.form.get('action')) 
+                update_cam(request.form.get('action'),False,verbose) 
             session['camera_id']=request.form.get('action')
             # print ('Requested: 4 Cam ID: ',session['camera_id'])
             if verbose == 'DEBUG': 
