@@ -19,7 +19,9 @@ def print_session_data():
     print (f'DEBUG:   Session data:\n         ',session)
     return 0
 
-def set_defaults(cam_id, reset=False, show_debug_info = False):
+def set_defaults(cam_id, reset=False, show_debug_info = False):     # Handles initialization and reset
+    show_debug_info = check_debug_status(False)
+
     if show_debug_info == 'DEBUG': 
         print ('DEBUG: Set Defaults Cam ID: ',cam_id, end=' ')
 
@@ -32,10 +34,9 @@ def set_defaults(cam_id, reset=False, show_debug_info = False):
     else:
         session.update(ae_level=sess_defaults[cam_id][0],bpc=sess_defaults[cam_id][1],fs_size=sess_defaults[cam_id][2],
             white_balance=sess_defaults[cam_id][3])  # Change all declared values to default values 
-    if show_debug_info == 'DEBUG': 
-        print ('AE Val: ',session['ae_level'],'AE Dir: ', session['ae_direction'] )
 
-    show_debug_info = check_debug_status(False)
+    if show_debug_info == 'DEBUG':      # follow on for previious print statement
+        print ('AE Val: ',session['ae_level'],'AE Dir: ', session['ae_direction'] )
 
     if show_debug_info == 'DEBUG': 
         if reset: 
@@ -53,9 +54,34 @@ def set_defaults(cam_id, reset=False, show_debug_info = False):
     set_white_balance(session['white_balance'])
     return show_debug_info
 
+def update_cam(cam_id, reset=False, show_debug_info = False):   # Handles updating changed values
+    if show_debug_info == 'DEBUG': 
+        print ('DEBUG: Updating Cam ID: ',cam_id, end=' ')
+
+    session.update(ae_level=sess_defaults[cam_id][0],bpc=sess_defaults[cam_id][1],fs_size=sess_defaults[cam_id][2],
+        white_balance=sess_defaults[cam_id][3])  # Change all declared values to default values 
+
+    if show_debug_info == 'DEBUG':  # Follow on for previous print statement
+        print ('AE Val: ',session['ae_level'],'AE Dir: ', session['ae_direction'] )
+
+    # show_debug_info = check_debug_status(False)
+
+    if show_debug_info == 'DEBUG': 
+        print('DEBUG: Changing stream to previous values')
+        print_session_data()
+        print ('DEBUG:   Camera session data:    [{}]'.format(cam_id),sess_defaults[cam_id])
+    else:
+        print('INFO: Stream has been reset to default values')
+
+    set_ae_exposure(None,session['ae_level'],show_debug_info) # None forces a "set level" instead of changing exposure direction
+    set_black_point(session['bpc'],show_debug_info)
+    set_frame_size(session['fs_size'],show_debug_info)
+    set_white_balance(session['white_balance'],show_debug_info)
+    return show_debug_info
+
 def write_session_data(cam_id, ae_val, bpc_mode, frame_size, wb_mode, show_debug_info = False):
     if show_debug_info == 'DEBUG': 
-        print ('Write session AE Val: ',ae_val,' Cam ID: ',cam_id)
+        print ('DEBUG: Write session data: AE Val: ',ae_val,' Cam ID: ',cam_id)
     sess_defaults[cam_id][0], sess_defaults[cam_id][1], sess_defaults[cam_id][2], sess_defaults[cam_id][3] = ae_val, bpc_mode, frame_size, wb_mode
 
     if show_debug_info == 'DEBUG': 
@@ -92,7 +118,7 @@ def strip_url(url, show_debug_info = False):
         print ('DEBUG: Camera IP address: ',domain_addr)
     return domain_addr
 
-def set_ae_exposure(ae_dir, show_debug_info = False): 
+def set_ae_exposure(ae_dir, ae_val = 'NaN',show_debug_info = False): 
     from time import sleep
 
     # show_debug_info = check_debug_status()
@@ -103,20 +129,26 @@ def set_ae_exposure(ae_dir, show_debug_info = False):
     if not session['camera_id'] == 'stop' or not session['camera_id'] == 'reset':
         url_stripped = strip_url(cam_list[str(session['camera_id'])])
 
-        print('INFO: Curent ae_level: ',session['ae_level'],' direction: ', ae_dir,' New ae_level: ', end=' ')
+        print('INFO: Curent ae_level: ',session['ae_level'],' direction: ', ae_dir, end=' ')
         if ae_dir == '0':
             ae_val = '0'
+        elif ae_dir == None:    # Force an overwrite of AE level instead of direction change
+            if int(ae_val):    # ae_val is now assigned a value provided during function call
+                print(f'\nINFO: Force set AE value to: ', ae_val, end=' ')
+            else:
+                print(f'\nERROR: ae_val is NaN', ae_val, type(ae_val), end=' ')
+                ae_val = int(ae_val)
         else:
             ae_val = int(session['ae_level']) + int(ae_dir)
         
-        # if show_debug_info == 'DEBUG':
-            # print ('DEBUG: AE val: ',ae_val, end=' ') 
-            # print(type(ae_val) , type(session['ae_level']))
+        if show_debug_info == 'DEBUG':
+            print ('DEBUG: AE val: ',ae_val, end=' ') 
+            print(type(ae_val) , type(session['ae_level']))
         
         if str(ae_val) in ae_level_range:
             url = url_stripped + '/control?var=ae_level&val='+str(ae_val)
             session['ae_level'] = str(ae_val)
-            print (ae_val)
+            print (' New ae_level: ',ae_val)      # Part of previous INFO output
             # if show_debug_info == 'DEBUG':
             #     print('DEBUG:  URL: ',url,' level: ',session['ae_level'], end='')
             get_request = requests.get(url)
@@ -145,6 +177,8 @@ def set_ae_exposure(ae_dir, show_debug_info = False):
         if show_debug_info == 'DEBUG':
             print ("DEBUG: AE set to: ",ae_val,' URL: ',url, ' level: ',session['ae_level'],' status code: ',get_status_code) 
         # sleep(2)
+    # else:
+    #     print('INFO: Status is: ',session['camera_id'])
 
 def set_black_point(bpc_mode, show_debug_info = False): 
     url_stripped = strip_url(cam_list[str(session['camera_id'])])
@@ -247,7 +281,6 @@ if __name__ == '__main__':
 
     show_debug_info = check_debug_status()
     print (show_debug_info, session['enabled_debug'])
-    # print (show_debug_info)
 
 else:
     from lib.sessions import session, sess_defaults
