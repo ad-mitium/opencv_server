@@ -55,6 +55,8 @@ def set_defaults(cam_id, reset=False, show_debug_info = False):     # Handles in
     return show_debug_info
 
 def update_cam(cam_id, reset=False, show_debug_info = False):   # Handles updating changed values
+    show_debug_info = check_debug_status(False)
+
     if show_debug_info == 'DEBUG': 
         print ('DEBUG: Updating Cam ID: ',cam_id, end=' ')
 
