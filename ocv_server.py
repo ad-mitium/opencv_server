@@ -50,89 +50,92 @@ def index():
     # verbose = check_debug_status()
     # print (verbose)
 
-    if request.method == 'POST':
-        if request.form.get('action') == '1':
-            # print("Request get: ",request.form.get('action'), type(request.form.get('action')), ' Camera ID: ', session['camera_id'] )
+    request_method = request.method
+    form_data = request.form.to_dict()
+
+    if request_method == 'POST':
+        if form_data.get('action') == '1':
+            # print("Request get: ",form_data.get('action'), type(form_data.get('action')), ' Camera ID: ', session['camera_id'] )
             # print ('Request: 1 Cam ID: ',session['camera_id'])
-            if not session['camera_id'] == request.form.get('action'):
-                session['camera_id']=request.form.get('action')
-                update_cam(request.form.get('action'),False,verbose)
+            if not session['camera_id'] == form_data.get('action'):
+                session['camera_id']=form_data.get('action')
+                update_cam(form_data.get('action'),False,verbose)
             else:
-                session['camera_id']=request.form.get('action')
+                session['camera_id']=form_data.get('action')
             # print ('Requested: 1 Cam ID: ',session['camera_id'])
             if verbose == 'DEBUG': 
                 print ('DEBUG:   Camera session data:    [{}]'.format(session['camera_id']),sess_defaults[session['camera_id']])
                 # print(f"Camera 1:\n         ",session,'\n',sess_defaults,'\n',sess_defaults[session['camera_id']])
             # print("Camera 1",session['camera_id'])
 
-        elif  request.form.get('action') == '2':
+        elif  form_data.get('action') == '2':
             # print ('Request: 2 Cam ID: ',session['camera_id'])
-            if not session['camera_id'] == request.form.get('action'):
-                session['camera_id']=request.form.get('action')
-                update_cam(request.form.get('action'),False,verbose)
+            if not session['camera_id'] == form_data.get('action'):
+                session['camera_id']=form_data.get('action')
+                update_cam(form_data.get('action'),False,verbose)
             else:
-                session['camera_id']=request.form.get('action')
+                session['camera_id']=form_data.get('action')
             # print ('Requested: 2 Cam ID: ',session['camera_id'])
             if verbose == 'DEBUG': 
                 print ('DEBUG:   Camera session data:    [{}]'.format(session['camera_id']),sess_defaults[session['camera_id']])
                 # print(f"Camera 2:\n         ",session,'\n',sess_defaults,'\n',sess_defaults[session['camera_id']])
             # print("Camera 2",session['camera_id'])
 
-        elif  request.form.get('action') == '3':
+        elif  form_data.get('action') == '3':
             # print ('Request: 3 Cam ID: ',session['camera_id'])
-            if not session['camera_id'] == request.form.get('action'):
-                session['camera_id']=request.form.get('action')
-                update_cam(request.form.get('action'),False,verbose) 
+            if not session['camera_id'] == form_data.get('action'):
+                session['camera_id']=form_data.get('action')
+                update_cam(form_data.get('action'),False,verbose) 
             else:
-                session['camera_id']=request.form.get('action')
+                session['camera_id']=form_data.get('action')
             # print ('Requested: 3 Cam ID: ',session['camera_id'])
             if verbose == 'DEBUG':
                 print ('DEBUG:   Camera session data:    [{}]'.format(session['camera_id']),sess_defaults[session['camera_id']])
                 # print(f"Camera 3:\n         ",session,'\n',sess_defaults,'\n',sess_defaults[session['camera_id']])
             # print("Camera 3",session['camera_id'])
 
-        elif  request.form.get('action') == '4':
+        elif  form_data.get('action') == '4':
             # print ('Request: 4 Cam ID: ',session['camera_id'])
-            if not session['camera_id'] == request.form.get('action'):
-                session['camera_id']=request.form.get('action')
-                update_cam(request.form.get('action'),False,verbose) 
-            session['camera_id']=request.form.get('action')
+            if not session['camera_id'] == form_data.get('action'):
+                session['camera_id']=form_data.get('action')
+                update_cam(form_data.get('action'),False,verbose) 
+            session['camera_id']=form_data.get('action')
             # print ('Requested: 4 Cam ID: ',session['camera_id'])
             if verbose == 'DEBUG': 
                 print ('DEBUG:   Camera session data:    [{}]'.format(session['camera_id']),sess_defaults[session['camera_id']])
                 # print(f"Camera 4:\n         ",session,'\n',sess_defaults,'\n',sess_defaults[session['camera_id']])
             # print("Camera 4",session['camera_id'])
 
-        elif  request.form.get('action') == 'reset':
+        elif  form_data.get('action') == 'reset':
             # session['camera_id']='reset'
             set_defaults(session['camera_id'],True)     # Send reset to set_defaults()
 
-        elif  request.form.get('action') == 'stop':
+        elif  form_data.get('action') == 'stop':
             session['camera_id']='stop'
             print('INFO: Stream has been stopped')
             get_frames(session['camera_id'],True)   # Send stop capture to break stream
             return render_template(stop_html)
 
-        elif request.form.get('fs_action') in framesize:
-            session['fs_size']=request.form.get('fs_action')
+        elif form_data.get('fs_action') in framesize:
+            session['fs_size']=form_data.get('fs_action')
             set_frame_size(session['fs_size'], verbose)
 
-        elif request.form.get('flip_action') in ['0','1']:
-            session['flip']=request.form.get('flip_action')
+        elif form_data.get('flip_action') in ['0','1']:
+            session['flip']=form_data.get('flip_action')
             set_flip_image(session['flip'], verbose)
 
-        elif request.form.get('bpc_action') == '1':
-            session['bpc']=request.form.get('bpc_action')
+        elif form_data.get('bpc_action') == '1':
+            session['bpc']=form_data.get('bpc_action')
             set_black_point(session['bpc'], verbose)
 
-        elif request.form.get('wb_action') in ['0','1']:
-            session['white_balance']=request.form.get('wb_action')
+        elif form_data.get('wb_action') in ['0','1']:
+            session['white_balance']=form_data.get('wb_action')
             set_white_balance(session['white_balance'], verbose)
             if verbose == 'DEBUG':
                 print('DEBUG: WB  Cam_ID: ',session['camera_id'],' level: ',session['ae_level'],' WB value: ',session['white_balance'])
 
-        elif request.form.get('ae_action') in ae_level_range: # Set exposure level
-            session['ae_direction']=request.form.get('ae_action')
+        elif form_data.get('ae_action') in ae_level_range: # Set exposure level
+            session['ae_direction']=form_data.get('ae_action')
             set_ae_exposure(session['ae_direction'], verbose)
             if verbose == 'DEBUG':
                 print('DEBUG: AE  Cam_ID: ',session['camera_id'],' level: ',session['ae_level'],' direction: ',session['ae_direction'],session['white_balance'])
@@ -145,10 +148,10 @@ def index():
     curr_time = strftime('%m-%d-%Y ') + strftime('%H:%M:%S')
 
     if verbose == 'DEBUG': 
-        print('DEBUG: {}: Route render:'.format(curr_time),request.method,' Cam_ID: ',session['camera_id'],' AE level: ',session['ae_level'],' Frame Size: ',session['fs_size'],' WB: ',session['white_balance'],' BPC: ',session['bpc'] )
-        print('DEBUG: Request form: ',request.form)
+        print('DEBUG: {}: Route render:'.format(curr_time),request_method,' Cam_ID: ',session['camera_id'],' AE level: ',session['ae_level'],' Frame Size: ',session['fs_size'],' WB: ',session['white_balance'],' BPC: ',session['bpc'] )
+        print('DEBUG: Request form: ',form_data)
     else:
-        print('INFO: {}: Route render:'.format(curr_time),request.method,' Cam_ID: ',session['camera_id'],' AE level: ',session['ae_level'],' Frame Size: ',session['fs_size'],' WB: ',session['white_balance'],' BPC: ',session['bpc'] )
+        print('INFO: {}: Route render:'.format(curr_time),request_method,' Cam_ID: ',session['camera_id'],' AE level: ',session['ae_level'],' Frame Size: ',session['fs_size'],' WB: ',session['white_balance'],' BPC: ',session['bpc'] )
     return render_template(index_html)
 
 def create_app():
