@@ -136,7 +136,7 @@ def set_ae_exposure(ae_dir, ae_val = 'NaN',show_debug_info = False):
         if ae_dir == '0':
             ae_val = '0'
         elif ae_dir == None:    # Force an overwrite of AE level instead of direction change
-            if int(ae_val):    # ae_val is now assigned a value provided during function call
+            if type(ae_val) == int:    # ae_val is now assigned a value provided during function call
                 print(f'\nINFO: Force set AE value to: ', ae_val, end=' ')
             else:
                 print(f'\nERROR: ae_val is NaN', ae_val, type(ae_val), end=' ')
