@@ -26,7 +26,7 @@ def video_feed(id='1'):
     id=session.get('camera_id')
 
     if verbose == 'DEBUG':
-       print('DEBUG:   Getting frames from Camera ID: ',id)
+       print('DEBUG:    Getting frames from Camera ID: ',id)
     if id.isdigit():
         id_int=int(id)
         if id_int==0:
@@ -56,7 +56,7 @@ def index():
     print('REQUEST:  Request form generated')
 
     if verbose == 'DEBUG': 
-        print('DEBUG:   Request form: ',form_data)
+        print('DEBUG:     Request form: ',form_data)
 
     if request_method == 'POST':
         if form_data.get('action') == '1':
@@ -68,7 +68,7 @@ def index():
             else:
                 session['camera_id']=form_data.get('action')
                 if verbose == 'DEBUG':
-                    print('DEBUG:  Camera ID not changed')
+                    print('DEBUG:   Camera ID not changed')
             # print ('Requested: 1 Cam ID: ',session['camera_id'])
             # if verbose == 'DEBUG': 
             #     print ('DEBUG:    Camera session data:    [{}]'.format(session['camera_id']),sess_defaults[session['camera_id']])
@@ -83,10 +83,10 @@ def index():
             else:
                 session['camera_id']=form_data.get('action')
                 if verbose == 'DEBUG':
-                    print('DEBUG:  Camera ID not changed')
+                    print('DEBUG:   Camera ID not changed')
             # print ('Requested: 2 Cam ID: ',session['camera_id'])
             # if verbose == 'DEBUG': 
-            #     print ('DEBUG:    Camera session data:    [{}]'.format(session['camera_id']),sess_defaults[session['camera_id']])
+            #     print ('DEBUG:     Camera session data:    [{}]'.format(session['camera_id']),sess_defaults[session['camera_id']])
                 # print(f"Camera 2:\n         ",session,'\n',sess_defaults,'\n',sess_defaults[session['camera_id']])
             # print("Camera 2",session['camera_id'])
 
@@ -98,10 +98,10 @@ def index():
             else:
                 session['camera_id']=form_data.get('action')
                 if verbose == 'DEBUG':
-                    print('DEBUG:  Camera ID not changed')
+                    print('DEBUG:   Camera ID not changed')
             # print ('Requested: 3 Cam ID: ',session['camera_id'])
             # if verbose == 'DEBUG':
-            #     print ('DEBUG:    Camera session data:    [{}]'.format(session['camera_id']),sess_defaults[session['camera_id']])
+            #     print ('DEBUG:     Camera session data:    [{}]'.format(session['camera_id']),sess_defaults[session['camera_id']])
                 # print(f"Camera 3:\n         ",session,'\n',sess_defaults,'\n',sess_defaults[session['camera_id']])
             # print("Camera 3",session['camera_id'])
 
@@ -113,10 +113,10 @@ def index():
             else:
                 session['camera_id']=form_data.get('action')
                 if verbose == 'DEBUG':
-                    print('DEBUG:  Camera ID not changed')
+                    print('DEBUG:   Camera ID not changed')
             # print ('Requested: 4 Cam ID: ',session['camera_id'])
             # if verbose == 'DEBUG': 
-            #     print ('DEBUG:    Camera session data:    [{}]'.format(session['camera_id']),sess_defaults[session['camera_id']])
+            #     print ('DEBUG:     Camera session data:    [{}]'.format(session['camera_id']),sess_defaults[session['camera_id']])
                 # print(f"Camera 4:\n         ",session,'\n',sess_defaults,'\n',sess_defaults[session['camera_id']])
             # print("Camera 4",session['camera_id'])
 
@@ -126,7 +126,7 @@ def index():
 
         elif  form_data.get('action') == 'stop':
             session['camera_id']='stop'
-            print('INFO:   Stream has been stopped')
+            print('INFO:    Stream has been stopped')
             get_frames(session['camera_id'],True)   # Send stop capture to break stream
             return render_template(stop_html)
 
@@ -146,13 +146,13 @@ def index():
             session['white_balance']=form_data.get('wb_action')
             set_white_balance(session['white_balance'], verbose)
             # if verbose == 'DEBUG':
-            #     print('DEBUG:  WB  Cam_ID: ',session['camera_id'],' level: ',session['ae_level'],' WB value: ',session['white_balance'])
+            #     print('DEBUG:   WB  Cam_ID: ',session['camera_id'],' level: ',session['ae_level'],' WB value: ',session['white_balance'])
 
         elif form_data.get('ae_action') in ae_level_range: # Set exposure level
             session['ae_direction']=form_data.get('ae_action')
             set_ae_exposure(session['ae_direction'], verbose)
             # if verbose == 'DEBUG':
-            #     print('DEBUG:  AE  Cam_ID: ',session['camera_id'],' level: ',session['ae_level'],' direction: ',session['ae_direction'],session['white_balance'])
+            #     print('DEBUG:   AE  Cam_ID: ',session['camera_id'],' level: ',session['ae_level'],' direction: ',session['ae_direction'],session['white_balance'])
 
         else:
             print("Undefined action")
@@ -166,7 +166,7 @@ def index():
         print('DEBUG:   Camera session data:    [{}]'.format(session['camera_id']),sess_defaults[session['camera_id']])
         # print('DEBUG: Request form: ',form_data)
     else:
-        print('INFO:    {}: Route render:'.format(curr_time),request_method,' Cam_ID: ',session['camera_id'],' AE level: ',session['ae_level'],' Frame Size: ',session['fs_size'],' WB: ',session['white_balance'],' BPC: ',session['bpc'] )
+        print('INFO:     {}: Route render:'.format(curr_time),request_method,' Cam_ID: ',session['camera_id'],' AE level: ',session['ae_level'],' Frame Size: ',session['fs_size'],' WB: ',session['white_balance'],' BPC: ',session['bpc'] )
     return render_template(index_html)
 
 def create_app():
@@ -210,10 +210,10 @@ if __name__ == '__main__':
         if verbose == 'DEBUG':
             print('DEBUG:  Route "/" defaults: Cam_ID: ',session['camera_id'],' AE level: ',session['ae_level'],' Frame Size: ',session['fs_size'],' WB: ',session['white_balance'],' BPC: ',session['bpc'])
             # print (strip_url(url))
-            # print ('INFO:   Debug level set to ',verbose,' and session is: ',session['enabled_debug'])
+            # print ('INFO:    Debug level set to ',verbose,' and session is: ',session['enabled_debug'])
             # print (check_debug_status())
         else:
-            print('INFO:   Ready to serve camera streams')
+            print('INFO:    Ready to serve camera streams')
         # app.run(debug=True)
         serve(app, host=network.host_address, port=host['host_port'])
 
