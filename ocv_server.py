@@ -62,6 +62,8 @@ def index():
                 update_cam(form_data.get('action'),False,verbose)
             else:
                 session['camera_id']=form_data.get('action')
+                if verbose == 'DEBUG':
+                    print('DEBUG: Camera ID not changed')
             # print ('Requested: 1 Cam ID: ',session['camera_id'])
             if verbose == 'DEBUG': 
                 print ('DEBUG:   Camera session data:    [{}]'.format(session['camera_id']),sess_defaults[session['camera_id']])
@@ -75,6 +77,8 @@ def index():
                 update_cam(form_data.get('action'),False,verbose)
             else:
                 session['camera_id']=form_data.get('action')
+                if verbose == 'DEBUG':
+                    print('DEBUG: Camera ID not changed')
             # print ('Requested: 2 Cam ID: ',session['camera_id'])
             if verbose == 'DEBUG': 
                 print ('DEBUG:   Camera session data:    [{}]'.format(session['camera_id']),sess_defaults[session['camera_id']])
@@ -88,6 +92,8 @@ def index():
                 update_cam(form_data.get('action'),False,verbose) 
             else:
                 session['camera_id']=form_data.get('action')
+                if verbose == 'DEBUG':
+                    print('DEBUG: Camera ID not changed')
             # print ('Requested: 3 Cam ID: ',session['camera_id'])
             if verbose == 'DEBUG':
                 print ('DEBUG:   Camera session data:    [{}]'.format(session['camera_id']),sess_defaults[session['camera_id']])
@@ -99,7 +105,10 @@ def index():
             if not session['camera_id'] == form_data.get('action'):
                 session['camera_id']=form_data.get('action')
                 update_cam(form_data.get('action'),False,verbose) 
-            session['camera_id']=form_data.get('action')
+            else:
+                session['camera_id']=form_data.get('action')
+                if verbose == 'DEBUG':
+                    print('DEBUG: Camera ID not changed')
             # print ('Requested: 4 Cam ID: ',session['camera_id'])
             if verbose == 'DEBUG': 
                 print ('DEBUG:   Camera session data:    [{}]'.format(session['camera_id']),sess_defaults[session['camera_id']])
@@ -156,7 +165,7 @@ def index():
 
 def create_app():
     print("App created")
-    set_defaults('0')
+    # set_defaults('0')
     return app
 
 if __name__ == '__main__':
