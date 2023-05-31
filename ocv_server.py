@@ -65,8 +65,8 @@ def index():
                 if verbose == 'DEBUG':
                     print('DEBUG: Camera ID not changed')
             # print ('Requested: 1 Cam ID: ',session['camera_id'])
-            if verbose == 'DEBUG': 
-                print ('DEBUG:   Camera session data:    [{}]'.format(session['camera_id']),sess_defaults[session['camera_id']])
+            # if verbose == 'DEBUG': 
+            #     print ('DEBUG:   Camera session data:    [{}]'.format(session['camera_id']),sess_defaults[session['camera_id']])
                 # print(f"Camera 1:\n         ",session,'\n',sess_defaults,'\n',sess_defaults[session['camera_id']])
             # print("Camera 1",session['camera_id'])
 
@@ -80,8 +80,8 @@ def index():
                 if verbose == 'DEBUG':
                     print('DEBUG: Camera ID not changed')
             # print ('Requested: 2 Cam ID: ',session['camera_id'])
-            if verbose == 'DEBUG': 
-                print ('DEBUG:   Camera session data:    [{}]'.format(session['camera_id']),sess_defaults[session['camera_id']])
+            # if verbose == 'DEBUG': 
+            #     print ('DEBUG:   Camera session data:    [{}]'.format(session['camera_id']),sess_defaults[session['camera_id']])
                 # print(f"Camera 2:\n         ",session,'\n',sess_defaults,'\n',sess_defaults[session['camera_id']])
             # print("Camera 2",session['camera_id'])
 
@@ -95,8 +95,8 @@ def index():
                 if verbose == 'DEBUG':
                     print('DEBUG: Camera ID not changed')
             # print ('Requested: 3 Cam ID: ',session['camera_id'])
-            if verbose == 'DEBUG':
-                print ('DEBUG:   Camera session data:    [{}]'.format(session['camera_id']),sess_defaults[session['camera_id']])
+            # if verbose == 'DEBUG':
+            #     print ('DEBUG:   Camera session data:    [{}]'.format(session['camera_id']),sess_defaults[session['camera_id']])
                 # print(f"Camera 3:\n         ",session,'\n',sess_defaults,'\n',sess_defaults[session['camera_id']])
             # print("Camera 3",session['camera_id'])
 
@@ -110,8 +110,8 @@ def index():
                 if verbose == 'DEBUG':
                     print('DEBUG: Camera ID not changed')
             # print ('Requested: 4 Cam ID: ',session['camera_id'])
-            if verbose == 'DEBUG': 
-                print ('DEBUG:   Camera session data:    [{}]'.format(session['camera_id']),sess_defaults[session['camera_id']])
+            # if verbose == 'DEBUG': 
+            #     print ('DEBUG:   Camera session data:    [{}]'.format(session['camera_id']),sess_defaults[session['camera_id']])
                 # print(f"Camera 4:\n         ",session,'\n',sess_defaults,'\n',sess_defaults[session['camera_id']])
             # print("Camera 4",session['camera_id'])
 
