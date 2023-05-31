@@ -57,6 +57,7 @@ def set_defaults(cam_id, reset=False, show_debug_info = False):     # Handles in
 def update_cam(cam_id, reset=False, show_debug_info = False):   # Handles updating changed values
     # show_debug_info = check_debug_status(False)
 
+    # print ('Update Cam: ',show_debug_info)
     if show_debug_info == 'DEBUG': 
         print ('DEBUG: Updating Cam ID: ',cam_id, end=' ')
 
@@ -126,7 +127,7 @@ def set_ae_exposure(ae_dir, ae_val = 'NaN',show_debug_info = False):
     # show_debug_info = check_debug_status()
     # print (show_debug_info, session['enabled_debug'])
     if show_debug_info == 'DEBUG': 
-        print ("DEBUG:    IN AE: Camera ID: " ,session['camera_id'])
+        print ("DEBUG: IN AE: Camera ID: " ,session['camera_id'])
 
     if not session['camera_id'] == 'stop' or not session['camera_id'] == 'reset':
         url_stripped = strip_url(cam_list[str(session['camera_id'])])
@@ -142,10 +143,6 @@ def set_ae_exposure(ae_dir, ae_val = 'NaN',show_debug_info = False):
                 ae_val = int(ae_val)
         else:
             ae_val = int(session['ae_level']) + int(ae_dir)
-        
-        if show_debug_info == 'DEBUG':
-            print ('DEBUG: AE val: ',ae_val, end=' ') 
-            print(type(ae_val) , type(session['ae_level']))
         
         if str(ae_val) in ae_level_range:
             url = url_stripped + '/control?var=ae_level&val='+str(ae_val)

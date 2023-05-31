@@ -66,6 +66,7 @@ def index():
             # print("Camera 1",session['camera_id'])
 
         elif  request.form.get('action') == '2':
+            # print ('Request: 2 Cam ID: ',session['camera_id'])
             if not session['camera_id'] == request.form.get('action'):
                 session['camera_id']=request.form.get('action')
                 update_cam(request.form.get('action'),False,verbose)
@@ -78,7 +79,7 @@ def index():
             # print("Camera 2",session['camera_id'])
 
         elif  request.form.get('action') == '3':
-            print ('Request: 3 Cam ID: ',session['camera_id'])
+            # print ('Request: 3 Cam ID: ',session['camera_id'])
             if not session['camera_id'] == request.form.get('action'):
                 session['camera_id']=request.form.get('action')
                 update_cam(request.form.get('action'),False,verbose) 
@@ -91,6 +92,7 @@ def index():
             # print("Camera 3",session['camera_id'])
 
         elif  request.form.get('action') == '4':
+            # print ('Request: 4 Cam ID: ',session['camera_id'])
             if not session['camera_id'] == request.form.get('action'):
                 session['camera_id']=request.form.get('action')
                 update_cam(request.form.get('action'),False,verbose) 
