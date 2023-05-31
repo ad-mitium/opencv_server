@@ -171,178 +171,186 @@ def strip_url(url, show_debug_info = False):
     return domain_addr
 
 def set_ae_exposure(ae_dir, ae_val = 'NaN',show_debug_info = False, suppress = False): 
-    from time import sleep
+    # from time import sleep
+    if not session['camera_id'] == '0':    # Never go to '0'
 
-    # show_debug_info = check_debug_status()
-    # print (show_debug_info, session['enabled_debug'])
-    if show_debug_info == 'DEBUG': 
-        print ("DEBUG:    IN AE: Camera ID: " ,session['camera_id'])
-
-    if not session['camera_id'] == 'stop' or not session['camera_id'] == 'reset':
-        url_stripped = strip_url(cam_list[str(session['camera_id'])])
-
-        if show_debug_info == 'DEBUG':
-            print('DEBUG:    Curent ae_level: ',session['ae_level'],' direction: ', ae_dir, end='')
-        elif not suppress:
-            print('INFO:     Curent ae_level: ',session['ae_level'],' direction: ', ae_dir, end='')
-        if ae_dir == '0':
-            ae_val = '0'
-        elif ae_dir == None:    # Force an overwrite of AE level instead of direction change
-            if type(ae_val) == int:    # ae_val is now assigned a value provided during function call
-                if show_debug_info == 'DEBUG':
-                    print(f'\r')
-                    print('DEBUG:    Camera has changed: {} Force set AE value to: '.format(session['camera_id']), ae_val, end='')
-                elif not suppress:
-                    print(f'\r')
-                    print('INFO:     Camera has changed: Force set AE value to: ', ae_val, end='')
-            else:
-                print(f'\r')
-                print('ERROR:  ae_val is NaN', ae_val, type(ae_val), end='')
-                ae_val = int(ae_val)
-        else:
-            ae_val = int(session['ae_level']) + int(ae_dir)
-        
-        if str(ae_val) in ae_level_range:
-            url = url_stripped + '/control?var=ae_level&val='+str(ae_val)
-            session['ae_level'] = str(ae_val)
-            print ('  New ae_level: ',ae_val)      # Part of previous INFO output
-            # if show_debug_info == 'DEBUG':
-            #     print('DEBUG:    URL: ',url,' level: ',session['ae_level'], end='')
-            get_request = requests.get(url)
-            get_status_code = get_request.status_code
-            # if show_debug_info == 'DEBUG':
-            #     print (' status code: ',get_request.status_code)
-        else:
-            print (f'\rERROR:  Value out of range: ',ae_val, end=' ')
-            url = 'No request made, AE value out of range ' # No url if you don't make a request
-            get_status_code = 'No request made, AE value out of range ' # No status code if you don't make a request
-            if ae_val > 2:      # Put ae_val back in range for DEBUG display purposes, wasn't changed in session['ae_level']
-                ae_val = 2
-            elif ae_val < -2:
-                ae_val = -2
-            if show_debug_info == 'DEBUG':
-                print(f'\r','DEBUG:    AE level reset to: ',ae_val)
-                print_session_data()
-            else:
-                print(' AE level reset to: ',ae_val)
-
+        # show_debug_info = check_debug_status()
+        # print (show_debug_info, session['enabled_debug'])
         if show_debug_info == 'DEBUG': 
-            print ("DEBUG:    IN AE, AFTER REQUEST SENT: Camera ID: " ,session['camera_id'])
+            print ("DEBUG:    IN AE: Camera ID: " ,session['camera_id'])
 
-        if show_debug_info == 'DEBUG':
-            print ("DEBUG:    AE set to: ",ae_val,' URL: ',url, ' level: ',session['ae_level'],' status code: ',get_status_code) 
-        write_session_data(session['camera_id'], ae_val, session['bpc'], session['fs_size'], session['white_balance'], session['flip'], show_debug_info)
+        if not session['camera_id'] == 'stop' or not session['camera_id'] == 'reset':
+            url_stripped = strip_url(cam_list[str(session['camera_id'])])
 
-        # sleep(2)
-    # else:
-    #     print('INFO:     Status is: ',session['camera_id'])
+            if show_debug_info == 'DEBUG':
+                print('DEBUG:    Curent ae_level: ',session['ae_level'],' direction: ', ae_dir, end='')
+            elif not suppress:
+                print('INFO:     Curent ae_level: ',session['ae_level'],' direction: ', ae_dir, end='')
+            if ae_dir == '0':
+                ae_val = '0'
+            elif ae_dir == None:    # Force an overwrite of AE level instead of direction change
+                if type(ae_val) == int:    # ae_val is now assigned a value provided during function call
+                    if show_debug_info == 'DEBUG':
+                        print(f'\r')
+                        print('DEBUG:    Camera has changed: {} Force set AE value to: '.format(session['camera_id']), ae_val, end='')
+                    elif not suppress:
+                        print(f'\r')
+                        print('INFO:     Camera has changed: Force set AE value to: ', ae_val, end='')
+                else:
+                    print(f'\r')
+                    print('ERROR:  ae_val is NaN', ae_val, type(ae_val), end='')
+                    ae_val = int(ae_val)
+            else:
+                ae_val = int(session['ae_level']) + int(ae_dir)
+            
+            if str(ae_val) in ae_level_range:
+                url = url_stripped + '/control?var=ae_level&val='+str(ae_val)
+                session['ae_level'] = str(ae_val)
+                print ('  New ae_level: ',ae_val)      # Part of previous INFO output
+                # if show_debug_info == 'DEBUG':
+                #     print('DEBUG:    URL: ',url,' level: ',session['ae_level'], end='')
+                get_request = requests.get(url)
+                get_status_code = get_request.status_code
+                # if show_debug_info == 'DEBUG':
+                #     print (' status code: ',get_request.status_code)
+            else:
+                print (f'\rERROR:  Value out of range: ',ae_val, end=' ')
+                url = 'No request made, AE value out of range ' # No url if you don't make a request
+                get_status_code = 'No request made, AE value out of range ' # No status code if you don't make a request
+                if ae_val > 2:      # Put ae_val back in range for DEBUG display purposes, wasn't changed in session['ae_level']
+                    ae_val = 2
+                elif ae_val < -2:
+                    ae_val = -2
+                if show_debug_info == 'DEBUG':
+                    print(f'\r','DEBUG:    AE level reset to: ',ae_val)
+                    print_session_data()
+                else:
+                    print(' AE level reset to: ',ae_val)
+
+            if show_debug_info == 'DEBUG': 
+                print ("DEBUG:    IN AE, AFTER REQUEST SENT: Camera ID: " ,session['camera_id'])
+
+            if show_debug_info == 'DEBUG':
+                print ("DEBUG:    AE set to: ",ae_val,' URL: ',url, ' level: ',session['ae_level'],' status code: ',get_status_code) 
+            write_session_data(session['camera_id'], ae_val, session['bpc'], session['fs_size'], session['white_balance'], session['flip'], show_debug_info)
+
+            # sleep(2)
+        # else:
+        #     print('INFO:     Status is: ',session['camera_id'])
 
 def set_black_point(bpc_mode, show_debug_info = False): 
-    url_stripped = strip_url(cam_list[str(session['camera_id'])])
+    if not session['camera_id'] == '0':    # Never go to '0'
+        url_stripped = strip_url(cam_list[str(session['camera_id'])])
 
-    # show_debug_info = check_debug_status()
-    # print (show_debug_info, session['enabled_debug'])
+        # show_debug_info = check_debug_status()
+        # print (show_debug_info, session['enabled_debug'])
 
-    if not session['camera_id'] == 'stop' or not session['camera_id'] == 'reset':
-        url = url_stripped + '/control?var=bpc&val='+str(bpc_mode)
-        get_request = requests.get(url)
-        if show_debug_info == 'DEBUG':
-            print ("DEBUG:    Black point correction set to: ",bpc_mode, end=' ')
-            print (' status code: ',get_request.status_code)
-            print_session_data()
-        write_session_data(session['camera_id'], session['ae_level'], bpc_mode, session['fs_size'], session['white_balance'], session['flip'], show_debug_info)
+        if not session['camera_id'] == 'stop' or not session['camera_id'] == 'reset':
+            url = url_stripped + '/control?var=bpc&val='+str(bpc_mode)
+            get_request = requests.get(url)
+            if show_debug_info == 'DEBUG':
+                print ("DEBUG:    Black point correction set to: ",bpc_mode, end=' ')
+                print (' status code: ',get_request.status_code)
+                print_session_data()
+            write_session_data(session['camera_id'], session['ae_level'], bpc_mode, session['fs_size'], session['white_balance'], session['flip'], show_debug_info)
 
 def set_flip_image(mirror_mode, show_debug_info = False): 
-    if not session['camera_id'] == 'stop' or not session['camera_id'] == 'reset':
-        url_stripped = strip_url(cam_list[str(session['camera_id'])])
+    if not session['camera_id'] == '0':    # Never go to '0'
+        if not session['camera_id'] == 'stop' or not session['camera_id'] == 'reset':
+            url_stripped = strip_url(cam_list[str(session['camera_id'])])
 
-        # show_debug_info = check_debug_status()
-        # print (show_debug_info, session['enabled_debug'])
+            # show_debug_info = check_debug_status()
+            # print (show_debug_info, session['enabled_debug'])
 
-        hmirror_adjust = url_stripped + '/control?var=hmirror&val='+str(mirror_mode)
-        get_request = requests.get(hmirror_adjust)
-        if show_debug_info == 'DEBUG':
-            print ('DEBUG:    Image flip: Horizontal mirror: ',get_request.status_code, end=' ')
+            hmirror_adjust = url_stripped + '/control?var=hmirror&val='+str(mirror_mode)
+            get_request = requests.get(hmirror_adjust)
+            if show_debug_info == 'DEBUG':
+                print ('DEBUG:    Image flip: Horizontal mirror: ',get_request.status_code, end=' ')
 
-        vfliup_adjust = url_stripped + '/control?var=vflip&val='+str(mirror_mode)
-        get_request = requests.get(vfliup_adjust)
-        if show_debug_info == 'DEBUG':
-            print (' Vertical flip: ',get_request.status_code)
-            print ('DEBUG:  Cam ID: ',session['camera_id'],' Image mirror set to: ',mirror_mode)
-            print_session_data()
+            vfliup_adjust = url_stripped + '/control?var=vflip&val='+str(mirror_mode)
+            get_request = requests.get(vfliup_adjust)
+            if show_debug_info == 'DEBUG':
+                print (' Vertical flip: ',get_request.status_code)
+                print ('DEBUG:  Cam ID: ',session['camera_id'],' Image mirror set to: ',mirror_mode)
+                print_session_data()
 
 def set_frame_size(frame_size, show_debug_info = False): 
-    if not session['camera_id'] == 'stop' or not session['camera_id'] == 'reset':
-        url_stripped = strip_url(cam_list[str(session['camera_id'])])
+    if not session['camera_id'] == '0':    # Never go to '0'
+        if not session['camera_id'] == 'stop' or not session['camera_id'] == 'reset':
+            url_stripped = strip_url(cam_list[str(session['camera_id'])])
 
-        # show_debug_info = check_debug_status()
-        # print (show_debug_info, session['enabled_debug'])
+            # show_debug_info = check_debug_status()
+            # print (show_debug_info, session['enabled_debug'])
 
-        url = url_stripped + '/control?var=framesize&val='+str(frame_size)
-        get_request = requests.get(url)
-        if show_debug_info == 'DEBUG':
-            print ("DEBUG:    Frame size set to: ",frame_size, " Resolution: ", end=' ')
-            if frame_size == '11':
-                print('1280 x 720', end=' ')
-            else:
-                print('800 x 600', end=' ')
-            print (' status code: ',get_request.status_code)
-            print_session_data()
-        write_session_data(session['camera_id'], session['ae_level'], session['bpc'], frame_size, session['white_balance'], session['flip'], show_debug_info)
+            url = url_stripped + '/control?var=framesize&val='+str(frame_size)
+            get_request = requests.get(url)
+            if show_debug_info == 'DEBUG':
+                print ("DEBUG:    Frame size set to: ",frame_size, " Resolution: ", end=' ')
+                if frame_size == '11':
+                    print('1280 x 720', end=' ')
+                else:
+                    print('800 x 600', end=' ')
+                print (' status code: ',get_request.status_code)
+                print_session_data()
+            write_session_data(session['camera_id'], session['ae_level'], session['bpc'], frame_size, session['white_balance'], session['flip'], show_debug_info)
 
 def set_white_balance(wb_mode, show_debug_info = False): 
-    if not session['camera_id'] == 'stop' or not session['camera_id'] == 'reset':
+    if not session['camera_id'] == '0':    # Never go to '0'
+        if not session['camera_id'] == 'stop' or not session['camera_id'] == 'reset':
+            url_stripped = strip_url(cam_list[str(session['camera_id'])])
+
+            # show_debug_info = check_debug_status()
+            # print (show_debug_info, session['enabled_debug'])
+
+            url = url_stripped + '/control?var=wb_mode&val='+str(wb_mode)
+            get_request = requests.get(url)
+            if show_debug_info == 'DEBUG':
+                print ("DEBUG:   White Balance set to: ",wb_mode, end=' ')
+                print (' status code: ',get_request.status_code)
+                print_session_data()
+            write_session_data(session['camera_id'], session['ae_level'], session['bpc'], session['fs_size'], wb_mode, session['flip'], show_debug_info)
+
+def set_gain_ceiling(gain_ceiling, show_debug_info = False): 
+    if not session['camera_id'] == '0':    # Never go to '0'
         url_stripped = strip_url(cam_list[str(session['camera_id'])])
 
         # show_debug_info = check_debug_status()
         # print (show_debug_info, session['enabled_debug'])
 
-        url = url_stripped + '/control?var=wb_mode&val='+str(wb_mode)
-        get_request = requests.get(url)
-        if show_debug_info == 'DEBUG':
-            print ("DEBUG:   White Balance set to: ",wb_mode, end=' ')
-            print (' status code: ',get_request.status_code)
-            print_session_data()
-        write_session_data(session['camera_id'], session['ae_level'], session['bpc'], session['fs_size'], wb_mode, session['flip'], show_debug_info)
-
-def set_gain_ceiling(gain_ceiling, show_debug_info = False): 
-    url_stripped = strip_url(cam_list[str(session['camera_id'])])
-
-    # show_debug_info = check_debug_status()
-    # print (show_debug_info, session['enabled_debug'])
-
-    if not session['camera_id'] == 'stop' or not session['camera_id'] == 'reset':
-        url = url_stripped + '/control?var=gainceiling&val='+str(gain_ceiling)
-        get_request = requests.get(url)
-        if show_debug_info == 'DEBUG':
-            print ("DEBUG:    Gain ceiling set to: ",gain_ceiling, end=' ')
-            print (' status code: ',get_request.status_code)
-            print_session_data()
-        write_session_data(session['camera_id'], session['ae_level'], session['bpc'], session['fs_size'], session['white_balance'], session['flip'], show_debug_info)
+        if not session['camera_id'] == 'stop' or not session['camera_id'] == 'reset':
+            url = url_stripped + '/control?var=gainceiling&val='+str(gain_ceiling)
+            get_request = requests.get(url)
+            if show_debug_info == 'DEBUG':
+                print ("DEBUG:    Gain ceiling set to: ",gain_ceiling, end=' ')
+                print (' status code: ',get_request.status_code)
+                print_session_data()
+            write_session_data(session['camera_id'], session['ae_level'], session['bpc'], session['fs_size'], session['white_balance'], session['flip'], show_debug_info)
 
 def set_aec(ae_compensation, show_debug_info = False): 
-    url_stripped = strip_url(cam_list[str(session['camera_id'])])
+    if not session['camera_id'] == '0':    # Never go to '0'
+        url_stripped = strip_url(cam_list[str(session['camera_id'])])
 
-    if not session['camera_id'] == 'stop' or not session['camera_id'] == 'reset':
-        url = url_stripped + '/control?var=aec&val='+str(ae_compensation)
-        get_request = requests.get(url)
-        if show_debug_info == 'DEBUG':
-            print ("DEBUG:    Auto exposure compensation set to: ",ae_compensation, end=' ')
-            print (' status code: ',get_request.status_code)
-            print_session_data()
-        write_session_data(session['camera_id'], session['ae_level'], session['bpc'], session['fs_size'], session['white_balance'], session['flip'], show_debug_info)
+        if not session['camera_id'] == 'stop' or not session['camera_id'] == 'reset':
+            url = url_stripped + '/control?var=aec&val='+str(ae_compensation)
+            get_request = requests.get(url)
+            if show_debug_info == 'DEBUG':
+                print ("DEBUG:    Auto exposure compensation set to: ",ae_compensation, end=' ')
+                print (' status code: ',get_request.status_code)
+                print_session_data()
+            write_session_data(session['camera_id'], session['ae_level'], session['bpc'], session['fs_size'], session['white_balance'], session['flip'], show_debug_info)
 
 def set_quality(quality, show_debug_info = False): 
-    url_stripped = strip_url(cam_list[str(session['camera_id'])])
+    if not session['camera_id'] == '0':    # Never go to '0'
+        url_stripped = strip_url(cam_list[str(session['camera_id'])])
 
-    if not session['camera_id'] == 'stop' or not session['camera_id'] == 'reset':
-        url = url_stripped + '/control?var=quality&val='+str(quality)
-        get_request = requests.get(url)
-        if show_debug_info == 'DEBUG':
-            print ("DEBUG:    Image quality is set to: ",quality, end=' ')
-            print (' status code: ',get_request.status_code)
-            print_session_data()
-        write_session_data(session['camera_id'], session['ae_level'], session['bpc'], session['fs_size'], session['white_balance'], session['flip'], show_debug_info)
+        if not session['camera_id'] == 'stop' or not session['camera_id'] == 'reset':
+            url = url_stripped + '/control?var=quality&val='+str(quality)
+            get_request = requests.get(url)
+            if show_debug_info == 'DEBUG':
+                print ("DEBUG:    Image quality is set to: ",quality, end=' ')
+                print (' status code: ',get_request.status_code)
+                print_session_data()
+            write_session_data(session['camera_id'], session['ae_level'], session['bpc'], session['fs_size'], session['white_balance'], session['flip'], show_debug_info)
 
 def get_frames(cam_id,stop_capture=False): 
     import cv2
