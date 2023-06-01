@@ -150,7 +150,7 @@ def index():
 
         elif form_data.get('ae_action') in ae_level_range: # Set exposure level
             session['ae_direction']=form_data.get('ae_action')
-            set_ae_exposure(session['ae_direction'], verbose)
+            set_ae_exposure(session['ae_direction'],'', verbose)
             # if verbose == 'DEBUG':
             #     print('DEBUG:   AE  Cam_ID: ',session['camera_id'],' level: ',session['ae_level'],' direction: ',session['ae_direction'],session['white_balance'])
 
