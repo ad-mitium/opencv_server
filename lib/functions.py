@@ -105,17 +105,42 @@ def update_cam(cam_id, reset=False, show_debug_info = False):   # Handles updati
     if show_debug_info == 'DEBUG': 
         print ('DEBUG:   Updating Cam ID: ',cam_id, end=' ')
 
-    session.update(ae_level=sess_defaults[cam_id][0],bpc=sess_defaults[cam_id][1],fs_size=sess_defaults[cam_id][2],
-        white_balance=sess_defaults[cam_id][3],flip=sess_defaults[cam_id][4],ae_compensation=sess_defaults[cam_id][5],
-            gain_ceiling=sess_defaults[cam_id][6],quality=sess_defaults[cam_id][7])  # Change all declared values to default values 
-
+    if not cam_id == 'Multi':
+        session.update(ae_level=sess_defaults[cam_id][0],bpc=sess_defaults[cam_id][1],fs_size=sess_defaults[cam_id][2],
+            white_balance=sess_defaults[cam_id][3],flip=sess_defaults[cam_id][4],ae_compensation=sess_defaults[cam_id][5],
+                gain_ceiling=sess_defaults[cam_id][6],quality=sess_defaults[cam_id][7])  # Change all declared values to default values 
+    else:
+        for cam_id in sess_defaults.keys():
+            if not cam_id == '0':       # Don't overwrite default values
+                session['camera_id']=cam_id     # Change camera ID or you'll overwrite the same one over and over
+                session.update(ae_level=sess_defaults[cam_id][0],bpc=sess_defaults[cam_id][1],fs_size=sess_defaults[cam_id][2],
+                    white_balance=sess_defaults[cam_id][3],flip=sess_defaults[cam_id][4],ae_compensation=sess_defaults[cam_id][5],
+                    gain_ceiling=sess_defaults[cam_id][6],quality=sess_defaults[cam_id][7])  # Change all declared values to default values 
+                if show_debug_info == 'DEBUG': 
+                    print ('DEBUG:   Defaults set for Cam ID: ',cam_id)
+                    # print ('         ',session)
+                set_ae_exposure(None,int(session['ae_level']),show_debug_info,True) 
+                set_black_point(session['bpc'])
+                set_frame_size('11')
+                set_white_balance(session['white_balance'])
+                set_flip_image(session['flip'])
+                set_aec(session['ae_compensation'])
+                set_gain_ceiling(session['gain_ceiling'])
+                set_quality(session['quality'])
+                write_session_data(session['camera_id'], session['ae_level'], session['bpc'], session['fs_size'], session['white_balance'], session['flip'])
+                if show_debug_info == 'DEBUG':
+                    print ('DEBUG:   Initial writing of session defaults completed for Camera: ', cam_id)
+                
     if show_debug_info == 'DEBUG':  # Follow on for previous print statement
-        print ('AE Val: ',session['ae_level'],'AE Dir: ', session['ae_direction'] )
+        if not cam_id == 'Multi':
+            print ('AE Val: ',session['ae_level'],'AE Dir: ', session['ae_direction'] )
 
     if show_debug_info == 'DEBUG': 
-        print('DEBUG:   Changing stream to previous values')
-        print_session_data()
-        print ('DEBUG:     Camera session data:    [{}]'.format(cam_id),sess_defaults[cam_id])
+        if not cam_id == '0':
+            print('DEBUG:   Changing stream to previous values')
+            print_session_data()
+            if not cam_id == 'Multi':
+                print ('DEBUG:     Camera session data:    [{}]'.format(cam_id),sess_defaults[cam_id])
 
     set_ae_exposure(None,int(session['ae_level']),show_debug_info) # None forces a "set level" instead of changing exposure direction
     set_black_point(session['bpc'],show_debug_info)
@@ -371,6 +396,53 @@ def get_frames(cam_id,stop_capture=False):
             yield (b'--frame\r\n'
                     b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
+def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show_debug_info=False): 
+    import cv2, numpy
+
+    for cam_id in sess_defaults.keys():     # Force all cameras to the same resolution
+        if not cam_id == '0':       # Don't overwrite default values
+            session['camera_id']=cam_id     # Change camera ID or you'll overwrite the same one over and over
+            session.update(fs_size=sess_defaults[cam_id][2])
+            set_frame_size('11')
+        if show_debug_info == 'DEBUG': 
+            print ('DEBUG:   Frame size reset for Cam ID: ',cam_id)
+
+    video1 = cv2.VideoCapture(cam_list[str(cam_id_1)])
+    video2 = cv2.VideoCapture(cam_list[str(cam_id_2)])
+    video3 = cv2.VideoCapture(cam_list[str(cam_id_3)])
+    video4 = cv2.VideoCapture(cam_list[str(cam_id_4)])
+
+    while True:
+        success_1, frame_1 = video1.read()
+        success_2, frame_2 = video2.read()
+        success_3, frame_3 = video3.read()
+        success_4, frame_4 = video4.read()
+        h_concat_row_1 = numpy.concatenate((frame_1,frame_2), axis=1)
+        h_concat_row_2 = numpy.concatenate((frame_3,frame_4), axis=1)
+        v_concat = numpy.concatenate((h_concat_row_1,h_concat_row_2), axis=0)
+
+        frame = v_concat
+
+        if not success_1:
+            print('ERROR:  Error getting video frame for Camera ID',cam_id_1)
+            break
+        elif not success_2:
+            print('ERROR:  Error getting video frame for Camera ID',cam_id_2)
+            break
+        elif not success_3:
+            print('ERROR:  Error getting video frame for Camera ID',cam_id_3)
+            break
+        elif not success_4:
+            print('ERROR:  Error getting video frame for Camera ID',cam_id_4)
+            break
+        elif stop_capture:
+            video.ReleaseCapture()
+            break
+        else:
+            ret_status, buffer = cv2.imencode('.jpg', frame)
+            frame = buffer.tobytes()
+            yield (b'--frame\r\n'
+                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 if __name__ == '__main__':
     import sys

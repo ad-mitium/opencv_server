@@ -13,11 +13,11 @@ import config.network as network
 from lib import version as ver
 from lib.sessions import session, sess_defaults
 from lib.functions import get_frames, set_ae_exposure, set_black_point, set_flip_image, set_frame_size, set_white_balance 
-from lib.functions import check_debug_status, update_cam, set_defaults, initialize_cams
+from lib.functions import check_debug_status, update_cam, set_defaults, initialize_cams, get_multi_frames
 
 app = Flask(__name__, template_folder='html')
 
-version_number = (0,1,3)
+version_number = (0,2,0)
 
 
 @app.route('/video_feed/', methods=["GET"])
@@ -42,10 +42,27 @@ def video_feed(id='1'):
     return Response(cvid_stream,
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
+@app.route('/multi_video_feed/', methods=["GET"])
+def multi_video_feed():
+    id1='1'
+    id2='2'
+    id3='3'
+    id4='4'
+
+    if verbose == 'DEBUG':
+       print('DEBUG:    Getting frames from Camera IDs: ',id1,id2,id3,id4,False,verbose)
+
+    cvid_stream = get_multi_frames(id1,id2,id3,id4)
+    """Video streaming route. Put this in the src attribute of an img tag."""
+
+    return Response(cvid_stream,
+                    mimetype='multipart/x-mixed-replace; boundary=frame')
+
 @app.route('/', methods=["GET", "POST"])
 def index():
     index_html= 'index.html'
     stop_html = 'index_stop.html'
+    multi_html= 'index_multi.html'
 
     # verbose = check_debug_status()
     # print (verbose)
@@ -119,6 +136,22 @@ def index():
             #     print ('DEBUG:     Camera session data:    [{}]'.format(session['camera_id']),sess_defaults[session['camera_id']])
                 # print(f"Camera 4:\n         ",session,'\n',sess_defaults,'\n',sess_defaults[session['camera_id']])
             # print("Camera 4",session['camera_id'])
+
+        elif  form_data.get('action') == 'Multi':
+            # print ('Request: Multi Cam ID: ',session['camera_id'])
+            if not session['camera_id'] == form_data.get('action'):
+                session['camera_id']=form_data.get('action')
+                update_cam(form_data.get('action'),False,verbose) 
+            else:
+                session['camera_id']=form_data.get('action')
+                if verbose == 'DEBUG':
+                    print('DEBUG:   Camera ID not changed')
+            # print ('Requested: Multiple Camera Frames')
+            # if verbose == 'DEBUG': 
+            #     print ('DEBUG:     Camera session data:    [{}]'.format(session['camera_id']),sess_defaults[session['camera_id']])
+                # print(f"Camera Multiple:\n         ",session,'\n',sess_defaults,'\n',sess_defaults[session['camera_id']])
+            # print("Camera Multiple Frames",session['camera_id'])
+            return render_template(multi_html)
 
         elif  form_data.get('action') == 'reset':
             # session['camera_id']='reset'
