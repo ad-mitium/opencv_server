@@ -375,7 +375,7 @@ def get_frames(cam_id,stop_capture=False):
 if __name__ == '__main__':
     import sys
     from sessions import session, sess_defaults
-    sys.path.append('config')   # allows for finding ffmpeg_options.py
+    sys.path.append('config')   # allows for finding config folder
     from cameras import camera_list as cam_list
     from cameras import ae_level as ae_level_range
     from cameras import framesize, white_balance
