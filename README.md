@@ -80,6 +80,14 @@ Below are the modifications made:
 
 Furthermore, this is not production level code, so I've decided to sidestep implementing session handling with a Dict. You are free to implement it if you wish.
 
+### Request timeouts
+
+There is an issue when the script is running for an extended amount of time in multiple camera mode where the ESP32 seems to go offline and causes request timeouts.  Oddly enough, it complains about setting the AE value.
+
+### Image Flipping when swapping from single camera to multiple camera
+
+There is an issue where one of the ESP32 cameras, which is mounted upside down, keeps getting flipped when switching back to multiple window mode.  This is most likely due to poor session handling, but somewhere, the writing session data to ```sess_defaults``` is being overwritten unnecessarily. A round of code clean up is needed before tackling this.
+
 ## Required python libraries
 
 * flask
