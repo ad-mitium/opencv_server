@@ -123,7 +123,7 @@ def update_cam(cam_id, reset=False, show_debug_info = False):   # Handles updati
                             white_balance=sess_defaults[cam_id][3],flip=sess_defaults[cam_id][4],ae_compensation=sess_defaults[cam_id][5],
                             gain_ceiling=sess_defaults[cam_id][6],quality=sess_defaults[cam_id][7])  # Change all declared values to default values 
                         if show_debug_info == 'DEBUG': 
-                            print ('DEBUG:   Defaults set for Cam ID: ',cam_id)
+                            print ('DEBUG:   Previous settings loaded for Cam ID: ',cam_id, sess_defaults[cam_id])
                             # print ('         ',session)
                         set_ae_exposure(None,int(session['ae_level']),show_debug_info,True) 
                         set_black_point(session['bpc'])
@@ -138,6 +138,7 @@ def update_cam(cam_id, reset=False, show_debug_info = False):   # Handles updati
                         print ('DEBUG:   Initial writing of session defaults completed for Camera: ', cam_id)
                 else:
                     print('ERROR:  Cannot update Camera ID ',cam_id)
+            print(sess_defaults)
 
         if show_debug_info == 'DEBUG':  # Follow on for previous print statement
             if not cam_id == 'Multi' or not cam_id == '0':
@@ -307,6 +308,7 @@ def set_flip_image(mirror_mode, show_debug_info = False):
                 print (' Vertical flip: ',get_request.status_code)
                 print ('DEBUG:   Cam ID: ',session['camera_id'],' Image mirror set to: ',mirror_mode)
                 print_session_data()
+            write_session_data(session['camera_id'], session['ae_level'], session['bpc'], session['fs_size'], session['white_balance'],mirror_mode, show_debug_info)
 
 def set_frame_size(frame_size, show_debug_info = False): 
     if not session['camera_id'] == '0':    # Never go to '0'
@@ -416,6 +418,7 @@ def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show
             session['camera_id']=cam_id     # Change camera ID or you'll overwrite the same one over and over
             session.update(fs_size=sess_defaults[cam_id][2])
             set_frame_size('11')
+            write_session_data(session['camera_id'], session['ae_level'], session['bpc'], session['fs_size'], session['white_balance'], session['flip'], show_debug_info)
         if show_debug_info == 'DEBUG': 
             print ('DEBUG:   Frame size reset for Cam ID: ',cam_id)
 
