@@ -244,10 +244,14 @@ def set_ae_exposure(ae_dir, ae_val = 'NaN',show_debug_info = False, suppress = F
                 print ('  New ae_level: ',ae_val)      # Part of previous INFO output
                 # if show_debug_info == 'DEBUG':
                 #     print('DEBUG:     URL: ',url,' level: ',session['ae_level'], end='')
-                get_request = requests.get(url)
-                get_status_code = get_request.status_code
-                # if show_debug_info == 'DEBUG':
-                #     print (' status code: ',get_request.status_code)
+                try:
+                    get_request = requests.get(url)
+                    get_status_code = get_request.status_code
+                    # if show_debug_info == 'DEBUG':
+                    #     print (' status code: ',get_request.status_code)
+                    get_request.raise_for_status()
+                except request.exceptions.Timeout:
+                    print('ERROR:   GET request has timed out')
             else:
                 print (f'\rERROR:   Value out of range: ',ae_val, end=' ')
                 url = 'No request made, AE value out of range ' # No url if you don't make a request
