@@ -216,15 +216,19 @@ def send_url_command(url,show_debug_info = False):
             print (' status code: ',get_request.status_code)
         get_request.raise_for_status()
     except requests.exceptions.Timeout:
+        print()
         print('ERROR:   GET request has timed out')
         get_status_code = 'Timeout'
     # except urllib3.exceptions.NewConnectionError:
+    #    print()
     #     print('ERROR:   GET request could not find host: ',url)
     #     get_status_code = 'No host' 
     # except urllib3.connection.HTTPConnection:
+    #    print()
     #     print('ERROR:   GET request could not connect to host: ',url)
     #     get_status_code = 'ConnError' 
     except requests.exceptions.ConnectionError:
+        print()
         print('ERROR:   GET request unable to connect to host: ',url)
         get_status_code = 'ConnError'
     finally:
