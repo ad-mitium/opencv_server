@@ -167,7 +167,7 @@ def index():
             session['fs_size']=form_data.get('fs_action')
             set_frame_size(session['fs_size'], verbose)
 
-        elif form_data.get('flip_action') in '1':
+        elif form_data.get('flip_action') == '1':
             # toggle_flip=form_data.get('flip_action')    # Ignore form data and toggle based on current session flip status
             print('DEBUG:     Image mirror mode is currently',session['flip'])
             if session['flip'] == '1':  # Toggle image flip instead of forcing to one mode
