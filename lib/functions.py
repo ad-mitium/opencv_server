@@ -213,7 +213,7 @@ def send_url_command(url,show_debug_info = False):
         if get_request.status_code == 200:
             get_status_code = get_request.status_code
         if show_debug_info == 'DEBUG':
-            print (' status code: ',get_request.status_code)
+            print (' status code: ',get_status_code)
         get_request.raise_for_status()
     except requests.exceptions.Timeout:
         print()
