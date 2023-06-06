@@ -206,7 +206,7 @@ def strip_url(url, show_debug_info = False):
     return domain_addr
 
 def send_url_command(url,show_debug_info = False):
-    # import urllib3
+    import urllib3
 
     try:
         get_request = requests.get(url,timeout=5)   # Increase timeout to 5 seconds
@@ -223,6 +223,10 @@ def send_url_command(url,show_debug_info = False):
     #    print()
     #     print('ERROR:   GET request could not find host: ',url)
     #     get_status_code = 'No host' 
+    except urllib3.exceptions.MaxRetryError:
+        print()
+        print('ERROR:   GET request exceeded number of retries: ',url)
+        get_status_code = 'Max retries' 
     # except urllib3.connection.HTTPConnection:
     #    print()
     #     print('ERROR:   GET request could not connect to host: ',url)
@@ -282,7 +286,7 @@ def set_ae_exposure(ae_dir, ae_val = 'NaN',show_debug_info = False, suppress = F
             else:
                 print (f'\rERROR:   Value out of range: ',ae_val, end=' ')
                 url = 'No request made, AE value out of range ' # No url if you don't make a request
-                get_status_code = 'No request made, AE value out of range ' # No status code if you don't make a request
+                status_code = 'No request made, AE value out of range ' # No status code if you don't make a request
                 if ae_val > 2:      # Put ae_val back in range for DEBUG display purposes, wasn't changed in session['ae_level']
                     ae_val = 2
                 elif ae_val < -2:
