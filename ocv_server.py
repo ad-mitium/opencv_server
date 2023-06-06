@@ -172,11 +172,11 @@ def index():
             print('DEBUG:     Image mirror mode is currently',session['flip'])
             if session['flip'] == '1':  # Toggle image flip instead of forcing to one mode
                 session['flip'] = '0'
-                print('DEBUG:     Image mirror mode has been unset',session['flip'])
+                print('DEBUG:     Image mirror mode has been unset')
             else:
-                print('DEBUG:     Image mirror mode does not match',session['flip'])
+                print('DEBUG:     Image mirror mode does not match',end=' ')
                 session['flip'] = '1'
-                print('DEBUG:     Image mirror mode has been set',session['flip'])
+                print('and has been set to',session['flip'])
             print('DEBUG:     Image mirror mode is now set to',session['flip'])
             set_flip_image(session['flip'], verbose)
 
@@ -185,11 +185,11 @@ def index():
             print('DEBUG:     Black Point Correction is currently',session['bpc'])
             if session['bpc'] == '1':  # Toggle bpc instead of forcing to one mode
                 session['bpc'] = '0'
-                print('DEBUG:     Black Point Correction has been unset',session['bpc'])
+                print('DEBUG:     Black Point Correction has been unset')
             else:
-                print('DEBUG:     Black Point Correction does not match',session['bpc'])
+                print('DEBUG:     Black Point Correction does not match',end=' ')
                 session['bpc'] = '1'
-                print('DEBUG:     Black Point Correction has been set',session['bpc'])
+                print('and has been set to',session['bpc'])
             print('DEBUG:     Black Point Correction is now set to',session['bpc'])
             set_black_point(session['bpc'], verbose)
 

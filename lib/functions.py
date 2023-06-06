@@ -212,8 +212,8 @@ def send_url_command(url,show_debug_info = False):
         get_request = requests.get(url,timeout=5)   # Increase timeout to 5 seconds
         if get_request.status_code == 200:
             get_status_code = get_request.status_code
-        if show_debug_info == 'DEBUG':
-            print (' status code: ',get_status_code)
+        # if show_debug_info == 'DEBUG':
+        #     print (' status code: ',get_status_code)
         get_request.raise_for_status()
     except requests.exceptions.Timeout:
         print()
@@ -319,8 +319,8 @@ def set_black_point(bpc_mode, show_debug_info = False):
             url = url_stripped + '/control?var=bpc&val='+str(bpc_mode)
             status_code = send_url_command(url,show_debug_info)
             if show_debug_info == 'DEBUG':
-                print ("DEBUG:     Black point correction set to: ",bpc_mode, end=' ')
-                print (' status code: ',status_code)
+            #     print ("DEBUG:     Black point correction set to: ",bpc_mode, end=' ')
+            #     # print (' status code: ',status_code)
                 print_session_data()
             write_session_data(session['camera_id'], session['ae_level'], bpc_mode, session['fs_size'], session['white_balance'], session['flip'], show_debug_info)
 
