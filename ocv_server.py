@@ -167,12 +167,30 @@ def index():
             session['fs_size']=form_data.get('fs_action')
             set_frame_size(session['fs_size'], verbose)
 
-        elif form_data.get('flip_action') in ['0','1']:
-            session['flip']=form_data.get('flip_action')
+        elif form_data.get('flip_action') in '1':
+            # toggle_flip=form_data.get('flip_action')    # Ignore form data and toggle based on current session flip status
+            print('DEBUG:     Image mirror mode is currently',session['flip'])
+            if session['flip'] == '1':  # Toggle image flip instead of forcing to one mode
+                session['flip'] = '0'
+                print('DEBUG:     Image mirror mode has been unset',session['flip'])
+            else:
+                print('DEBUG:     Image mirror mode does not match',session['flip'])
+                session['flip'] = '1'
+                print('DEBUG:     Image mirror mode has been set',session['flip'])
+            print('DEBUG:     Image mirror mode is now set to',session['flip'])
             set_flip_image(session['flip'], verbose)
 
         elif form_data.get('bpc_action') == '1':
-            session['bpc']=form_data.get('bpc_action')
+            # session['bpc']=form_data.get('bpc_action')
+            print('DEBUG:     Black Point Correction is currently',session['bpc'])
+            if session['bpc'] == '1':  # Toggle bpc instead of forcing to one mode
+                session['bpc'] = '0'
+                print('DEBUG:     Black Point Correction has been unset',session['bpc'])
+            else:
+                print('DEBUG:     Black Point Correction does not match',session['bpc'])
+                session['bpc'] = '1'
+                print('DEBUG:     Black Point Correction has been set',session['bpc'])
+            print('DEBUG:     Black Point Correction is now set to',session['bpc'])
             set_black_point(session['bpc'], verbose)
 
         elif form_data.get('wb_action') in ['0','1']:
