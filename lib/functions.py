@@ -425,6 +425,13 @@ def set_quality(quality, show_debug_info = False):
                 print_session_data()
             write_session_data(session['camera_id'], session['ae_level'], session['bpc'], session['fs_size'], session['white_balance'], session['flip'], show_debug_info)
 
+def load_no_image():
+    import cv2
+
+    img_file = cv2.imread('static/images/image_unavailable.jpg')
+
+    return img_file
+
 def get_frames(cam_id,stop_capture=False): 
     import cv2
 
@@ -464,6 +471,9 @@ def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show
     video3 = cv2.VideoCapture(cam_list[str(cam_id_3)])
     video4 = cv2.VideoCapture(cam_list[str(cam_id_4)])
 
+    frame_count = 0
+    # y = 0      # for diagnoistics
+
     while True:
         success_1, frame_1 = video1.read()
         success_2, frame_2 = video2.read()
@@ -471,18 +481,53 @@ def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show
         success_4, frame_4 = video4.read()
 
         if not success_1:
-            print('ERROR:  Error getting video frame for Camera ID',cam_id_1)
-            break
+            if frame_count < 900:
+                if frame_count == 1:
+                    print('ERROR:  Error getting video frame for Camera ID',cam_id_1)
+                frame_count = frame_count + 1
+            else:       # Exceeded 900 frames or 30 secs with error, reset to 0
+                frame_count = 0
+                # print(x)
+
+            # frame_1 = numpy.zeros((720,1280,3), dtype = int)
+            frame_1 = load_no_image()
+            # if y == 0:
+            #     print(frame_1)     # for diagnoistics
+            #     y = 1
+            # break
         elif not success_2:
-            print('ERROR:  Error getting video frame for Camera ID',cam_id_2)
-            break
+            if frame_count < 900:
+                if frame_count == 1:
+                    print('ERROR:  Error getting video frame for Camera ID',cam_id_2)
+                frame_count = frame_count + 1
+            else:       # Exceeded 900 frames or 30 secs with error, reset to 0
+                frame_count = 0
+
+            # frame_2 = numpy.zeros((720,1280,3), dtype = int)
+            frame_2 = load_no_image()
         h_concat_row_1 = numpy.concatenate((frame_1,frame_2), axis=1)
+
         if not success_3:
-            print('ERROR:  Error getting video frame for Camera ID',cam_id_3)
-            break
+            if frame_count < 900:
+                if frame_count == 1:
+                    print('ERROR:  Error getting video frame for Camera ID',cam_id_3)
+                frame_count = frame_count + 1
+            else:       # Exceeded 900 frames or 30 secs with error, reset to 0
+                frame_count = 0
+
+            # frame_3 = numpy.zeros((720,1280,3), dtype = int)
+            frame_3 = load_no_image()
+            # break
         elif not success_4:
-            print('ERROR:  Error getting video frame for Camera ID',cam_id_4)
-            break
+            if frame_count < 900:
+                if frame_count == 1:
+                    print('ERROR:  Error getting video frame for Camera ID',cam_id_4)
+                frame_count = frame_count + 1
+            else:       # Exceeded 900 frames or 30 secs with error, reset to 0
+                frame_count = 0
+
+            frame_4 = load_no_image()
+            # break
         h_concat_row_2 = numpy.concatenate((frame_3,frame_4), axis=1)
         v_concat = numpy.concatenate((h_concat_row_1,h_concat_row_2), axis=0)
 

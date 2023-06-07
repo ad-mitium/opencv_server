@@ -17,7 +17,7 @@ from lib.functions import check_debug_status, update_cam, set_defaults, initiali
 
 app = Flask(__name__, template_folder='html')
 
-version_number = (0,2,1)
+version_number = (0,2,3)
 
 
 @app.route('/video_feed/', methods=["GET"])

@@ -86,7 +86,11 @@ There is an issue when the script is running for an extended amount of time in m
 
 ### Image Flipping when swapping from single camera to multiple camera
 
-There is an issue where one of the ESP32 cameras, which is mounted upside down, keeps getting flipped when switching back to multiple window mode.  This is most likely due to poor session handling, but somewhere, the writing session data to ```sess_defaults``` is being overwritten unnecessarily. A round of code clean up is needed before tackling this.
+There is an issue where one of the ESP32 cameras, which is mounted upside down, keeps getting flipped when switching back to multiple window mode.  This is most likely due to poor session handling, but somewhere, the writing session data to ```sess_defaults``` is being overwritten unnecessarily. A round of code clean up is needed before tackling this. This is now partially addressed by adding toggling to ```bpc``` (black point correction) and ```flip image```.
+
+### Heavy CPU usage when stream is lost
+
+Added handling for lost image stream when in multiple camera view. When the ```frame_count``` variable is < 100 frames, CPU usage jumps to 100%. For now, the ```frame_count``` is set to 30 seconds worth of frames to reduce CPU usage to managable levels. I haven't decided if it is worth the compute cost to add this check to the single camera view.
 
 ## Required python libraries
 
