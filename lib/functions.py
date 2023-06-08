@@ -219,9 +219,9 @@ def send_url_command(url,show_debug_info = False):
         #     print (' status code: ',get_status_code)
         get_request.raise_for_status()
     except requests.exceptions.Timeout:
-        print()
+        # print()
         curr_time = strftime('%m-%d-%Y ') + strftime('%H:%M:%S')
-        print('ERROR:   GET request has timed out','at',curr_time)
+        print('ERROR:   Camera: {}  GET request has timed out'.format(session['camera_id']),'at',curr_time)
         get_status_code = 'Timeout'
     # except urllib3.exceptions.NewConnectionError:
     #    print()
@@ -229,7 +229,7 @@ def send_url_command(url,show_debug_info = False):
     #     print('ERROR:   GET request could not find host: ',url,'at',curr_time)
     #     get_status_code = 'No host' 
     except urllib3.exceptions.MaxRetryError:
-        print()
+        # print()
         curr_time = strftime('%m-%d-%Y ') + strftime('%H:%M:%S')
         print('ERROR:   GET request exceeded number of retries: ',url,'at',curr_time)
         get_status_code = 'Max retries' 
@@ -239,7 +239,7 @@ def send_url_command(url,show_debug_info = False):
     #     print('ERROR:   GET request could not connect to host: ',url,'at',curr_time)
     #     get_status_code = 'ConnError' 
     except requests.exceptions.ConnectionError:
-        print()
+        # print()
         curr_time = strftime('%m-%d-%Y ') + strftime('%H:%M:%S')
         print('ERROR:   GET request unable to connect to host: ',url,'at',curr_time)
         get_status_code = 'ConnError'
@@ -273,7 +273,7 @@ def set_ae_exposure(ae_dir, ae_val = 'NaN',show_debug_info = False, suppress = F
                         print('DEBUG:     Camera has changed: {} Force set AE value to: '.format(session['camera_id']), ae_val, end='')
                     elif not suppress:
                         # print(f'\n')
-                        print('INFO:      Camera has changed: Force set AE value to: ', ae_val, end='')
+                        print(f'\nINFO:      Camera has changed: Force set AE value to: ', ae_val, end='')
                 else:
                     print(f'\r')
                     print('ERROR:   ae_val is NaN', ae_val, type(ae_val), end='')
@@ -290,6 +290,8 @@ def set_ae_exposure(ae_dir, ae_val = 'NaN',show_debug_info = False, suppress = F
                 #     print('DEBUG:     URL: ',url,' level: ',session['ae_level'], end='')
 
                 status_code = send_url_command(url,show_debug_info)
+                if not status_code == 200:
+                    print()
 
             else:
                 print (f'\nERROR:   Value out of range: ',ae_val, end='')
@@ -312,6 +314,9 @@ def set_ae_exposure(ae_dir, ae_val = 'NaN',show_debug_info = False, suppress = F
                 print ("DEBUG:     AE set to: ",ae_val,' URL: ',url, ' level: ',session['ae_level'],' status code: ',status_code) 
             write_session_data(session['camera_id'], ae_val, session['bpc'], session['fs_size'], session['white_balance'], session['flip'], show_debug_info)
 
+            if not show_debug_info == 'DEBUG':
+                if not suppress:
+                    print()     # Force new line when not in DEBUG mode after New AE val dialogue 
             # sleep(2)
         # else:
         #     print('INFO:      Status is: ',session['camera_id'])
@@ -454,7 +459,12 @@ def load_no_image():
 def get_frames(cam_id,stop_capture=False): 
     import cv2
 
-    video = cv2.VideoCapture(cam_list[str(cam_id)])
+    try:
+        video = cv2.VideoCapture(cam_list[str(cam_id)])
+        video.setExceptionMode(True)
+    # except cv2.error:
+    except Exception:
+        print('ERROR:   An exception has occurred in opening the stream for Camera ID',cam_id)
 
     while True:
         success, frame = video.read()
@@ -482,6 +492,7 @@ def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show
             session.update(fs_size=sess_defaults[cam_id][2])
             set_frame_size('11')
             write_session_data(session['camera_id'], session['ae_level'], session['bpc'], session['fs_size'], session['white_balance'], session['flip'], show_debug_info)
+            # print(cam_id)
         if show_debug_info == 'DEBUG': 
             print ('DEBUG:   Frame size reset for Cam ID: ',cam_id)
 
