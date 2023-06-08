@@ -41,6 +41,7 @@ def initialize_cams(show_debug_info=False):
             set_aec(session['ae_compensation'])
             set_gain_ceiling(session['gain_ceiling'])
             set_quality(session['quality'])
+            set_DCW(cam_id)
             if not cam_id == '0':
                 write_session_data(session['camera_id'], session['ae_level'], session['bpc'], session['fs_size'], session['white_balance'], session['flip'])
                 if show_debug_info == 'DEBUG':
@@ -432,6 +433,17 @@ def set_quality(quality, show_debug_info = False):
                 print_session_data()
             write_session_data(session['camera_id'], session['ae_level'], session['bpc'], session['fs_size'], session['white_balance'], session['flip'], show_debug_info)
 
+def set_DCW(camera_id, show_debug_info = False):    # Camera is set to down convert image, this disables that
+    url_stripped = strip_url(cam_list[str(session['camera_id'])])
+
+    if not session['camera_id'] == 'stop' or not session['camera_id'] == 'reset':
+        url = url_stripped + '/control?var=dcw&val='+dcw[0]
+        status_code = send_url_command(url,show_debug_info)
+        if show_debug_info == 'DEBUG':
+            print ("DEBUG:     Down conversion is set to: ",dcw, end=' ')
+            print (' status code: ',status_code)
+            # print_session_data()
+
 def load_no_image():
     import cv2
 
@@ -555,7 +567,7 @@ if __name__ == '__main__':
     sys.path.append('config')   # allows for finding config folder
     from cameras import camera_list as cam_list
     from cameras import ae_level as ae_level_range
-    from cameras import framesize, white_balance
+    from cameras import framesize, white_balance, dcw
     from network import host
     from network import debug_level
     import network as network
@@ -567,7 +579,7 @@ else:
     from lib.sessions import session, sess_defaults
     from config.cameras import camera_list as cam_list
     from config.cameras import ae_level as ae_level_range
-    from config.cameras import framesize, white_balance
+    from config.cameras import framesize, white_balance, dcw
     from config.network import host
     from config.network import debug_level
     import config.network as network

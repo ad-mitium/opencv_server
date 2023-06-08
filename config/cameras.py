@@ -22,3 +22,4 @@ quality = ['4']     # Set image quality to best
 
 aec = ['1']     # Enable auto exposure compensation
 gain_ceiling = ['0','1','2']    # Range for AEC gain
+dcw = ['0']
