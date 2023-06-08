@@ -207,6 +207,7 @@ def strip_url(url, show_debug_info = False):
 
 def send_url_command(url,show_debug_info = False):
     import urllib3
+    from time import strftime
 
     try:
         get_request = requests.get(url,timeout=5)   # Increase timeout to 5 seconds
@@ -217,23 +218,28 @@ def send_url_command(url,show_debug_info = False):
         get_request.raise_for_status()
     except requests.exceptions.Timeout:
         print()
-        print('ERROR:   GET request has timed out')
+        curr_time = strftime('%m-%d-%Y ') + strftime('%H:%M:%S')
+        print('ERROR:   GET request has timed out','at',curr_time)
         get_status_code = 'Timeout'
     # except urllib3.exceptions.NewConnectionError:
     #    print()
-    #     print('ERROR:   GET request could not find host: ',url)
+    #    curr_time = strftime('%m-%d-%Y ') + strftime('%H:%M:%S')
+    #     print('ERROR:   GET request could not find host: ',url,'at',curr_time)
     #     get_status_code = 'No host' 
     except urllib3.exceptions.MaxRetryError:
         print()
-        print('ERROR:   GET request exceeded number of retries: ',url)
+        curr_time = strftime('%m-%d-%Y ') + strftime('%H:%M:%S')
+        print('ERROR:   GET request exceeded number of retries: ',url,'at',curr_time)
         get_status_code = 'Max retries' 
     # except urllib3.connection.HTTPConnection:
     #    print()
-    #     print('ERROR:   GET request could not connect to host: ',url)
+    #    curr_time = strftime('%m-%d-%Y ') + strftime('%H:%M:%S')
+    #     print('ERROR:   GET request could not connect to host: ',url,'at',curr_time)
     #     get_status_code = 'ConnError' 
     except requests.exceptions.ConnectionError:
         print()
-        print('ERROR:   GET request unable to connect to host: ',url)
+        curr_time = strftime('%m-%d-%Y ') + strftime('%H:%M:%S')
+        print('ERROR:   GET request unable to connect to host: ',url,'at',curr_time)
         get_status_code = 'ConnError'
     finally:
         pass
