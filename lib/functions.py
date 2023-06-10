@@ -116,15 +116,15 @@ def update_cam(cam_id, reset=False, show_debug_info = False):   # Handles updati
                 white_balance=sess_defaults[cam_id][3],flip=sess_defaults[cam_id][4],ae_compensation=sess_defaults[cam_id][5],
                     gain_ceiling=sess_defaults[cam_id][6],quality=sess_defaults[cam_id][7])  # Change all declared values to default values 
         else:       # Make updates for multiple views
-            for cam_id in sess_defaults.keys():
-                if not cam_id == '0': 
-                    if not cam_id == 'Multi':       # Don't overwrite default values
-                        session['camera_id']=cam_id     # Change camera ID or you'll overwrite the same one over and over
-                        session.update(ae_level=sess_defaults[cam_id][0],bpc=sess_defaults[cam_id][1],fs_size=sess_defaults[cam_id][2],
-                            white_balance=sess_defaults[cam_id][3],flip=sess_defaults[cam_id][4],ae_compensation=sess_defaults[cam_id][5],
-                            gain_ceiling=sess_defaults[cam_id][6],quality=sess_defaults[cam_id][7])  # Change all declared values to default values 
+            for cam_id_for in sess_defaults.keys():
+                if not cam_id_for == '0': 
+                    if not cam_id_for == 'Multi':       # Don't overwrite default values
+                        session['camera_id']=cam_id_for     # Change camera ID or you'll overwrite the same one over and over
+                        session.update(ae_level=sess_defaults[cam_id_for][0],bpc=sess_defaults[cam_id_for][1],fs_size=sess_defaults[cam_id_for][2],
+                            white_balance=sess_defaults[cam_id_for][3],flip=sess_defaults[cam_id_for][4],ae_compensation=sess_defaults[cam_id_for][5],
+                            gain_ceiling=sess_defaults[cam_id_for][6],quality=sess_defaults[cam_id_for][7])  # Change all declared values to default values 
                         if show_debug_info == 'DEBUG': 
-                            print ('DEBUG:   Previous settings loaded for Cam ID: ',cam_id, sess_defaults[cam_id])
+                            print ('DEBUG:   Previous settings loaded for Cam ID: ',cam_id_for, sess_defaults[cam_id_for])
                             # print ('         ',session)
                         set_ae_exposure(None,int(session['ae_level']),show_debug_info,True) 
                         set_black_point(session['bpc'])
@@ -136,9 +136,9 @@ def update_cam(cam_id, reset=False, show_debug_info = False):   # Handles updati
                         set_quality(session['quality'])
                         write_session_data(session['camera_id'], session['ae_level'], session['bpc'], session['fs_size'], session['white_balance'], session['flip'])
                     if show_debug_info == 'DEBUG':
-                        print ('DEBUG:   Initial writing of session defaults completed for Camera: ', cam_id)
-                else:
-                    print('ERROR:  Cannot update Camera ID ',cam_id)
+                        print ('DEBUG:   Initial writing of session defaults completed for Camera: ', cam_id_for)
+                # else:
+                #     print('ERROR:  Cannot update Camera ID ',cam_id_for, 'update for loop')
             print(sess_defaults)
 
         if show_debug_info == 'DEBUG':  # Follow on for previous print statement
@@ -241,7 +241,7 @@ def send_url_command(url,show_debug_info = False):
     except requests.exceptions.ConnectionError:
         # print()
         curr_time = strftime('%m-%d-%Y ') + strftime('%H:%M:%S')
-        print('ERROR:   GET request unable to connect to host: ',url,'at',curr_time)
+        print(f'\nERROR:   GET request unable to connect to host: ',url,'at',curr_time)
         get_status_code = 'ConnError'
     finally:
         # print('Command sent')            print('here')
