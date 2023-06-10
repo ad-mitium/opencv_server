@@ -229,7 +229,7 @@ def send_url_command(url,show_debug_info = False):
     except requests.exceptions.ConnectionError:
         # print()
         curr_time = strftime('%m-%d-%Y ') + strftime('%H:%M:%S')
-        print(f'\nERROR:   GET request unable to connect to host: ',url,'at',curr_time)
+        print('ERROR:   GET request unable to connect to host: ',url,'at',curr_time)
         get_status_code = 'ConnError'
     finally:
         # print('Command sent')            print('here')
@@ -273,7 +273,7 @@ def set_ae_exposure(ae_dir, ae_val = 'NaN',show_debug_info = False, suppress = F
                 url = url_stripped + '/control?var=ae_level&val='+str(ae_val)
                 session['ae_level'] = str(ae_val)
                 if not suppress:
-                    print ('  New ae_level: ',ae_val,end='')      # Part of previous INFO output
+                    print ('  New ae_level: ',ae_val)      # Part of previous INFO output
                 # if show_debug_info == 'DEBUG':
                 #     print('DEBUG:     URL: ',url,' level: ',session['ae_level'], end='')
 
@@ -282,7 +282,7 @@ def set_ae_exposure(ae_dir, ae_val = 'NaN',show_debug_info = False, suppress = F
                     print()
 
             else:
-                print (f'\nERROR:   Value out of range: ',ae_val, end='')
+                print ('ERROR:   Value out of range: ',ae_val, end='')
                 url = 'No request made, AE value out of range ' # No url if you don't make a request
                 status_code = 'No request made, AE value out of range ' # No status code if you don't make a request
                 if ae_val > 2:      # Put ae_val back in range for DEBUG display purposes, wasn't changed in session['ae_level']
@@ -296,7 +296,7 @@ def set_ae_exposure(ae_dir, ae_val = 'NaN',show_debug_info = False, suppress = F
                     print(' AE level reset to: ',ae_val)
 
             if show_debug_info == 'DEBUG': 
-                print(f'\nDEBUG:     IN AE, AFTER REQUEST SENT: Camera ID: ' ,session['camera_id'])
+                print('DEBUG:     IN AE, AFTER REQUEST SENT: Camera ID: ' ,session['camera_id'])
 
             if show_debug_info == 'DEBUG':
                 print ("DEBUG:     AE set to: ",ae_val,' URL: ',url, ' level: ',session['ae_level'],' status code: ',status_code) 
