@@ -125,7 +125,8 @@ def update_cam(cam_id, reset=False, show_debug_info = False):   # Handles updati
                         print ('DEBUG:   Initial writing of session defaults completed for Camera: ', cam_id_for)
                 # else:
                 #     print('ERROR:  Cannot update Camera ID ',cam_id_for, 'update for loop')
-            print(sess_defaults)
+            if show_debug_info == 'DEBUG':
+                print(f'DEBUG:   In multi mode\n',sess_defaults)
 
         if show_debug_info == 'DEBUG':  # Follow on for previous print statement
             if not cam_id == 'Multi' or not cam_id == '0':
