@@ -159,7 +159,10 @@ def index():
 
         elif  form_data.get('action') == 'stop':
             session['camera_id']='stop'
-            print('INFO:    Stream has been stopped')
+            if verbose == 'DEBUG':
+                print('DEBUG:   Stream has been stopped')
+            else:
+                print('INFO:    Stream has been stopped')
             get_frames(session['camera_id'],True)   # Send stop capture to break stream
             return render_template(stop_html)
 
@@ -169,28 +172,38 @@ def index():
 
         elif form_data.get('flip_action') == '1':
             # toggle_flip=form_data.get('flip_action')    # Ignore form data and toggle based on current session flip status
-            print('DEBUG:     Image mirror mode is currently',session['flip'])
+            if verbose == 'DEBUG':
+                print('DEBUG:     Image mirror mode is currently',session['flip'])
             if session['flip'] == '1':  # Toggle image flip instead of forcing to one mode
                 session['flip'] = '0'
-                print('DEBUG:     Image mirror mode has been unset')
+                if verbose == 'DEBUG':
+                    print('DEBUG:     Image mirror mode has been unset')
             else:
-                print('DEBUG:     Image mirror mode does not match',end=' ')
+                if verbose == 'DEBUG':
+                    print('DEBUG:     Image mirror mode does not match',end=' ')
                 session['flip'] = '1'
-                print('and has been set to',session['flip'])
-            print('DEBUG:     Image mirror mode is now set to',session['flip'])
+                if verbose == 'DEBUG':
+                    print('and has been set to',session['flip'])
+            if verbose == 'DEBUG':
+                print('DEBUG:     Image mirror mode is now set to',session['flip'])
             set_flip_image(session['flip'], verbose)
 
         elif form_data.get('bpc_action') == '1':
             # session['bpc']=form_data.get('bpc_action')
-            print('DEBUG:     Black Point Correction is currently',session['bpc'])
+            if verbose == 'DEBUG':
+                print('DEBUG:     Black Point Correction is currently',session['bpc'])
             if session['bpc'] == '1':  # Toggle bpc instead of forcing to one mode
                 session['bpc'] = '0'
-                print('DEBUG:     Black Point Correction has been unset')
+                if verbose == 'DEBUG':
+                    print('DEBUG:     Black Point Correction has been unset')
             else:
-                print('DEBUG:     Black Point Correction does not match',end=' ')
+                if verbose == 'DEBUG':
+                    print('DEBUG:     Black Point Correction does not match',end=' ')
                 session['bpc'] = '1'
-                print('and has been set to',session['bpc'])
-            print('DEBUG:     Black Point Correction is now set to',session['bpc'])
+                if verbose == 'DEBUG':
+                    print('and has been set to',session['bpc'])
+            if verbose == 'DEBUG':
+                print('DEBUG:     Black Point Correction is now set to',session['bpc'])
             set_black_point(session['bpc'], verbose)
 
         elif form_data.get('wb_action') in ['0','1']:
