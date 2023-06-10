@@ -278,8 +278,8 @@ def set_ae_exposure(ae_dir, ae_val = 'NaN',show_debug_info = False, suppress = F
                 #     print('DEBUG:     URL: ',url,' level: ',session['ae_level'], end='')
 
                 status_code = send_url_command(url,show_debug_info)
-                if not status_code == 200:
-                    print()
+                # if not status_code == 200:
+                #     print()
 
             else:
                 print ('ERROR:   Value out of range: ',ae_val, end='')
