@@ -13,7 +13,7 @@ import config.network as network
 from lib import version as ver
 from lib.sessions import session, sess_defaults
 from lib.functions import get_frames, set_ae_exposure, set_black_point, set_flip_image, set_frame_size, set_white_balance 
-from lib.functions import check_debug_status, update_cam, set_defaults, initialize_cams, get_multi_frames
+from lib.functions import check_debug_status, update_cam, set_reset, initialize_cams, get_multi_frames
 
 app = Flask(__name__, template_folder='html')
 
@@ -155,7 +155,7 @@ def index():
 
         elif  form_data.get('action') == 'reset':
             # session['camera_id']='reset'
-            set_defaults(session['camera_id'],True)     # Send reset to set_defaults()
+            set_reset(session['camera_id'])     # Send reset to set_reset()
 
         elif  form_data.get('action') == 'stop':
             session['camera_id']='stop'
@@ -222,7 +222,6 @@ def index():
 
 def create_app():
     print("App created")
-    # set_defaults('0')
     return app
 
 if __name__ == '__main__':
