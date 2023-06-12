@@ -97,4 +97,5 @@ Added handling for lost image stream when in multiple camera view. When the ```f
 
 * ~~Implement per Camera ID session handling~~ Completed
 * ~~Implement ```flip_image``` button toggling for flipping the image~~ Completed
+* Add Camera ID overlay to multiple camera stream view
 * TBD
