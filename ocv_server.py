@@ -227,7 +227,8 @@ def index():
 
     if verbose == 'DEBUG': 
         print('DEBUG:  {}: Route render:'.format(curr_time),request_method,' Cam_ID: ',session['camera_id'],' AE level: ',session['ae_level'],' Frame Size: ',session['fs_size'],' WB: ',session['white_balance'],' BPC: ',session['bpc'] )
-        print('DEBUG:   Camera session data:    [{}]'.format(session['camera_id']),sess_defaults[session['camera_id']])
+        if not form_data.get('action') in ['1','2','3','4']:     # Print only if there is a camera ID in action 
+            print('DEBUG:   Camera session data:    [{}]'.format(session['camera_id']),sess_defaults[session['camera_id']])
         # print('DEBUG: Request form: ',form_data)
     else:
         print('INFO:     {}: Route render:'.format(curr_time),request_method,' Cam_ID: ',session['camera_id'],' AE level: ',session['ae_level'],' Frame Size: ',session['fs_size'],' WB: ',session['white_balance'],' BPC: ',session['bpc'] )
