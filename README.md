@@ -82,10 +82,6 @@ Furthermore, this is not production level code, so I've decided to sidestep impl
 
 ### Issues specific to Multiple Camera view
 
-#### Request timeouts
-
-There is an issue when the script is running for an extended amount of time in multiple camera mode where the ESP32 seems to go offline and causes request timeouts.  Oddly enough, it complains about setting the AE value.
-
 #### Heavy CPU usage when stream is lost
 
 Added handling for lost image stream when in multiple camera view. When the ```frame_count``` variable is < 100 frames, CPU usage jumps to 100%. For now, the ```frame_count``` is set to 30 seconds worth of frames to reduce CPU usage to managable levels. I haven't decided if it is worth the compute cost to add this check to the single camera view.
