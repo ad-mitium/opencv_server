@@ -20,11 +20,14 @@ def print_session_data():
     return 0
 
 def initialize_cams(show_debug_info=False):
+    # print ('Before',session['camera_id'])
+
     if show_debug_info == 'DEBUG': 
         print ('DEBUG:   Initializing cameras...')
         # print (session,f'\n',sess_defaults)
     for cam_id in sess_defaults.keys():
-        session['camera_id']=cam_id     # Change camera ID or you'll overwrite the same one over and over
+        if not cam_id == '0':       # Don't assign '0', as it is not being written
+            session['camera_id']=cam_id     # Change camera ID or you'll overwrite the same one over and over
         session.update(ae_level=sess_defaults[cam_id][0],bpc=sess_defaults[cam_id][1],fs_size=sess_defaults[cam_id][2],
             white_balance=sess_defaults[cam_id][3],flip=sess_defaults[cam_id][4],ae_compensation=sess_defaults[cam_id][5],
             gain_ceiling=sess_defaults[cam_id][6],quality=sess_defaults[cam_id][7])  # Change all declared values to default values 
@@ -50,6 +53,8 @@ def initialize_cams(show_debug_info=False):
         print ('DEBUG:   Cameras initialized',f'\n',sess_defaults)
     else:
         print('INFO:   Stream for Cameras have been initialized to default values')
+    session['camera_id']='1'     # Reassign camera ID back to 1 after initializing
+    # print ('After',session['camera_id'])
 
 
 def set_reset(cam_id, show_debug_info = False):     # Handles initialization and reset
@@ -239,14 +244,14 @@ def send_url_command(url,show_debug_info = False):
 
 def set_ae_exposure(cam_id,ae_dir, ae_val = 'NaN',show_debug_info = False, suppress = False): 
     # from time import sleep
-    if not session[cam_id] == '0':    # Never go to '0'
+    if not session['camera_id'] == '0':    # Never go to '0'
 
         # show_debug_info = check_debug_status()
         # print (show_debug_info, session['enabled_debug'])
         if show_debug_info == 'DEBUG': 
-            print ("DEBUG:     IN AE: Camera ID: " ,session[cam_id])
+            print ("DEBUG:     IN AE: Camera ID: " ,session['camera_id'])
 
-        if not session[cam_id] == 'stop' or not session['camera_id'] == 'reset':
+        if not session['camera_id'] == 'stop' or not session['camera_id'] == 'reset':
             url_stripped = strip_url(cam_list[str(session['camera_id'])])
 
             if show_debug_info == 'DEBUG':
@@ -259,7 +264,7 @@ def set_ae_exposure(cam_id,ae_dir, ae_val = 'NaN',show_debug_info = False, suppr
                 if type(ae_val) == int:    # ae_val is now assigned a value provided during function call
                     if show_debug_info == 'DEBUG':
                         # print(f'\n')
-                        print('DEBUG:     Camera has changed: {} Force set AE value to: '.format(session[cam_id]), ae_val, end='')
+                        print('DEBUG:     Camera has changed: {} Force set AE value to: '.format(session['camera_id']), ae_val, end='')
                     elif not suppress:
                         # print(f'\n')
                         print(f'\nINFO:      Camera has changed: Force set AE value to: ', ae_val, end='')
@@ -297,11 +302,11 @@ def set_ae_exposure(cam_id,ae_dir, ae_val = 'NaN',show_debug_info = False, suppr
                     print(' AE level reset to: ',ae_val)
 
             if show_debug_info == 'DEBUG': 
-                print('DEBUG:     IN AE, AFTER REQUEST SENT: Camera ID: ' ,session['camera_id'])
+                print(f'\nDEBUG:     IN AE, AFTER REQUEST SENT: Camera ID: ' ,session['camera_id'])
 
             if show_debug_info == 'DEBUG':
                 print ("DEBUG:     AE set to: ",ae_val,' URL: ',url, ' level: ',session['ae_level'],' status code: ',status_code) 
-            write_session_data(session[cam_id], ae_val, session['bpc'], session['fs_size'], session['white_balance'], session['flip'], show_debug_info)
+            write_session_data(session['camera_id'], ae_val, session['bpc'], session['fs_size'], session['white_balance'], session['flip'], show_debug_info)
 
             if not show_debug_info == 'DEBUG':
                 if not suppress:
