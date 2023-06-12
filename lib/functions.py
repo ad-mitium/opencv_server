@@ -165,7 +165,7 @@ def write_session_data(cam_id, ae_val, bpc_mode, frame_size, wb_mode, flip, show
             print ('DEBUG:   Current Camera session data:    [{}]'.format(cam_id),sess_defaults[cam_id])
             # print_session_data()
             # print ('DEBUG:   Write session data: AE Val: ',ae_val,' Cam ID: ',cam_id)
-        sess_defaults[cam_id][0], sess_defaults[cam_id][1], sess_defaults[cam_id][2], sess_defaults[cam_id][3], sess_defaults[cam_id][4] = ae_val, bpc_mode, frame_size, wb_mode, flip
+        sess_defaults[cam_id][0], sess_defaults[cam_id][1], sess_defaults[cam_id][2], sess_defaults[cam_id][3], sess_defaults[cam_id][4] = str(ae_val), bpc_mode, frame_size, wb_mode, flip
 
         if show_debug_info == 'DEBUG': 
             print('DEBUG:   Writing camera session values')
