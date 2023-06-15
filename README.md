@@ -80,7 +80,7 @@ Below are the modifications made:
 
 Furthermore, this is not production level code, so I've decided to sidestep implementing session handling with a Dict. You are free to implement it if you wish.
 
-#### ```swscaler``` invalid slice messages
+### ```swscaler``` invalid slice messages
 
 Changing the image resolution to a larger resolution causes OpenCV to complain about invalid slices. This will not be fixed because the fix requires changing how OpenCV handles image size changes. Either that or suppressing OpenCV error output outright.  I have not been successful in catching OpenCV errors.
 
