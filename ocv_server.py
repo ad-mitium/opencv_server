@@ -69,11 +69,35 @@ def index():
 
     request_method = request.method
     form_data = request.form.to_dict()
+    form_key = form_data.keys()
 
-    print('REQUEST:  Request form generated')
+    if 'fs_action' in form_key: 
+        # print('Frame Size action')
+        form_value = form_data.get('fs_action')
+    elif 'wb_action' in form_key:
+        # print('White Balance action')
+        form_value = form_data.get('wb_action')
+    elif 'bpc_action' in form_key:
+        # print('Black Point Correction action')
+        form_value = form_data.get('bpc_action')
+    elif 'flip_action' in form_key:
+        # print('Flip Image action')
+        form_value = form_data.get('flip_action')
+    elif 'ae_action' in form_key:
+        # print('AE action')
+        form_value = form_data.get('ae_action')
+    elif 'action' in form_key:
+        # print('Camera action')
+        form_value = form_data.get('action')
+    else:
+        print('Action not found')
 
-    if verbose == 'DEBUG': 
-        print('DEBUG:     Request form: ',form_data)
+    print('REQUEST:  Request form generated',end='')
+
+    if verbose == 'DEBUG':
+        print(f'\nDEBUG:     Request form: ',form_data)
+    else:
+        print(': ',form_value)      # Concatenate requested value to Request message
 
     if request_method == 'POST':
         if form_data.get('action') == '1':
