@@ -96,6 +96,7 @@ A "feature" when changing settings in multiple camera view is that it defaults t
 * opencv-python-headless
 * numpy (required by opencv-python-headless)
 * waitress
+* netifaces (Optional if you hardcode your host ip address)
 
 ## ToDo
 
