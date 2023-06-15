@@ -17,7 +17,7 @@ from lib.functions import check_debug_status, update_cam, set_reset, initialize_
 
 app = Flask(__name__, template_folder='html')
 
-version_number = (0,2,4)
+version_number = (0,2,5)
 
 
 @app.route('/video_feed/', methods=["GET"])
@@ -155,8 +155,12 @@ def index():
 
         elif  form_data.get('action') == 'reset':
             # session['camera_id']='reset'
-            set_reset(session['camera_id'])     # Send reset to set_reset()
-
+            if verbose == 'DEBUG':
+                print('DEBUG:   Stream has been reset')
+            else:
+                print('INFO:    Stream has been reset')
+            set_reset(session['camera_id'],verbose)     # Send reset to set_reset()
+            
         elif  form_data.get('action') == 'stop':
             session['camera_id']='stop'
             if verbose == 'DEBUG':

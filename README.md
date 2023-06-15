@@ -86,6 +86,10 @@ Furthermore, this is not production level code, so I've decided to sidestep impl
 
 Added handling for lost image stream when in multiple camera view. When the ```frame_count``` variable is < 100 frames, CPU usage jumps to 100%. For now, the ```frame_count``` is set to 30 seconds worth of frames to reduce CPU usage to managable levels. I haven't decided if it is worth the compute cost to add this check to the single camera view.
 
+#### Setting buttons default to camera 4 in multiple camera view
+
+A "feature" when changing settings in multiple camera view is that it defaults to camera 4. However, there is a long delay before the server shows an image. Long enough for a user to think the application is not working. It is due to some legacy session handling when there wasn't a multiple camera view. It's caused a lot of headaches as well as workarounds to maintain compatibility and may very well require a re-write.
+
 ## Required python libraries
 
 * flask
@@ -98,4 +102,5 @@ Added handling for lost image stream when in multiple camera view. When the ```f
 * ~~Implement per Camera ID session handling~~ Completed
 * ~~Implement ```flip_image``` button toggling for flipping the image~~ Completed
 * Add Camera ID overlay to multiple camera stream view
+* Fix lazy session handling of camera ID when changing settings in multiple camera view
 * TBD
