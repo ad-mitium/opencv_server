@@ -35,11 +35,11 @@ When using this script in command line mode, several flags are accessible.
 
 The script is configured by the files in the config folder.  Change the ```host['host_ip']``` field and uncomment the appropriate ```host_address``` variable in ```network.py``` if you want to hard code the IP address.
 
-## Issues
+## Known Issues
 
 ### Dropped WiFi connections and invalid data
 
-The ESP32 seems to drop connection or send invalid data quite often.  That may be an issue with my wireless environment or it could be the ESP32 wasn't intended to be on 24/7.
+The ESP32 seems to drop connection or send invalid data quite often.  That may be an issue with my wireless environment or it could be the ESP32 wasn't intended to be on 24/7. These devices appear to be rather fragile with respect to connectivity.
 
 There are two things I have implemented to address the dropped connections and invalid data.  I made changes to the demo code and I added some javascript in ```index.html``` to reload the page every few minutes.
 
@@ -79,6 +79,12 @@ Below are the modifications made:
 ### Session handling
 
 Furthermore, this is not production level code, so I've decided to sidestep implementing session handling with a Dict. You are free to implement it if you wish.
+
+#### ```swscaler``` invalid slice messages
+
+Changing the image resolution to a larger resolution causes OpenCV to complain about invalid slices. This will not be fixed because the fix requires changing how OpenCV handles image size changes. Either that or suppressing OpenCV error output outright.  I have not been successful in catching OpenCV errors.
+
+It occurs at all times, but is most frequently observed when forcing all video streams to the same size in multiple camera view for image concatenation.
 
 ### Issues specific to Multiple Camera view
 
