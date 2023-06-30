@@ -17,7 +17,7 @@ from lib.functions import check_debug_status, update_cam, set_reset, initialize_
 
 app = Flask(__name__, template_folder='html')
 
-version_number = (0,2,5)
+version_number = (0,2,6)
 
 
 @app.route('/video_feed/', methods=["GET"])
@@ -101,7 +101,6 @@ def index():
 
     if request_method == 'POST':
         if form_data.get('action') == '1':
-            # print("Request get: ",form_data.get('action'), type(form_data.get('action')), ' Camera ID: ', session['camera_id'] )
             # print ('Request: 1 Cam ID: ',session['camera_id'])
             if not session['camera_id'] == form_data.get('action'):
                 session['camera_id']=form_data.get('action')
@@ -199,9 +198,9 @@ def index():
             set_frame_size(session['fs_size'], verbose)
 
         elif form_data.get('flip_action') == '1':
-            # toggle_flip=form_data.get('flip_action')    # Ignore form data and toggle based on current session flip status
             if verbose == 'DEBUG':
                 print('DEBUG:     Image mirror mode is currently',session['flip'])
+            # Toggle flip
             if session['flip'] == '1':  # Toggle image flip instead of forcing to one mode
                 session['flip'] = '0'
                 if verbose == 'DEBUG':
@@ -212,6 +211,7 @@ def index():
                 session['flip'] = '1'
                 if verbose == 'DEBUG':
                     print('and has been set to',session['flip'])
+
             if verbose == 'DEBUG':
                 print('DEBUG:     Image mirror mode is now set to',session['flip'])
             set_flip_image(session['flip'], verbose)
@@ -220,6 +220,7 @@ def index():
             # session['bpc']=form_data.get('bpc_action')
             if verbose == 'DEBUG':
                 print('DEBUG:     Black Point Correction is currently',session['bpc'])
+            # Toggle BPC
             if session['bpc'] == '1':  # Toggle bpc instead of forcing to one mode
                 session['bpc'] = '0'
                 if verbose == 'DEBUG':
@@ -230,6 +231,7 @@ def index():
                 session['bpc'] = '1'
                 if verbose == 'DEBUG':
                     print('and has been set to',session['bpc'])
+
             if verbose == 'DEBUG':
                 print('DEBUG:     Black Point Correction is now set to',session['bpc'])
             set_black_point(session['bpc'], verbose)
@@ -249,7 +251,7 @@ def index():
         else:
             print("Undefined action")
             # session['camera_id']='1'
-            pass # unknown camera ID, pass to video_feed()
+            pass # unknown camera ID, pass to video_feed() to deal with it
 
     curr_time = strftime('%m-%d-%Y ') + strftime('%H:%M:%S')
 
@@ -285,28 +287,16 @@ if __name__ == '__main__':
 
     # print('Server debug: ',session['enabled_debug'])
 
-    # verbose = check_debug_status()
-    # if not session['enabled_debug']:
-    #     verbose = debug_level['0']
-    #     print ('Debug level set to ',verbose,' and session is: ',session['enabled_debug'])
-    # else:
-    #     verbose = debug_level['1']
-    #     print ('Debug level set to ',verbose,' and session is: ',session['enabled_debug'])
-    #     print (f'Session data:\n    ',session)
-
     if args.host_ip:
         print ("Access server using this ip address and port: http://{}:{}".format(network.host_address,host['host_port']))
     else:
-        verbose = check_debug_status(False)
+        verbose = check_debug_status(False)     # Don't print session info
         initialize_cams(verbose)
         if verbose == 'DEBUG':
             print('DEBUG:  Route "/" defaults: Cam_ID: ',session['camera_id'],' AE level: ',session['ae_level'],' Frame Size: ',session['fs_size'],' WB: ',session['white_balance'],' BPC: ',session['bpc'])
-            # print (strip_url(url))
-            # print ('INFO:    Debug level set to ',verbose,' and session is: ',session['enabled_debug'])
-            # print (check_debug_status())
+            # app.run(debug=True)
         else:
             print('INFO:    Ready to serve camera streams')
-        # app.run(debug=True)
         serve(app, host=network.host_address, port=host['host_port'])
 
 else:
