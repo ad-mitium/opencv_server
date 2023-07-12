@@ -110,4 +110,5 @@ A "feature" when changing settings in multiple camera view is that it defaults t
 * ~~Implement ```flip_image``` button toggling for flipping the image~~ Completed
 * Add Camera ID overlay to multiple camera stream view
 * Fix lazy session handling of camera ID when changing settings in multiple camera view
+* Rewrite route logic and perform actions by action type
 * TBD
