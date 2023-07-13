@@ -17,7 +17,7 @@ from lib.functions import check_debug_status, update_cam, set_reset, initialize_
 
 app = Flask(__name__, template_folder='html')
 
-version_number = (0,2,6)
+version_number = (0,2,7)
 
 
 @app.route('/video_feed/', methods=["GET"])
@@ -69,7 +69,8 @@ def index():
 
     request_method = request.method
     form_data = request.form.to_dict()
-    form_key = form_data.keys()
+    # form_key = form_data.keys()
+    form_key = list(form_data.keys())[0]    # extract name of key from request.form.to_dict() 
 
     if 'fs_action' in form_key: 
         # print('Frame Size action')
@@ -95,9 +96,9 @@ def index():
     print('REQUEST:  Request form generated',end='')
 
     if verbose == 'DEBUG':
-        print(f'\nDEBUG:     Request form: ',form_data)
+        print(f'\nDEBUG:     Request form: {form_data}, {form_key} = {form_value}')
     else:
-        print(': ',form_value)      # Concatenate requested value to Request message
+        print(f': {form_key} = {form_value}')      # Concatenate requested value to Request message
 
     if request_method == 'POST':
         if form_data.get('action') == '1':
