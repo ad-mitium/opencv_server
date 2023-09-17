@@ -73,11 +73,12 @@ def index():
     if not form_data:
         if verbose:
             print ('DEBUG:    No Actions detected, defaulting to stop')
-            form_data = {'action': 'stop'}
+            # form_data = {'action': 'stop'}
+            form_key = None
         else:
-            pass
+            # pass
     # form_key = form_data.keys()
-    form_key = list(form_data.keys())[0]    # extract name of key from request.form.to_dict() 
+            form_key = list(form_data.keys())[0]    # extract name of key from request.form.to_dict() 
 
     if 'fs_action' in form_key: 
         # print('Frame Size action')
