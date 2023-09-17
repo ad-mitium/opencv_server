@@ -74,7 +74,7 @@ def index():
         if verbose:
             print ('DEBUG:    No Actions detected, defaulting to stop')
             # form_data = {'action': 'stop'}
-            form_key,form_value = "None"
+            form_key,form_value = "None","0"
         else:
             # pass
     # form_key = form_data.keys()
