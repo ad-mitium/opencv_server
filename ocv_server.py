@@ -17,7 +17,7 @@ from lib.functions import check_debug_status, update_cam, set_reset, initialize_
 
 app = Flask(__name__, template_folder='html')
 
-version_number = (0,2,7)
+version_number = (0,2,8)
 
 
 @app.route('/video_feed/', methods=["GET"])
@@ -69,6 +69,13 @@ def index():
 
     request_method = request.method
     form_data = request.form.to_dict()
+    # print(form_data)
+    if not form_data:
+        if verbose:
+            print ('DEBUG:    No Actions detected, defaulting to stop')
+            form_data = {'action': 'stop'}
+        else:
+            pass
     # form_key = form_data.keys()
     form_key = list(form_data.keys())[0]    # extract name of key from request.form.to_dict() 
 
@@ -90,6 +97,7 @@ def index():
     elif 'action' in form_key:
         # print('Camera action')
         form_value = form_data.get('action')
+        # print(form_value)
     else:
         print('Action not found')
 
@@ -292,6 +300,8 @@ if __name__ == '__main__':
         print ("Access server using this ip address and port: http://{}:{}".format(network.host_address,host['host_port']))
     else:
         verbose = check_debug_status(False)     # Don't print session info
+        if verbose == 'DEBUG':
+            print("DEBUG:  Host IP and port:     {}:{}".format(network.host_address,host['host_port']))
         initialize_cams(verbose)
         if verbose == 'DEBUG':
             print('DEBUG:  Route "/" defaults: Cam_ID: ',session['camera_id'],' AE level: ',session['ae_level'],' Frame Size: ',session['fs_size'],' WB: ',session['white_balance'],' BPC: ',session['bpc'])
