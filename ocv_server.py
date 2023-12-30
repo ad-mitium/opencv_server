@@ -17,7 +17,7 @@ from lib.functions import check_debug_status, update_cam, set_reset, initialize_
 
 app = Flask(__name__, template_folder='html')
 
-version_number = (0,2,8)
+version_number = (0,2,9)
 
 
 @app.route('/video_feed/', methods=["GET"])
@@ -70,15 +70,16 @@ def index():
     request_method = request.method
     form_data = request.form.to_dict()
     # print(form_data)
+    # print('Verbose = ',verbose)
     if not form_data:
-        if verbose:
+        if verbose == 'DEBUG':
             print ('DEBUG:    No Actions detected, defaulting to stop')
             # form_data = {'action': 'stop'}
         form_key, form_value = "None", "0"
     else:
         # form_key = form_data.keys()
         form_key = list(form_data.keys())[0]    # extract name of key from request.form.to_dict() 
-        if verbose:
+        if verbose == 'DEBUG':
             print ('DEBUG:    Action detected: ', form_key)
 
     if 'fs_action' in form_key: 

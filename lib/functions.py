@@ -496,8 +496,9 @@ def get_frames(cam_id,stop_capture=False):
         video = cv2.VideoCapture(cam_list[str(cam_id)])
         video.setExceptionMode(True)
     # except cv2.error:
-    except Exception:
+    except Exception as except_msg:
         print('ERROR:   An exception has occurred in opening the stream for Camera ID',cam_id)
+        print(except_msg)
 
     while True:
         success, frame = video.read()
