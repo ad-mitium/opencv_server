@@ -8,13 +8,43 @@
 
     <form method="post" action="/">
         <font color=#fefefe;>Camera:</font>
-        <button type="submit" name="action" value="1">1</button>
-        <button type="submit" name="action" value="2">2</button>
-        <button type="submit" name="action" value="3">3</button>
-        <button type="submit" name="action" value="4">4</button>
-        <button type="submit" name="action" value="Multi">All Four</button>
-        <!-- <button type="submit" name="action" value="stop">Stop stream</button> -->
-    </form>
+        <button id="cam1" type="submit" name="action" value="1">1</button>
+        <button id="cam2" type="submit" name="action" value="2">2</button>
+        <button id="cam3" type="submit" name="action" value="3">3</button>
+        <button id="cam4" type="submit" name="action" value="4">4</button>
+        <button id="all" type="submit" name="action" value="Multi">All Four</button>
+        <button id="reset" type="submit" name="action" value="reset">Reset</button>
+        <!-- <button id="stop" type="submit" name="action" value="stop">Stop stream</button> -->
+        <script>
+            document.getElementById("cam1").addEventListener("click", function() {
+                    this.style.backgroundColor = "green";
+                }
+            )
+            document.getElementById("cam1").addEventListener("click", function() {
+                this.style.backgroundColor = "green";
+                }
+            )
+            document.getElementById("cam2").addEventListener("click", function() {
+                this.style.backgroundColor = "green";
+                }
+            )
+            document.getElementById("cam3").addEventListener("click", function() {
+                this.style.backgroundColor = "green";
+                }
+            )
+            document.getElementById("cam4").addEventListener("click", function() {
+                this.style.backgroundColor = "green";
+                }
+            )
+            document.getElementById("all").addEventListener("click", function() {
+                this.style.backgroundColor = "green";
+                }
+            )
+            document.getElementById("reset").addEventListener("click", function() {
+                this.style.backgroundColor = "green";
+                }
+            )
+        </script>    </form>
     <font color=#f1f1f1;>Video feed stopped<br/></font>
 
 </body>

@@ -15,34 +15,110 @@
         <div class="column">
             <form method="post" action="/">
                 <font color=#ffffff;>Camera:</font>
-                <button type="submit" name="action" value="1">1</button>
-                <button type="submit" name="action" value="2">2</button>
-                <button type="submit" name="action" value="3">3</button>
-                <button type="submit" name="action" value="4">4</button>
-                <button type="submit" name="action" value="Multi">All Four</button>
-                <button type="submit" name="action" value="reset">Reset</button>
-                <button type="submit" name="action" value="stop">Stop stream</button>
+                <button id="cam1" type="submit" name="action" value="1">1</button>
+                <button id="cam2" type="submit" name="action" value="2">2</button>
+                <button id="cam3" type="submit" name="action" value="3">3</button>
+                <button id="cam4" type="submit" name="action" value="4">4</button>
+                <button id="all" type="submit" name="action" value="Multi">All Four</button>
+                <button id="reset" type="submit" name="action" value="reset">Reset</button>
+                <button id="stop" type="submit" name="action" value="stop">Stop stream</button>
+                <script>
+                    document.getElementById("cam1").addEventListener("click", function() {
+                            this.style.backgroundColor = "green";
+                        }
+                    )
+                    document.getElementById("cam1").addEventListener("click", function() {
+                        this.style.backgroundColor = "green";
+                        }
+                    )
+                    document.getElementById("cam2").addEventListener("click", function() {
+                        this.style.backgroundColor = "green";
+                        }
+                    )
+                    document.getElementById("cam3").addEventListener("click", function() {
+                        this.style.backgroundColor = "green";
+                        }
+                    )
+                    document.getElementById("cam4").addEventListener("click", function() {
+                        this.style.backgroundColor = "green";
+                        }
+                    )
+                    document.getElementById("all").addEventListener("click", function() {
+                        this.style.backgroundColor = "green";
+                        }
+                    )
+                    document.getElementById("reset").addEventListener("click", function() {
+                        this.style.backgroundColor = "green";
+                        }
+                    )
+                    document.getElementById("stop").addEventListener("click", function() {
+                        this.style.backgroundColor = "green";
+                        }
+                    )   
+                </script>
             </form>
         </div>
         <div class="column2">
             <form method="post" action="/">
-                <button type="submit" name="fs_action" value="9">800x600</button>
-                <button type="submit" name="fs_action" value="11">1280x720</button>
+                <button id="size800" type="submit" name="fs_action" value="9">800x600</button>
+                <button id="size1280" type="submit" name="fs_action" value="11">1280x720</button>
+                <script>
+                    document.getElementById("size800").addEventListener("click", function() {
+                        this.style.backgroundColor = "green";
+                        }
+                    )   
+                    document.getElementById("size1280").addEventListener("click", function() {
+                        this.style.backgroundColor = "green";
+                        }
+                    )   
+                </script>
             </form>
         </div>
         <div class="column3">
             <form method="post" action="/">
-                <button type="submit" name="wb_action" value="0">WB Auto</button>
-                <button type="submit" name="wb_action" value="1">WB Sunny</button>
-                <button type="submit" name="bpc_action" value="1">BPC</button>
-                <button type="submit" name="flip_action" value="1">Flip image</button><!--  -->
+                <button id="wb_auto" type="submit" name="wb_action" value="0">WB Auto</button>
+                <button id="wb_sunny" type="submit" name="wb_action" value="1">WB Sunny</button>
+                <button id="bpc" type="submit" name="bpc_action" value="1">BPC</button>
+                <button id="flip" type="submit" name="flip_action" value="1">Flip image</button><!--  -->
+                <script>
+                    document.getElementById("wb_auto").addEventListener("click", function() {
+                        this.style.backgroundColor = "green";
+                        }
+                    )   
+                    document.getElementById("wb_sunny").addEventListener("click", function() {
+                        this.style.backgroundColor = "green";
+                        }
+                    )   
+                    document.getElementById("bpc").addEventListener("click", function() {
+                        this.style.backgroundColor = "green";
+                        }
+                    )   
+                    document.getElementById("flip").addEventListener("click", function() {
+                        this.style.backgroundColor = "green";
+                        }
+                    )   
+                </script>
             </form>
         </div>
         <div class="column4">
             <form method="post" action="/">
-                <button type="submit" name="ae_action" value="1">+ Exp.</button>
-                <button type="submit" name="ae_action" value="0">Reset Exposure</button>
-                <button type="submit" name="ae_action" value="-1">- Exp.</button>
+                <button id="exp_minus" type="submit" name="ae_action" value="1">+ Exp.</button>
+                <button id="exp_reset" type="submit" name="ae_action" value="0">Reset Exposure</button>
+                <button id="exp_plus" type="submit" name="ae_action" value="-1">- Exp.</button>
+                <script>
+                    document.getElementById("exp_minus").addEventListener("click", function() {
+                        this.style.backgroundColor = "green";
+                        }
+                    )   
+                    document.getElementById("exp_reset").addEventListener("click", function() {
+                        this.style.backgroundColor = "green";
+                        }
+                    )   
+                    document.getElementById("exp_plus").addEventListener("click", function() {
+                        this.style.backgroundColor = "green";
+                        }
+                    )   
+                </script>
             </form>
         </div>
     </div>
