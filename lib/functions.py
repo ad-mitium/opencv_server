@@ -485,7 +485,7 @@ def set_DCW(camera_id, show_debug_info = False):    # Camera is set to down conv
 def load_no_image():
     import cv2
 
-    img_file = cv2.imread('static/images/image_unavailable.jpg')
+    img_file = cv2.imread('static/images/source_unavailable.jpg')
 
     return img_file
 
