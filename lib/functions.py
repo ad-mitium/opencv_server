@@ -573,7 +573,14 @@ def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show
 
             # frame_2 = numpy.zeros((720,1280,3), dtype = int)
             frame_2 = load_no_image()
-        h_concat_row_1 = numpy.concatenate((frame_1,frame_2), axis=1)
+        try:
+            h_concat_row_1 = numpy.concatenate((frame_1,frame_2), axis=1)
+        except ValueError:
+            if len(frame_1) < 3:
+                frame_1 = load_no_image()
+            if len(frame_2) < 3:
+                frame_2 = load_no_image()
+            h_concat_row_1 = numpy.concatenate((frame_1,frame_2), axis=1)
 
         if not success_3:
             if frame_count < 900:
@@ -596,7 +603,15 @@ def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show
 
             frame_4 = load_no_image()
             # break
-        h_concat_row_2 = numpy.concatenate((frame_3,frame_4), axis=1)
+        try:
+            h_concat_row_2 = numpy.concatenate((frame_3,frame_4), axis=1)
+        except ValueError:
+            if len(frame_3) < 3:
+                frame_3 = load_no_image()
+            if len(frame_4) < 3:
+                frame_4 = load_no_image()
+            h_concat_row_2 = numpy.concatenate((frame_3,frame_4), axis=1)
+
         v_concat = numpy.concatenate((h_concat_row_1,h_concat_row_2), axis=0)
 
         frame = v_concat
