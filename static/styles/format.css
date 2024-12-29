@@ -5,12 +5,12 @@
     }
     
     .column {
-        flex: 32%;
+        flex: 31%;
     }
 
     .column2 {
         text-align: center;
-        flex: 16%;
+        flex: 15%;
     }
 
     .column3 {
@@ -20,7 +20,7 @@
 
     .column4 {
         text-align: right;
-        flex: 26%;
+        flex: 28%;
     }
 
     .row:after {
