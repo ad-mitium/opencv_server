@@ -96,6 +96,10 @@ Added handling for lost image stream when in multiple camera view. When the ```f
 
 A "feature" when changing settings in multiple camera view is that it defaults to camera 4. However, there is a long delay before the server shows an image. Long enough for a user to think the application is not working. It is due to some legacy session handling when there wasn't a multiple camera view. It's caused a lot of headaches as well as workarounds to maintain compatibility and may very well require a re-write.
 
+#### After a while all feeds become "unavailable"
+
+Over time, all feeds eventually show unavailable despite only one feed reporting errors. The forced refresh helps address this. Ultimately, there is a logic error that needs to be addressed with respect to exception handling when concatenating each of the rows of video.
+
 ## Required python libraries
 
 * flask
