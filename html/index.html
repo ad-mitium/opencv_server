@@ -6,13 +6,15 @@
     <link rel="stylesheet" type= "text/css" href="{{ url_for('static',filename='styles/format.css') }}">
 </head>
 <script>
-    function timedRefresh(timeoutPeriod) {
-        setTimeout("location.reload(true);",timeoutPeriod);
+    function timedRefresh() {
+        const timeoutPeriod = 10
+        setTimeout("location.reload(true);",(1000 * 60 * timeoutPeriod));
     }
 </script>
 <script>
-    // Set the date we're counting down to
-    var countDownDate = new Date().getTime()+ (1000 * 60 * 10);
+    // Set the time we're counting down to
+    const timeoutPeriod = 10
+    var countDownDate = new Date().getTime()+ (1000 * 60 * timeoutPeriod);
     
     // Update the count down every 1 second
     var x = setInterval(function() {
@@ -33,13 +35,13 @@
       // If the count down is over, write some text 
       if (distance < 0) {
         clearInterval(x);
-        document.getElementById("timer").innerHTML = "EXPIRED";
+        document.getElementById("timer").innerHTML = "Reloading";
       }
     }, 1000);
     </script>
  
- <!-- Refresh every 10 (10*60*1000) minutes--> 
-<body onload='JavaScript:timedRefresh(600000)' style="background: #0e0e0e; height: 100%;">
+ <!-- Refresh every 10 minutes--> 
+<body onload='JavaScript:timedRefresh()' style="background: #0e0e0e; height: 100%;">
     <div class="row">
         <div class="column">
             <form method="post" action="/">
