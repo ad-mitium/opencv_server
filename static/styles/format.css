@@ -15,12 +15,12 @@
 
     .column3 {
         text-align: center;
-        flex: 30%;
+        flex: 26%;
     }
 
     .column4 {
         text-align: right;
-        flex: 22%;
+        flex: 26%;
     }
 
     .row:after {
