@@ -617,7 +617,10 @@ def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show
         frame = v_concat
 
         if stop_capture:
-            video.ReleaseCapture()
+            video1.ReleaseCapture()
+            video2.ReleaseCapture()
+            video3.ReleaseCapture()
+            video4.ReleaseCapture()
             break
         else:
             ret_status, buffer = cv2.imencode('.jpg', frame)
