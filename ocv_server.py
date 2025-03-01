@@ -207,7 +207,7 @@ def index():
 
         elif form_data.get('fs_action') in framesize:
             session['fs_size']=form_data.get('fs_action')
-            set_frame_size(session['fs_size'], verbose)
+            set_frame_size(session['camera_id'], session['fs_size'], verbose)
 
         elif form_data.get('flip_action') == '1':
             if verbose == 'DEBUG':
@@ -226,7 +226,7 @@ def index():
 
             if verbose == 'DEBUG':
                 print('DEBUG:     Image mirror mode is now set to',session['flip'])
-            set_flip_image(session['flip'], verbose)
+            set_flip_image(session['camera_id'], session['flip'], verbose)
 
         elif form_data.get('bpc_action') == '1':
             # session['bpc']=form_data.get('bpc_action')
@@ -246,17 +246,17 @@ def index():
 
             if verbose == 'DEBUG':
                 print('DEBUG:     Black Point Correction is now set to',session['bpc'])
-            set_black_point(session['bpc'], verbose)
+            set_black_point(session['camera_id'], session['bpc'], verbose)
 
         elif form_data.get('wb_action') in ['0','1']:
             session['white_balance']=form_data.get('wb_action')
-            set_white_balance(session['white_balance'], verbose)
+            set_white_balance(session['camera_id'], session['white_balance'], verbose)
             # if verbose == 'DEBUG':
             #     print('DEBUG:   WB  Cam_ID: ',session['camera_id'],' level: ',session['ae_level'],' WB value: ',session['white_balance'])
 
         elif form_data.get('ae_action') in ae_level_range: # Set exposure level
             session['ae_direction']=form_data.get('ae_action')
-            set_ae_exposure(session['camera_id'],session['ae_direction'],'', verbose)
+            set_ae_exposure(session['camera_id'], session['ae_direction'],'', verbose)
             # if verbose == 'DEBUG':
             #     print('DEBUG:   AE  Cam_ID: ',session['camera_id'],' level: ',session['ae_level'],' direction: ',session['ae_direction'],session['white_balance'])
 
