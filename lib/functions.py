@@ -275,7 +275,8 @@ def set_ae_exposure(cam_id,ae_dir, ae_val = 'NaN',show_debug_info = False, suppr
 
         # print('ao1')
         if not session['camera_id'] == 'stop' or not session['camera_id'] == 'reset':
-            session['online_status']=update_online_status(cam_id)   # Check status beforehand
+            if not session['camera_id'] == 'multi':
+                session['online_status']=update_online_status(cam_id)   # Check status beforehand
             url_stripped = strip_url(cam_list[str(session['camera_id'])])
 
             if not suppress:
@@ -369,7 +370,8 @@ def set_black_point(cam_id, bpc_mode, show_debug_info = False):
 
         if not session['camera_id'] == 'stop' or not session['camera_id'] == 'reset':
             url = url_stripped + '/control?var=bpc&val='+str(bpc_mode)
-            session['online_status']=update_online_status(cam_id)   # Check status beforehand
+            if not session['camera_id'] == 'multi':
+                session['online_status']=update_online_status(cam_id)   # Check status beforehand
             if session['online_status']:
                 status_code = send_url_command(url,show_debug_info)
             else:
@@ -418,7 +420,8 @@ def set_frame_size(cam_id, frame_size, show_debug_info = False):
             url_stripped = strip_url(cam_list[str(session['camera_id'])])
 
             url = url_stripped + '/control?var=framesize&val='+str(frame_size)
-            session['online_status']=update_online_status(cam_id)   # Check status beforehand
+            if not session['camera_id'] == 'multi':
+                session['online_status']=update_online_status(cam_id)   # Check status beforehand
             if session['online_status']:
                 status_code = send_url_command(url,show_debug_info)
             else:
@@ -442,7 +445,8 @@ def set_white_balance(cam_id, wb_mode, show_debug_info = False):
             url_stripped = strip_url(cam_list[str(session['camera_id'])])
 
             url = url_stripped + '/control?var=wb_mode&val='+str(wb_mode)
-            session['online_status']=update_online_status(cam_id)   # Check status beforehand
+            if not session['camera_id'] == 'multi':
+                session['online_status']=update_online_status(cam_id)   # Check status beforehand
             if session['online_status']:
                 status_code = send_url_command(url,show_debug_info)
             else:
@@ -461,7 +465,8 @@ def set_gain_ceiling(cam_id, gain_ceiling, show_debug_info = False):
 
         if not session['camera_id'] == 'stop' or not session['camera_id'] == 'reset':
             url = url_stripped + '/control?var=gainceiling&val='+str(gain_ceiling)
-            session['online_status']=update_online_status(cam_id)   # Check status beforehand
+            if not session['camera_id'] == 'multi':
+                session['online_status']=update_online_status(cam_id)   # Check status beforehand
             if session['online_status']:
                 status_code = send_url_command(url,show_debug_info)
             else:
@@ -481,7 +486,8 @@ def set_aec(cam_id, ae_compensation, show_debug_info = False):
 
         if not session['camera_id'] == 'stop' or not session['camera_id'] == 'reset':
             url = url_stripped + '/control?var=aec&val='+str(ae_compensation)
-            session['online_status']=update_online_status(cam_id)   # Check status beforehand
+            if not session['camera_id'] == 'multi':
+                session['online_status']=update_online_status(cam_id)   # Check status beforehand
             if session['online_status']:
                 status_code = send_url_command(url,show_debug_info)
             else:
@@ -501,7 +507,8 @@ def set_quality(cam_id, quality, show_debug_info = False):
 
         if not session['camera_id'] == 'stop' or not session['camera_id'] == 'reset':
             url = url_stripped + '/control?var=quality&val='+str(quality)
-            session['online_status']=update_online_status(cam_id)   # Check status beforehand
+            if not session['camera_id'] == 'multi':
+                session['online_status']=update_online_status(cam_id)   # Check status beforehand
             if session['online_status']:
                 status_code = send_url_command(url,show_debug_info)
             else:
@@ -521,7 +528,8 @@ def set_DCW(camera_id, show_debug_info = False):    # Camera is set to down conv
 
         if not session['camera_id'] == 'stop' or not session['camera_id'] == 'reset':
             url = url_stripped + '/control?var=dcw&val='+dcw[0]
-            session['online_status']=update_online_status(cam_id)   # Check status beforehand
+            if not session['camera_id'] == 'multi':
+                session['online_status']=update_online_status(cam_id)   # Check status beforehand
             if session['online_status']:
                 status_code = send_url_command(url,show_debug_info)
             else:
