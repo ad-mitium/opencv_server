@@ -152,7 +152,7 @@ def update_cam(cam_id, reset=False, show_debug_info = False):   # Handles updati
                             gain_ceiling=sess_defaults[cam_id_for][6],quality=sess_defaults[cam_id_for][7])  # Change all declared values to default values 
                         if show_debug_info == 'DEBUG': 
                             print ('DEBUG:   Previous settings loaded for Cam ID: ',cam_id_for, sess_defaults[cam_id_for])
-                        print('Cam_id_for before set_ae_exp=',cam_id_for,'session camera id',session['camera_id'])
+                        print('Cam_id_for before set_ae_exp=',cam_id_for,'session camera id',session['camera_id'], 'Cam_ID=',cam_id)
                         set_ae_exposure(cam_id,None,int(session['ae_level']),show_debug_info,suppress,action)
                         set_black_point(cam_id, session['bpc'])
                         set_frame_size(cam_id, '11')
@@ -280,7 +280,7 @@ def set_ae_exposure(cam_id,ae_dir, ae_val = 'NaN',show_debug_info = False, suppr
 
         # print('ao1')
         if not session['camera_id'] == 'stop' or not session['camera_id'] == 'reset':
-            print('Cam_id=',cam_id,'Session camera ID=',session['camera_id'])
+            # print('Cam_id=',cam_id,'Session camera ID=',session['camera_id'])
             if not session['camera_id'] == 'Multi':
                 session['online_status']=update_online_status(cam_id)   # Check status beforehand
             url_stripped = strip_url(cam_list[str(session['camera_id'])])
