@@ -143,6 +143,7 @@ def update_cam(cam_id, reset=False, show_debug_info = False):   # Handles updati
             for cam_id_for in sess_defaults.keys():
                 if not cam_id_for == '0': 
                     if not cam_id_for == 'Multi':       # Don't overwrite default values
+                        print(cam_id_for)
                         session['camera_id']=cam_id_for     # Change camera ID or you'll overwrite the same one over and over
                         session.update(ae_level=sess_defaults[cam_id_for][0],bpc=sess_defaults[cam_id_for][1],fs_size=sess_defaults[cam_id_for][2],
                             white_balance=sess_defaults[cam_id_for][3],flip=sess_defaults[cam_id_for][4],ae_compensation=sess_defaults[cam_id_for][5],
