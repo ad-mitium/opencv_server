@@ -245,6 +245,11 @@ def send_url_command(url,show_debug_info = False, suppress = True):
         pass
     return get_status_code
 
+def update_online_status(cam_id, show_debug_info = False): 
+    url_stripped = strip_url(cam_list[str(cam_id)])
+    get_cam_status=send_url_command(url_stripped,show_debug_info)
+    return get_cam_status
+
 def set_ae_exposure(cam_id,ae_dir, ae_val = 'NaN',show_debug_info = False, suppress = False, action = ''): 
     is_reset = False
     is_multi = False
@@ -567,9 +572,10 @@ def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show
     for cam_id in sess_defaults:     # Force all cameras to the same resolution
         if not cam_id == '0':       # Don't overwrite default values
             get_session_data(cam_id)
-            # if show_debug_info == 'DEBUG': 
-            print ('DEBUG:     Camera session data:    [{}]'.format(cam_id),sess_defaults[cam_id])
+            if show_debug_info == 'DEBUG': 
+                print ('DEBUG:     Camera session data:    [{}]'.format(cam_id),sess_defaults[cam_id])
             session['camera_id']=cam_id     # Change camera ID or you'll overwrite the same one over and over
+            session['online_status']=update_online_status(cam_id)
             cam_online_status[int(cam_id)]=session['online_status']
             session.update(fs_size=sess_defaults[cam_id][2])        # Store original frame size setting
             set_frame_size(cam_id,'11')
