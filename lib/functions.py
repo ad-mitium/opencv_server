@@ -177,7 +177,7 @@ def write_session_data(cam_id, ae_val, bpc_mode, frame_size, wb_mode, flip, show
             if show_debug_info == 'DEBUG': 
                 print ('DEBUG:   Current Camera session data:    [{}]'.format(cam_id),sess_defaults[cam_id])
                 # print_session_data()
-        cam_session[cam_id]['ae_level'], cam_session[cam_id]['bpc'], cam_session[cam_id]['fs_size'], cam_session[cam_id]['white_balance'], cam_session[cam_id]['flip'] = str(ae_val), bpc_mode, frame_size, wb_mode, flip
+        cam_session[str(cam_id)]['ae_level'], cam_session[str(cam_id)]['bpc'], cam_session[str(cam_id)]['fs_size'], cam_session[str(cam_id)]['white_balance'], cam_session[str(cam_id)]['flip'] = str(ae_val), bpc_mode, frame_size, wb_mode, flip
 
         if not suppress:
             if show_debug_info == 'DEBUG': 
@@ -193,7 +193,7 @@ def write_session_data(cam_id, ae_val, bpc_mode, frame_size, wb_mode, flip, show
     return write_success
 
 def get_session_data(cam_id, show_debug_info = False):      # only used with get_multi_frames
-    session.update(camera_id=cam_id,ae_direction=cam_session[cam_id]['ae_level'],bpc=cam_session[cam_id]['bpc'], white_balance=cam_session[cam_id]['white_balance'], flip = cam_session[cam_id]['flip']) 
+    session.update(camera_id=cam_id,ae_direction=cam_session[str(cam_id)]['ae_level'],bpc=cam_session[str(cam_id)]['bpc'], white_balance=cam_session[str(cam_id)]['white_balance'], flip = cam_session[str(cam_id)]['flip']) 
 
     if show_debug_info == 'DEBUG': 
         print('DEBUG:   Getting camera session values')
