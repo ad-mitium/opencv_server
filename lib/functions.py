@@ -570,7 +570,7 @@ def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show
                 print ('DEBUG:     Camera session data:    [{}]'.format(cam_id),sess_defaults[cam_id])
             session['camera_id']=cam_id     # Change camera ID or you'll overwrite the same one over and over
             cam_online_status[int(cam_id)]=session['online_status']
-            session.update(fs_size=sess_defaults[cam_id][2])
+            session.update(fs_size=sess_defaults[cam_id][2])        # Store original frame size setting
             set_frame_size(cam_id,'11')
             write_session_data(session['camera_id'], session['ae_level'], session['bpc'], session['fs_size'], session['white_balance'], session['flip'], show_debug_info)
             print ("Cam: ",cam_id," ae:", session['ae_level']," wb:", session['white_balance']," bpc:", session['bpc'],"flip mode:", session['flip'], end=" ] ")
@@ -604,7 +604,7 @@ def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show
             #     print(frame_1)     # for diagnoistics
             #     y = 1
             # break
-        elif not success_2 or not cam_online_status[1]:
+        elif not success_2 or not cam_online_status[2]:
             if frame_count < 900:
                 if frame_count == 1:
                     print('ERROR:  Error getting video frame for Camera ID',cam_id_2)
@@ -623,7 +623,7 @@ def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show
                 frame_2 = load_no_image()
             h_concat_row_1 = numpy.concatenate((frame_1,frame_2), axis=1)
 
-        if not success_3 or not cam_online_status[1]:
+        if not success_3 or not cam_online_status[3]:
             if frame_count < 900:
                 if frame_count == 1:
                     print('ERROR:  Error getting video frame for Camera ID',cam_id_3)
@@ -634,7 +634,7 @@ def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show
             # frame_3 = numpy.zeros((720,1280,3), dtype = int)
             frame_3 = load_no_image()
             # break
-        elif not success_4 or not cam_online_status[1]:
+        elif not success_4 or not cam_online_status[4]:
             if frame_count < 900:
                 if frame_count == 1:
                     print('ERROR:  Error getting video frame for Camera ID',cam_id_4)
