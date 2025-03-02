@@ -363,7 +363,10 @@ def set_black_point(cam_id, bpc_mode, show_debug_info = False):
 
         if not session['camera_id'] == 'stop' or not session['camera_id'] == 'reset':
             url = url_stripped + '/control?var=bpc&val='+str(bpc_mode)
-            status_code = send_url_command(url,show_debug_info)
+            if session['online_status']:
+                status_code = send_url_command(url,show_debug_info)
+            else:
+                status_code = False
             if show_debug_info == 'DEBUG':
                 # print ('DEBUG:     Black point correction set to: ',bpc_mode)     # Duplicate because of toggle logic
                 # print (' status code: ',status_code)
@@ -379,13 +382,19 @@ def set_flip_image(cam_id, mirror_mode, show_debug_info = False):
             url_stripped = strip_url(cam_list[str(session['camera_id'])])
 
             hmirror_adjust_url = url_stripped + '/control?var=hmirror&val='+str(mirror_mode)
-            h_status_code = send_url_command(hmirror_adjust_url,show_debug_info)
+            if session['online_status']:
+                h_status_code = send_url_command(hmirror_adjust_url,show_debug_info)
+            else:
+                h_status_code = False
             # get_request = requests.get(hmirror_adjust)
             if show_debug_info == 'DEBUG':
                 print ('DEBUG:     Image flip: Horizontal mirror: ',h_status_code, end=' ')
 
             vfliup_adjust_url = url_stripped + '/control?var=vflip&val='+str(mirror_mode)
-            v_status_code = send_url_command(vfliup_adjust_url,show_debug_info)
+            if session['online_status']:
+                v_status_code = send_url_command(vfliup_adjust_url,show_debug_info)
+            else:
+                v_status_code = False
             # get_request = requests.get(vfliup_adjust)
             if show_debug_info == 'DEBUG':
                 print (' Vertical flip: ',v_status_code)
@@ -402,7 +411,10 @@ def set_frame_size(cam_id, frame_size, show_debug_info = False):
             url_stripped = strip_url(cam_list[str(session['camera_id'])])
 
             url = url_stripped + '/control?var=framesize&val='+str(frame_size)
-            status_code = send_url_command(url,show_debug_info)
+            if session['online_status']:
+                status_code = send_url_command(url,show_debug_info)
+            else:
+                status_code = False
             if show_debug_info == 'DEBUG':
                 print ("DEBUG:     Frame size set to: ",frame_size, " Resolution: ", end=' ')
                 if frame_size == '11':
@@ -421,7 +433,10 @@ def set_white_balance(cam_id, wb_mode, show_debug_info = False):
             url_stripped = strip_url(cam_list[str(session['camera_id'])])
 
             url = url_stripped + '/control?var=wb_mode&val='+str(wb_mode)
-            status_code = send_url_command(url,show_debug_info)
+            if session['online_status']:
+                status_code = send_url_command(url,show_debug_info)
+            else:
+                status_code = False
             if show_debug_info == 'DEBUG':
                 print ("DEBUG:    White Balance set to: ",wb_mode, end=' ')
                 print (' status code: ',status_code)
@@ -436,7 +451,10 @@ def set_gain_ceiling(cam_id, gain_ceiling, show_debug_info = False):
 
         if not session['camera_id'] == 'stop' or not session['camera_id'] == 'reset':
             url = url_stripped + '/control?var=gainceiling&val='+str(gain_ceiling)
-            status_code = send_url_command(url,show_debug_info)
+            if session['online_status']:
+                status_code = send_url_command(url,show_debug_info)
+            else:
+                status_code = False
             if show_debug_info == 'DEBUG':
                 print ("DEBUG:     Gain ceiling set to: ",gain_ceiling, end=' ')
                 print (' status code: ',status_code)
@@ -452,7 +470,10 @@ def set_aec(cam_id, ae_compensation, show_debug_info = False):
 
         if not session['camera_id'] == 'stop' or not session['camera_id'] == 'reset':
             url = url_stripped + '/control?var=aec&val='+str(ae_compensation)
-            status_code = send_url_command(url,show_debug_info)
+            if session['online_status']:
+                status_code = send_url_command(url,show_debug_info)
+            else:
+                status_code = False
             if show_debug_info == 'DEBUG':
                 print ("DEBUG:     Auto exposure compensation set to: ",ae_compensation, end=' ')
                 print (' status code: ',status_code)
@@ -468,7 +489,10 @@ def set_quality(cam_id, quality, show_debug_info = False):
 
         if not session['camera_id'] == 'stop' or not session['camera_id'] == 'reset':
             url = url_stripped + '/control?var=quality&val='+str(quality)
-            status_code = send_url_command(url,show_debug_info)
+            if session['online_status']:
+                status_code = send_url_command(url,show_debug_info)
+            else:
+                status_code = False
             if show_debug_info == 'DEBUG':
                 print ("DEBUG:     Image quality is set to: ",quality, end=' ')
                 print (' status code: ',status_code)
@@ -484,7 +508,10 @@ def set_DCW(camera_id, show_debug_info = False):    # Camera is set to down conv
 
         if not session['camera_id'] == 'stop' or not session['camera_id'] == 'reset':
             url = url_stripped + '/control?var=dcw&val='+dcw[0]
-            status_code = send_url_command(url,show_debug_info)
+            if session['online_status']:
+                status_code = send_url_command(url,show_debug_info)
+            else:
+                status_code = False
             if show_debug_info == 'DEBUG':
                 print ("DEBUG:     Down conversion is set to: ",dcw, end=' ')
                 print (' status code: ',status_code)
@@ -542,7 +569,7 @@ def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show
             if show_debug_info == 'DEBUG': 
                 print ('DEBUG:     Camera session data:    [{}]'.format(cam_id),sess_defaults[cam_id])
             session['camera_id']=cam_id     # Change camera ID or you'll overwrite the same one over and over
-            cam_online_status[int(cam_id)]=session['online_status']
+            cam_online_status['cam_id']=session['online_status']
             session.update(fs_size=sess_defaults[cam_id][2])
             set_frame_size(cam_id,'11')
             write_session_data(session['camera_id'], session['ae_level'], session['bpc'], session['fs_size'], session['white_balance'], session['flip'], show_debug_info)
