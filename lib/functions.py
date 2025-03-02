@@ -31,7 +31,7 @@ def initialize_cams(show_debug_info=False):
     # Test connection to see if camera is online
     for cam_ids,url in cam_list.items():
         url_stripped = strip_url(cam_list[str(cam_ids)])
-        get_cam_status=update_online_status(url_stripped,show_debug_info)
+        get_cam_status=send_url_command(url_stripped,show_debug_info)
         if get_cam_status == 200:
             session['online_status'] = True
         else:
