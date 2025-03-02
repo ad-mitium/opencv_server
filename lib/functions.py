@@ -611,6 +611,7 @@ def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show
         if show_debug_info == 'DEBUG': 
             print ('\nDEBUG:   Frame size reset for Cam ID: ',cam_id)
     print ("")      # Send newline after all camera session info is printed
+    print (sess_defaults)
     if show_debug_info == 'DEBUG': 
         print (cam_online_status)
 
