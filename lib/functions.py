@@ -426,6 +426,7 @@ def set_frame_size(cam_id, frame_size, show_debug_info = False):
                 write_session_data(session['camera_id'], session['ae_level'], session['bpc'], frame_size, session['white_balance'], session['flip'], show_debug_info)
             else:
                 print('ERROR:     Frame size was not changed')
+                print(status_code)
 
 def set_white_balance(cam_id, wb_mode, show_debug_info = False): 
     if not session['camera_id'] == '0':    # Never go to '0'
