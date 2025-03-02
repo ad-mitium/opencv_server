@@ -66,7 +66,7 @@ def initialize_cams(show_debug_info=False):
     if show_debug_info == 'DEBUG': 
         print ('DEBUG:   Cameras initialized',f'\n',sess_defaults)
     else:
-        print('INFO:   Stream for Cameras have been initialized to default values')
+        print('INFO:    Stream for Cameras have been initialized to default values')
     session['camera_id']='1'     # Reassign camera ID back to 1 after initializing
 
 def set_reset(cam_id, show_debug_info = False):     # Handles initialization and reset
