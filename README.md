@@ -112,7 +112,7 @@ Over time, all feeds eventually show unavailable despite only one feed reporting
 
 * ~~Implement per Camera ID session handling~~ Completed
 * ~~Implement ```flip_image``` button toggling for flipping the image~~ Completed
-* Add Camera ID overlay to multiple camera stream view
-* Fix lazy session handling of camera ID when changing settings in multiple camera view
+* ~~Add Camera ID overlay to multiple camera stream view~~ Completed
+* ~~Fix lazy session handling of camera ID when changing settings in multiple camera view~~ Completed
 * Rewrite route logic and perform actions by action type
 * TBD
