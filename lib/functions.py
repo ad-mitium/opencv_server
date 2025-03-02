@@ -595,7 +595,6 @@ def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show
         # print(cam_id,sess_defaults)
         # print(cam_id, session)
         if not cam_id == '0':       # Don't overwrite default values
-            print ("Cam: ",cam_session[str(cam_id)]['camera_id']," ae:", cam_session[str(cam_id)]['ae_level']," wb:", cam_session[str(cam_id)]['white_balance']," bpc:", cam_session[str(cam_id)]['bpc'],"flip mode:", cam_session[str(cam_id)]['flip'], end=" ] ")
             get_session_data(cam_id)
             print ("Cam(get_session): ",cam_session[str(cam_id)]['camera_id']," ae:", cam_session[str(cam_id)]['ae_level']," wb:", cam_session[str(cam_id)]['white_balance']," bpc:", cam_session[str(cam_id)]['bpc'],"flip mode:", cam_session[str(cam_id)]['flip'], end=" ] ")
             if show_debug_info == 'DEBUG': 
@@ -603,6 +602,7 @@ def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show
             session['camera_id']=cam_id     # Change camera ID or you'll overwrite the same one over and over
             session['online_status']=update_online_status(cam_id)
             cam_online_status[int(cam_id)]=session['online_status']
+            print ("Cam(get_online_status): ",cam_session[str(cam_id)]['camera_id']," ae:", cam_session[str(cam_id)]['ae_level']," wb:", cam_session[str(cam_id)]['white_balance']," bpc:", cam_session[str(cam_id)]['bpc'],"flip mode:", cam_session[str(cam_id)]['flip'], end=" ] ")
             # session.update(fs_size=sess_defaults[cam_id][2])        # Store original frame size setting
             set_frame_size(cam_id,'11')
             print ("Cam(set_fs_size): ",cam_session[str(cam_id)]['camera_id']," ae:", cam_session[str(cam_id)]['ae_level']," wb:", cam_session[str(cam_id)]['white_balance']," bpc:", cam_session[str(cam_id)]['bpc'],"flip mode:", cam_session[str(cam_id)]['flip'], end=" ] ")
