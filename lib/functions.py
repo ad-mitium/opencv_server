@@ -152,15 +152,15 @@ def update_cam(cam_id, reset=False, show_debug_info = False):   # Handles updati
                             gain_ceiling=sess_defaults[cam_id_for][6],quality=sess_defaults[cam_id_for][7])  # Change all declared values to default values 
                         if show_debug_info == 'DEBUG': 
                             print ('DEBUG:   Previous settings loaded for Cam ID: ',cam_id_for, sess_defaults[cam_id_for])
-                        print('Cam_id_for before set_ae_exp=',cam_id_for,'session camera id',session['camera_id'], 'Cam_ID=',cam_id)
-                        set_ae_exposure(cam_id,None,int(session['ae_level']),show_debug_info,suppress,action)
-                        set_black_point(cam_id, session['bpc'])
-                        set_frame_size(cam_id, '11')
-                        set_white_balance(cam_id, session['white_balance'])
-                        set_flip_image(cam_id, session['flip'])
-                        set_aec(cam_id, session['ae_compensation'])
-                        set_gain_ceiling(cam_id, session['gain_ceiling'])
-                        set_quality(cam_id, session['quality'])
+                        # print('Cam_id_for before set_ae_exp=',cam_id_for,'session camera id',session['camera_id'], 'Cam_ID=',cam_id)
+                        set_ae_exposure(cam_id_for,None,int(session['ae_level']),show_debug_info,suppress,action)
+                        set_black_point(cam_id_for, session['bpc'])
+                        set_frame_size(cam_id_for, '11')
+                        set_white_balance(cam_id_for, session['white_balance'])
+                        set_flip_image(cam_id_for, session['flip'])
+                        set_aec(cam_id_for, session['ae_compensation'])
+                        set_gain_ceiling(cam_id_for, session['gain_ceiling'])
+                        set_quality(cam_id_for, session['quality'])
                         write_session_data(session['camera_id'], session['ae_level'], session['bpc'], session['fs_size'], session['white_balance'], session['flip'])
                     if show_debug_info == 'DEBUG':
                         print ('DEBUG:   Initial writing of session defaults completed for Camera: ', cam_id_for)
@@ -250,7 +250,7 @@ def send_url_command(url,show_debug_info = False, suppress = True):
     return get_status_code
 
 def update_online_status(cam_id, show_debug_info = False): 
-    print('Cam_id in update_online_status=',cam_id)
+    # print('Cam_id in update_online_status=',cam_id)
     url_stripped = strip_url(cam_list[str(cam_id)])
     get_cam_status=send_url_command(url_stripped,show_debug_info)
     return get_cam_status
@@ -272,7 +272,7 @@ def set_ae_exposure(cam_id,ae_dir, ae_val = 'NaN',show_debug_info = False, suppr
     else:
         is_stopped = False
 
-    print('Action=',action,'Cam_id=',cam_id)
+    # print('Action=',action,'Cam_id=',cam_id)
     if not session['camera_id'] == '0':    # Never go to '0'
 
         # if show_debug_info == 'DEBUG': 
