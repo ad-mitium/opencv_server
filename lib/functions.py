@@ -38,7 +38,9 @@ def initialize_cams(show_debug_info=False):
             if not cam_id == '0':       # Don't show '0', as it is not being written
                 print ('DEBUG:   Defaults set for Cam ID: ',cam_id)
         if not cam_id == '0':       # Don't overwrite default values
-            get_cam_status=send_url_command(cam_list[str(session['camera_id'])],show_debug_info)
+            # Test connection to see if camera is online
+            url_stripped = strip_url(cam_list[str(cam_id)])
+            get_cam_status=send_url_command(url_stripped,show_debug_info)
             if get_cam_status == 200:
                 session['online_status'] = True
             else:
@@ -526,6 +528,7 @@ def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show
     import cv2, numpy
 
     frame_count = 0
+    cam_online_status=[]
     # y = 0      # for diagnoistics
 
     if show_debug_info == 'DEBUG': 
@@ -537,6 +540,7 @@ def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show
             if show_debug_info == 'DEBUG': 
                 print ('DEBUG:     Camera session data:    [{}]'.format(cam_id),sess_defaults[cam_id])
             session['camera_id']=cam_id     # Change camera ID or you'll overwrite the same one over and over
+            cam_online_status[int(cam_id)]=session['online_status']
             session.update(fs_size=sess_defaults[cam_id][2])
             set_frame_size(cam_id,'11')
             write_session_data(session['camera_id'], session['ae_level'], session['bpc'], session['fs_size'], session['white_balance'], session['flip'], show_debug_info)
@@ -556,7 +560,7 @@ def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show
         success_3, frame_3 = video3.read()
         success_4, frame_4 = video4.read()
 
-        if not success_1:
+        if not success_1 or not cam_online_status[1]:
             if frame_count < 900:
                 if frame_count == 1:
                     print('ERROR:  Error getting video frame for Camera ID',cam_id_1)
