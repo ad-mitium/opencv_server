@@ -267,7 +267,7 @@ def set_ae_exposure(cam_id,ae_dir, ae_val = 'NaN',show_debug_info = False, suppr
     else:
         is_stopped = False
 
-
+    
     if not session['camera_id'] == '0':    # Never go to '0'
 
         # if show_debug_info == 'DEBUG': 
@@ -275,6 +275,7 @@ def set_ae_exposure(cam_id,ae_dir, ae_val = 'NaN',show_debug_info = False, suppr
 
         # print('ao1')
         if not session['camera_id'] == 'stop' or not session['camera_id'] == 'reset':
+            session['online_status']=update_online_status(cam_id)   # Check status beforehand
             url_stripped = strip_url(cam_list[str(session['camera_id'])])
 
             if not suppress:
@@ -368,6 +369,7 @@ def set_black_point(cam_id, bpc_mode, show_debug_info = False):
 
         if not session['camera_id'] == 'stop' or not session['camera_id'] == 'reset':
             url = url_stripped + '/control?var=bpc&val='+str(bpc_mode)
+            session['online_status']=update_online_status(cam_id)   # Check status beforehand
             if session['online_status']:
                 status_code = send_url_command(url,show_debug_info)
             else:
@@ -379,7 +381,7 @@ def set_black_point(cam_id, bpc_mode, show_debug_info = False):
             if status_code == 200:
                 write_session_data(session['camera_id'], session['ae_level'], bpc_mode, session['fs_size'], session['white_balance'], session['flip'], show_debug_info)
             else:
-                print('ERROR:     Black point correction was not changed')
+                print('ERROR:     Black point correction was not changed for {}'.format(session['camera_id']))
 
 def set_flip_image(cam_id, mirror_mode, show_debug_info = False): 
     if not session['camera_id'] == '0':    # Never go to '0'
@@ -408,7 +410,7 @@ def set_flip_image(cam_id, mirror_mode, show_debug_info = False):
             if h_status_code == 200 and v_status_code == 200:
                 write_session_data(session['camera_id'], session['ae_level'], session['bpc'], session['fs_size'], session['white_balance'],mirror_mode, show_debug_info)
             else:
-                print('ERROR:     Image flip for Cam ID: ',session['camera_id'],' was not changed')
+                print('ERROR:     Image flip for Cam ID: ',session['camera_id'],' was not changed for {}'.format(session['camera_id']))
 
 def set_frame_size(cam_id, frame_size, show_debug_info = False): 
     if not session['camera_id'] == '0':    # Never go to '0'
@@ -416,6 +418,7 @@ def set_frame_size(cam_id, frame_size, show_debug_info = False):
             url_stripped = strip_url(cam_list[str(session['camera_id'])])
 
             url = url_stripped + '/control?var=framesize&val='+str(frame_size)
+            session['online_status']=update_online_status(cam_id)   # Check status beforehand
             if session['online_status']:
                 status_code = send_url_command(url,show_debug_info)
             else:
@@ -430,7 +433,7 @@ def set_frame_size(cam_id, frame_size, show_debug_info = False):
             if status_code == 200:
                 write_session_data(session['camera_id'], session['ae_level'], session['bpc'], frame_size, session['white_balance'], session['flip'], show_debug_info)
             else:
-                print('ERROR:     Frame size was not changed')
+                print('ERROR:     Frame size was not changed for {}'.format(session['camera_id']))
                 # print(status_code)
 
 def set_white_balance(cam_id, wb_mode, show_debug_info = False): 
@@ -439,6 +442,7 @@ def set_white_balance(cam_id, wb_mode, show_debug_info = False):
             url_stripped = strip_url(cam_list[str(session['camera_id'])])
 
             url = url_stripped + '/control?var=wb_mode&val='+str(wb_mode)
+            session['online_status']=update_online_status(cam_id)   # Check status beforehand
             if session['online_status']:
                 status_code = send_url_command(url,show_debug_info)
             else:
@@ -449,7 +453,7 @@ def set_white_balance(cam_id, wb_mode, show_debug_info = False):
             if status_code == 200:
                 write_session_data(session['camera_id'], session['ae_level'], session['bpc'], session['fs_size'], wb_mode, session['flip'], show_debug_info)
             else:
-                print('ERROR:     White Balance was not changed')
+                print('ERROR:     White Balance was not changed for {}'.format(session['camera_id']))
 
 def set_gain_ceiling(cam_id, gain_ceiling, show_debug_info = False): 
     if not session['camera_id'] == '0':    # Never go to '0'
@@ -457,6 +461,7 @@ def set_gain_ceiling(cam_id, gain_ceiling, show_debug_info = False):
 
         if not session['camera_id'] == 'stop' or not session['camera_id'] == 'reset':
             url = url_stripped + '/control?var=gainceiling&val='+str(gain_ceiling)
+            session['online_status']=update_online_status(cam_id)   # Check status beforehand
             if session['online_status']:
                 status_code = send_url_command(url,show_debug_info)
             else:
@@ -468,7 +473,7 @@ def set_gain_ceiling(cam_id, gain_ceiling, show_debug_info = False):
                 # write_session_data(session['camera_id'], session['ae_level'], session['bpc'], session['fs_size'], session['white_balance'], session['flip'], show_debug_info)
                 pass
             else:
-                print('ERROR:     Gain ceiling was not changed')
+                print('ERROR:     Gain ceiling was not changed for {}'.format(session['camera_id']))
 
 def set_aec(cam_id, ae_compensation, show_debug_info = False): 
     if not session['camera_id'] == '0':    # Never go to '0'
@@ -476,6 +481,7 @@ def set_aec(cam_id, ae_compensation, show_debug_info = False):
 
         if not session['camera_id'] == 'stop' or not session['camera_id'] == 'reset':
             url = url_stripped + '/control?var=aec&val='+str(ae_compensation)
+            session['online_status']=update_online_status(cam_id)   # Check status beforehand
             if session['online_status']:
                 status_code = send_url_command(url,show_debug_info)
             else:
@@ -487,7 +493,7 @@ def set_aec(cam_id, ae_compensation, show_debug_info = False):
                 # write_session_data(session['camera_id'], session['ae_level'], session['bpc'], session['fs_size'], session['white_balance'], session['flip'], show_debug_info)
                 pass
             else:
-                print('ERROR:     Auto exposure compensation was not changed')
+                print('ERROR:     Auto exposure compensation was not changed for {}'.format(session['camera_id']))
 
 def set_quality(cam_id, quality, show_debug_info = False): 
     if not session['camera_id'] == '0':    # Never go to '0'
@@ -495,6 +501,7 @@ def set_quality(cam_id, quality, show_debug_info = False):
 
         if not session['camera_id'] == 'stop' or not session['camera_id'] == 'reset':
             url = url_stripped + '/control?var=quality&val='+str(quality)
+            session['online_status']=update_online_status(cam_id)   # Check status beforehand
             if session['online_status']:
                 status_code = send_url_command(url,show_debug_info)
             else:
@@ -506,7 +513,7 @@ def set_quality(cam_id, quality, show_debug_info = False):
                 # write_session_data(session['camera_id'], session['ae_level'], session['bpc'], session['fs_size'], session['white_balance'], session['flip'], show_debug_info)
                 pass
             else:
-                print('ERROR:     Image quality was not changed')
+                print('ERROR:     Image quality was not changed for {}'.format(session['camera_id']))
 
 def set_DCW(camera_id, show_debug_info = False):    # Camera is set to down convert image, this disables that
     if not session['camera_id'] == '0':    # Never go to '0'
@@ -514,6 +521,7 @@ def set_DCW(camera_id, show_debug_info = False):    # Camera is set to down conv
 
         if not session['camera_id'] == 'stop' or not session['camera_id'] == 'reset':
             url = url_stripped + '/control?var=dcw&val='+dcw[0]
+            session['online_status']=update_online_status(cam_id)   # Check status beforehand
             if session['online_status']:
                 status_code = send_url_command(url,show_debug_info)
             else:
@@ -525,7 +533,7 @@ def set_DCW(camera_id, show_debug_info = False):    # Camera is set to down conv
                 # write_session_data(session['camera_id'], session['ae_level'], session['bpc'], session['fs_size'], session['white_balance'], session['flip'], show_debug_info)
                 pass
             else:
-                print('ERROR:     Down conversion was not changed')
+                print('ERROR:     Down conversion was not changed for {}'.format(session['camera_id']))
 
 def load_no_image():
     import cv2
