@@ -595,6 +595,7 @@ def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show
         # print(cam_id,sess_defaults)
         # print(cam_id, session)
         if not cam_id == '0':       # Don't overwrite default values
+            print ("Cam: ",cam_session[str(cam_id)]['camera_id']," ae:", cam_session[str(cam_id)]['ae_level']," wb:", cam_session[str(cam_id)]['white_balance']," bpc:", cam_session[str(cam_id)]['bpc'],"flip mode:", cam_session[str(cam_id)]['flip'], end=" ] ")
             get_session_data(cam_id)
             if show_debug_info == 'DEBUG': 
                 print ('DEBUG:     Camera session data:    [{}]'.format(cam_id),sess_defaults[cam_id])
