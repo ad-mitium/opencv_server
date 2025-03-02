@@ -272,7 +272,7 @@ def set_ae_exposure(cam_id,ae_dir, ae_val = 'NaN',show_debug_info = False, suppr
     else:
         is_stopped = False
 
-    # print('Action=',action)
+    print('Action=',action,'Cam_id=',cam_id)
     if not session['camera_id'] == '0':    # Never go to '0'
 
         # if show_debug_info == 'DEBUG': 
