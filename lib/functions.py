@@ -38,19 +38,27 @@ def initialize_cams(show_debug_info=False):
             if not cam_id == '0':       # Don't show '0', as it is not being written
                 print ('DEBUG:   Defaults set for Cam ID: ',cam_id)
         if not cam_id == '0':       # Don't overwrite default values
-            set_ae_exposure(cam_id,None,int(session['ae_level']),show_debug_info,True,action) 
-            set_black_point(cam_id, session['bpc'])
-            set_frame_size(cam_id, session['fs_size'])
-            set_white_balance(cam_id, session['white_balance'])
-            set_flip_image(cam_id, session['flip'])
-            set_aec(cam_id, session['ae_compensation'])
-            set_gain_ceiling(cam_id, session['gain_ceiling'])
-            set_quality(cam_id, session['quality'])
-            set_DCW(cam_id)
-            if not cam_id == '0':
-                write_session_data(session['camera_id'], session['ae_level'], session['bpc'], session['fs_size'], session['white_balance'], session['flip'])
-                if show_debug_info == 'DEBUG':
-                    print ('DEBUG:   Initial writing of session defaults completed for Camera: ', cam_id)
+            get_cam_status=send_url_command(cam_list[str(session['camera_id'])],show_debug_info)
+            if get_cam_status == 200:
+                session['online_status'] = True
+            else:
+                session['online_status'] = False
+            
+            # Initialize camera if it is online
+            if session['online_status'] :
+                set_ae_exposure(cam_id,None,int(session['ae_level']),show_debug_info,True,action) 
+                set_black_point(cam_id, session['bpc'])
+                set_frame_size(cam_id, session['fs_size'])
+                set_white_balance(cam_id, session['white_balance'])
+                set_flip_image(cam_id, session['flip'])
+                set_aec(cam_id, session['ae_compensation'])
+                set_gain_ceiling(cam_id, session['gain_ceiling'])
+                set_quality(cam_id, session['quality'])
+                set_DCW(cam_id)
+                if not cam_id == '0':
+                    write_session_data(session['camera_id'], session['ae_level'], session['bpc'], session['fs_size'], session['white_balance'], session['flip'])
+                    if show_debug_info == 'DEBUG':
+                        print ('DEBUG:   Initial writing of session defaults completed for Camera: ', cam_id)
     if show_debug_info == 'DEBUG': 
         print ('DEBUG:   Cameras initialized',f'\n',sess_defaults)
     else:

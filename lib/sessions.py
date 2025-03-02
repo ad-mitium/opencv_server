@@ -14,7 +14,8 @@ session = {    # Not the safest method to pass data between routes
     'ae_compensation' : '1',
     'gain_ceiling' : '2',
     'quality' : '4',
-    'enabled_debug' : False
+    'enabled_debug' : False,
+    'online_status' : True
 
 }
 
