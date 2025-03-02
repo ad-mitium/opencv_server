@@ -364,9 +364,9 @@ def set_ae_exposure(cam_id,ae_dir, ae_val = 'NaN',show_debug_info = False, suppr
 
             if status_code == 200:
                 if not suppress:
-                    write_session_data(session['camera_id'], ae_val, session['bpc'], session['fs_size'], session['white_balance'], session['flip'], show_debug_info)
+                    write_session_data(cam_session[str(cam_id)]['camera_id'], ae_val, cam_session[str(cam_id)]['bpc'], cam_session[str(cam_id)]['fs_size'], cam_session[str(cam_id)]['white_balance'], cam_session[str(cam_id)]['flip'], show_debug_info)
                 else:
-                    write_session_data(session['camera_id'], ae_val, session['bpc'], session['fs_size'], session['white_balance'], session['flip'], not show_debug_info,suppress)
+                    write_session_data(cam_session[str(cam_id)]['camera_id'], ae_val, cam_session[str(cam_id)]['bpc'], cam_session[str(cam_id)]['fs_size'], cam_session[str(cam_id)]['white_balance'], cam_session[str(cam_id)]['flip'], not show_debug_info,suppress)
             else:
                 print('ERROR:     AE level was not changed')
 
@@ -387,7 +387,7 @@ def set_black_point(cam_id, bpc_mode, show_debug_info = False):
                 # print (' status code: ',status_code)
                 pass
             if status_code == 200:
-                write_session_data(session['camera_id'], session['ae_level'], bpc_mode, session['fs_size'], session['white_balance'], session['flip'], show_debug_info)
+                write_session_data(cam_session[str(cam_id)]['camera_id'], cam_session[str(cam_id)]['ae_level'], bpc_mode, cam_session[str(cam_id)]['fs_size'], cam_session[str(cam_id)]['white_balance'], cam_session[str(cam_id)]['flip'], show_debug_info)
             else:
                 print('ERROR:     Black point correction was not changed for camera {}'.format(session['camera_id']))
 
@@ -416,7 +416,7 @@ def set_flip_image(cam_id, mirror_mode, show_debug_info = False):
                 print ('DEBUG:    Image flip for Cam ID: ',session['camera_id'],' Image mirror set to: ',mirror_mode)
                 # print_session_data()
             if h_status_code == 200 and v_status_code == 200:
-                write_session_data(session['camera_id'], session['ae_level'], session['bpc'], session['fs_size'], session['white_balance'],mirror_mode, show_debug_info)
+                write_session_data(cam_session[str(cam_id)]['camera_id'], cam_session[str(cam_id)]['ae_level'], cam_session[str(cam_id)]['bpc'], cam_session[str(cam_id)]['fs_size'], cam_session[str(cam_id)]['white_balance'],mirror_mode, show_debug_info)
             else:
                 print('ERROR:     Image flip for Cam ID: ',session['camera_id'],' was not changed')
 
@@ -440,7 +440,7 @@ def set_frame_size(cam_id, frame_size, show_debug_info = False):
                     print('800 x 600', end=' ')
                 print (' status code: ',status_code)
             if status_code == 200:
-                write_session_data(session['camera_id'], session['ae_level'], session['bpc'], frame_size, session['white_balance'], session['flip'], show_debug_info)
+                write_session_data(cam_session[str(cam_id)]['camera_id'], cam_session[str(cam_id)]['ae_level'], cam_session[str(cam_id)]['bpc'], frame_size, cam_session[str(cam_id)]['white_balance'], cam_session[str(cam_id)]['flip'], show_debug_info)
             else:
                 print('ERROR:     Frame size was not changed for camera {}'.format(session['camera_id']))
                 # print(status_code)
@@ -461,7 +461,7 @@ def set_white_balance(cam_id, wb_mode, show_debug_info = False):
                 print ("DEBUG:    White Balance set to: ",wb_mode, end=' ')
                 print (' status code: ',status_code)
             if status_code == 200:
-                write_session_data(session['camera_id'], session['ae_level'], session['bpc'], session['fs_size'], wb_mode, session['flip'], show_debug_info)
+                write_session_data(cam_session[str(cam_id)]['camera_id'], cam_session[str(cam_id)]['ae_level'], cam_session[str(cam_id)]['bpc'], cam_session[str(cam_id)]['fs_size'], wb_mode, cam_session[str(cam_id)]['flip'], show_debug_info)
             else:
                 print('ERROR:     White Balance was not changed for camera {}'.format(session['camera_id']))
 
@@ -481,7 +481,7 @@ def set_gain_ceiling(cam_id, gain_ceiling, show_debug_info = False):
                 print ("DEBUG:     Gain ceiling set to: ",gain_ceiling, end=' ')
                 print (' status code: ',status_code)
             if status_code == 200:
-                # write_session_data(session['camera_id'], session['ae_level'], session['bpc'], session['fs_size'], session['white_balance'], session['flip'], show_debug_info)
+                # write_session_data(cam_session[str(cam_id)]['camera_id'], cam_session[str(cam_id)]['ae_level'], cam_session[str(cam_id)]['bpc'], cam_session[str(cam_id)]['fs_size'], cam_session[str(cam_id)]['white_balance'], cam_session[str(cam_id)]['flip'], show_debug_info)
                 pass
             else:
                 print('ERROR:     Gain ceiling was not changed for camera {}'.format(session['camera_id']))
@@ -502,7 +502,7 @@ def set_aec(cam_id, ae_compensation, show_debug_info = False):
                 print ("DEBUG:     Auto exposure compensation set to: ",ae_compensation, end=' ')
                 print (' status code: ',status_code)
             if status_code == 200:
-                # write_session_data(session['camera_id'], session['ae_level'], session['bpc'], session['fs_size'], session['white_balance'], session['flip'], show_debug_info)
+                # write_session_data(cam_session[str(cam_id)]['camera_id'], cam_session[str(cam_id)]['ae_level'], cam_session[str(cam_id)]['bpc'], cam_session[str(cam_id)]['fs_size'], cam_session[str(cam_id)]['white_balance'], cam_session[str(cam_id)]['flip'], show_debug_info)
                 pass
             else:
                 print('ERROR:     Auto exposure compensation was not changed for camera {}'.format(session['camera_id']))
@@ -523,7 +523,7 @@ def set_quality(cam_id, quality, show_debug_info = False):
                 print ("DEBUG:     Image quality is set to: ",quality, end=' ')
                 print (' status code: ',status_code)
             if status_code == 200:
-                # write_session_data(session['camera_id'], session['ae_level'], session['bpc'], session['fs_size'], session['white_balance'], session['flip'], show_debug_info)
+                # write_session_data(cam_session[str(cam_id)]['camera_id'], cam_session[str(cam_id)]['ae_level'], cam_session[str(cam_id)]['bpc'], cam_session[str(cam_id)]['fs_size'], cam_session[str(cam_id)]['white_balance'], cam_session[str(cam_id)]['flip'], show_debug_info)
                 pass
             else:
                 print('ERROR:     Image quality was not changed for camera {}'.format(session['camera_id']))
@@ -544,7 +544,7 @@ def set_DCW(cam_id, show_debug_info = False):    # Camera is set to down convert
                 print ("DEBUG:     Down conversion is set to: ",dcw, end=' ')
                 print (' status code: ',status_code)
             if status_code == 200:
-                # write_session_data(session['camera_id'], session['ae_level'], session['bpc'], session['fs_size'], session['white_balance'], session['flip'], show_debug_info)
+                # write_session_data(cam_session[str(cam_id)]['camera_id'], cam_session[str(cam_id)]['ae_level'], cam_session[str(cam_id)]['bpc'], cam_session[str(cam_id)]['fs_size'], cam_session[str(cam_id)]['white_balance'], cam_session[str(cam_id)]['flip'], show_debug_info)
                 pass
             else:
                 print('ERROR:     Down conversion was not changed for camera {}'.format(session['camera_id']))
@@ -596,16 +596,13 @@ def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show
         # print(cam_id, session)
         if not cam_id == '0':       # Don't overwrite default values
             get_session_data(cam_id)
-            print ("Cam(get_session): ",cam_session[str(cam_id)]['camera_id']," ae:", cam_session[str(cam_id)]['ae_level']," wb:", cam_session[str(cam_id)]['white_balance']," bpc:", cam_session[str(cam_id)]['bpc'],"flip mode:", cam_session[str(cam_id)]['flip'], end=" ] ")
             if show_debug_info == 'DEBUG': 
                 print ('DEBUG:     Camera session data:    [{}]'.format(cam_id),sess_defaults[cam_id])
             session['camera_id']=cam_id     # Change camera ID or you'll overwrite the same one over and over
             session['online_status']=update_online_status(cam_id)
             cam_online_status[int(cam_id)]=session['online_status']
-            print ("Cam(get_online_status): ",cam_session[str(cam_id)]['camera_id']," ae:", cam_session[str(cam_id)]['ae_level']," wb:", cam_session[str(cam_id)]['white_balance']," bpc:", cam_session[str(cam_id)]['bpc'],"flip mode:", cam_session[str(cam_id)]['flip'], end=" ] ")
             # session.update(fs_size=sess_defaults[cam_id][2])        # Store original frame size setting
             set_frame_size(cam_id,'11')
-            print ("Cam(set_fs_size): ",cam_session[str(cam_id)]['camera_id']," ae:", cam_session[str(cam_id)]['ae_level']," wb:", cam_session[str(cam_id)]['white_balance']," bpc:", cam_session[str(cam_id)]['bpc'],"flip mode:", cam_session[str(cam_id)]['flip'], end=" ] ")
             write_session_data(cam_session[str(cam_id)]['camera_id'], cam_session[str(cam_id)]['ae_level'], cam_session[str(cam_id)]['bpc'], cam_session[str(cam_id)]['fs_size'], cam_session[str(cam_id)]['white_balance'], cam_session[str(cam_id)]['flip'], show_debug_info)
             print ("Cam: ",cam_session[str(cam_id)]['camera_id']," ae:", cam_session[str(cam_id)]['ae_level']," wb:", cam_session[str(cam_id)]['white_balance']," bpc:", cam_session[str(cam_id)]['bpc'],"flip mode:", cam_session[str(cam_id)]['flip'], end=" ] ")
         if show_debug_info == 'DEBUG': 
