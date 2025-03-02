@@ -2,6 +2,7 @@
 # Authored by Timothy Mui 3/28/2023
  
 import requests
+from time import strftime
 
 def check_debug_status(print_session=True):
     if session['enabled_debug'] == False:
@@ -212,7 +213,7 @@ def strip_url(url, show_debug_info = False):
 
 def send_url_command(url,show_debug_info = False, suppress = True):
     import urllib3
-    from time import strftime
+    # from time import strftime
 
     try:
         get_request = requests.get(url,timeout=5)   # Increase timeout to 5 seconds
@@ -559,6 +560,10 @@ def load_no_image():
 def get_frames(cam_id,stop_capture=False): 
     import cv2
 
+    curr_time = strftime('%m-%d-%Y ') + strftime('%H:%M:%S')
+    text="Cam "+cam_session[str(cam_id)]['camera_id']+" " 
+    font = cv2.FONT_HERSHEY_COMPLEX
+
     try:
         video = cv2.VideoCapture(cam_list[str(cam_id)])
         video.setExceptionMode(True)
@@ -576,6 +581,15 @@ def get_frames(cam_id,stop_capture=False):
             video.ReleaseCapture()
             break
         else:
+
+            cv2.putText(frame,  
+                text,  
+                (15, 25),  
+                font, 1,  
+                (255, 255, 255),  
+                2,  
+                cv2.LINE_4) 
+            
             ret_status, buffer = cv2.imencode('.jpg', frame)
             frame = buffer.tobytes()
             yield (b'--frame\r\n'
@@ -583,6 +597,13 @@ def get_frames(cam_id,stop_capture=False):
 
 def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show_debug_info=False): 
     import cv2, numpy
+
+    text1="Cam "+cam_session[str(cam_1)]['camera_id']+" " 
+    text2="Cam "+cam_session[str(cam_2)]['camera_id']+" " 
+    text3="Cam "+cam_session[str(cam_3)]['camera_id']+" " 
+    text4="Cam "+cam_session[str(cam_4)]['camera_id']+" " 
+    font = cv2.FONT_HERSHEY_COMPLEX
+
 
     frame_count = 0
     cam_online_status={}
@@ -623,6 +644,35 @@ def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show
         success_3, frame_3 = video3.read()
         success_4, frame_4 = video4.read()
 
+        cv2.putText(frame_1,  
+                text1,  
+                (15, 25),  
+                font, 1,  
+                (255, 255, 255),  
+                2,  
+                cv2.LINE_4) 
+        cv2.putText(frame_2,  
+                text2,  
+                (15, 25),  
+                font, 1,  
+                (255, 255, 255),  
+                2,  
+                cv2.LINE_4) 
+        cv2.putText(frame_3,  
+                text3,  
+                (15, 25),  
+                font, 1,  
+                (255, 255, 255),  
+                2,  
+                cv2.LINE_4) 
+        cv2.putText(frame_4,  
+                text4,  
+                (15, 25),  
+                font, 1,  
+                (255, 255, 255),  
+                2,  
+                cv2.LINE_4) 
+            
         if not success_1 or not cam_online_status[1]:
             if frame_count < 900:
                 if frame_count == 1:
