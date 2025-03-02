@@ -528,7 +528,7 @@ def set_quality(cam_id, quality, show_debug_info = False):
             else:
                 print('ERROR:     Image quality was not changed for camera {}'.format(session['camera_id']))
 
-def set_DCW(camera_id, show_debug_info = False):    # Camera is set to down convert image, this disables that
+def set_DCW(cam_id, show_debug_info = False):    # Camera is set to down convert image, this disables that
     if not session['camera_id'] == '0':    # Never go to '0'
         url_stripped = strip_url(cam_list[str(session['camera_id'])])
 
