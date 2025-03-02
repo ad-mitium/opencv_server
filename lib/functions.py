@@ -193,9 +193,10 @@ def write_session_data(cam_id, ae_val, bpc_mode, frame_size, wb_mode, flip, show
     return write_success
 
 def get_session_data(cam_id, show_debug_info = False):      # only used with get_multi_frames
-    session.update(ae_direction=sess_defaults[cam_id][0],bpc=sess_defaults[cam_id][1], white_balance=sess_defaults[cam_id][3], flip = sess_defaults[cam_id][4]) 
+    print(cam_id)
+    session.update(camera_id=cam_id,ae_direction=sess_defaults[cam_id][0],bpc=sess_defaults[cam_id][1], white_balance=sess_defaults[cam_id][3], flip = sess_defaults[cam_id][4]) 
     # print (sess_defaults,f'\n',session)
-    print (session)
+    # print (session)
 
     if show_debug_info == 'DEBUG': 
         print('DEBUG:   Getting camera session values')
@@ -594,7 +595,7 @@ def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show
         print ("DEBUG:   Multi-cam: Force reset resolution of cameras")
 
     for cam_id in sess_defaults:     # Force all cameras to the same resolution
-        print(cam_id,sess_defaults)
+        # print(cam_id,sess_defaults)
         # session['camera_id']=cam_id     # Change camera ID or you'll overwrite the same one over and over
         get_session_data(cam_id)
         # print(cam_id, session)
