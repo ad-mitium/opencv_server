@@ -569,7 +569,7 @@ def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show
             if show_debug_info == 'DEBUG': 
                 print ('DEBUG:     Camera session data:    [{}]'.format(cam_id),sess_defaults[cam_id])
             session['camera_id']=cam_id     # Change camera ID or you'll overwrite the same one over and over
-            cam_online_status[cam_id]=session['online_status']
+            cam_online_status[int(cam_id)]=session['online_status']
             session.update(fs_size=sess_defaults[cam_id][2])
             set_frame_size(cam_id,'11')
             write_session_data(session['camera_id'], session['ae_level'], session['bpc'], session['fs_size'], session['white_balance'], session['flip'], show_debug_info)
