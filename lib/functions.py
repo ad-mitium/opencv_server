@@ -563,7 +563,7 @@ def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show
     if show_debug_info == 'DEBUG': 
         print ("DEBUG:   Multi-cam: Force reset resolution of cameras")
 
-    for cam_id in sess_defaults.keys():     # Force all cameras to the same resolution
+    for cam_id in sess_defaults:     # Force all cameras to the same resolution
         if not cam_id == '0':       # Don't overwrite default values
             get_session_data(cam_id)
             if show_debug_info == 'DEBUG': 
