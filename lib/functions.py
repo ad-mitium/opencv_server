@@ -566,8 +566,8 @@ def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show
     for cam_id in sess_defaults:     # Force all cameras to the same resolution
         if not cam_id == '0':       # Don't overwrite default values
             get_session_data(cam_id)
-            if show_debug_info == 'DEBUG': 
-                print ('DEBUG:     Camera session data:    [{}]'.format(cam_id),sess_defaults[cam_id])
+            # if show_debug_info == 'DEBUG': 
+            print ('DEBUG:     Camera session data:    [{}]'.format(cam_id),sess_defaults[cam_id])
             session['camera_id']=cam_id     # Change camera ID or you'll overwrite the same one over and over
             cam_online_status[int(cam_id)]=session['online_status']
             session.update(fs_size=sess_defaults[cam_id][2])        # Store original frame size setting
