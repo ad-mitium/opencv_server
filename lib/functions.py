@@ -426,7 +426,7 @@ def set_frame_size(cam_id, frame_size, show_debug_info = False):
                 write_session_data(session['camera_id'], session['ae_level'], session['bpc'], frame_size, session['white_balance'], session['flip'], show_debug_info)
             else:
                 print('ERROR:     Frame size was not changed')
-                print(status_code)
+                # print(status_code)
 
 def set_white_balance(cam_id, wb_mode, show_debug_info = False): 
     if not session['camera_id'] == '0':    # Never go to '0'
@@ -578,6 +578,7 @@ def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show
         if show_debug_info == 'DEBUG': 
             print ('\nDEBUG:   Frame size reset for Cam ID: ',cam_id)
     print ("")      # Send newline after all camera session info is printed
+    print (cam_online_status)
 
     video1 = cv2.VideoCapture(cam_list[str(cam_id_1)])
     video2 = cv2.VideoCapture(cam_list[str(cam_id_2)])
