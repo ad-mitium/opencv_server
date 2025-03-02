@@ -28,6 +28,16 @@ def initialize_cams(show_debug_info=False):
     else:
         print ('INFO:    Initializing cameras...')
 
+    # Test connection to see if camera is online
+    for cam_ids,url in cam_list.items():
+        url_stripped = strip_url(cam_list[str(cam_ids)])
+        get_cam_status=send_url_command(url_stripped,show_debug_info)
+        if get_cam_status == 200:
+            session['online_status'] = True
+        else:
+            session['online_status'] = False
+            
+
     for cam_id in sess_defaults.keys():
         if not cam_id == '0':       # Don't assign '0', as it is not being written
             session['camera_id']=cam_id     # Change camera ID or you'll overwrite the same one over and over
@@ -38,14 +48,6 @@ def initialize_cams(show_debug_info=False):
             if not cam_id == '0':       # Don't show '0', as it is not being written
                 print ('DEBUG:   Defaults set for Cam ID: ',cam_id)
         if not cam_id == '0':       # Don't overwrite default values
-            # Test connection to see if camera is online
-            url_stripped = strip_url(cam_list[str(cam_id)])
-            get_cam_status=send_url_command(url_stripped,show_debug_info)
-            if get_cam_status == 200:
-                session['online_status'] = True
-            else:
-                session['online_status'] = False
-            
             # Initialize camera if it is online
             if session['online_status'] :
                 set_ae_exposure(cam_id,None,int(session['ae_level']),show_debug_info,True,action) 
