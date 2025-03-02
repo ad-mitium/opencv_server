@@ -117,14 +117,14 @@ def update_cam(cam_id, reset=False, show_debug_info = False):   # Handles updati
                 print ('DEBUG:   Updating multiple Cam IDs')
 
         if not cam_id == 'Multi':
-            session.update(camera_id=cam_id,ae_level=sess_defaults[cam_id][0],bpc=sess_defaults[cam_id][1],fs_size=sess_defaults[cam_id][2],
-                white_balance=sess_defaults[cam_id][3],flip=sess_defaults[cam_id][4],ae_compensation=sess_defaults[cam_id][5],
-                    gain_ceiling=sess_defaults[cam_id][6],quality=sess_defaults[cam_id][7])  # Change all declared values to default values 
+            session.update(camera_id=cam_id,ae_level=cam_session[cam_id]['ae_level'],bpc=cam_session[cam_id]['bpc'],fs_size=cam_session[cam_id]['fs_size'],
+                white_balance=cam_session[cam_id]['white_balance'],flip=cam_session[cam_id]['flip'],ae_compensation=cam_session[cam_id]['ae_compensation'],
+                    gain_ceiling=cam_session[cam_id]['gain_ceiling'],quality=cam_session[cam_id]['quality'])  # Change all declared values to stored values 
             if show_debug_info == 'DEBUG': 
                 print('DEBUG:   Changing stream to previous values')
                 print_session_data()
                 if not cam_id == 'Multi':
-                    print ('DEBUG:     Camera session data:    [{}]'.format(cam_id),sess_defaults[cam_id])
+                    print ('DEBUG:     Camera session data:    [{}]'.format(cam_id),cam_session[cam_id])
 
             set_ae_exposure(cam_id,None,int(session['ae_level']),show_debug_info) # None forces a "set level" instead of changing exposure direction
             set_black_point(cam_id, session['bpc'],show_debug_info)
@@ -177,7 +177,7 @@ def write_session_data(cam_id, ae_val, bpc_mode, frame_size, wb_mode, flip, show
             if show_debug_info == 'DEBUG': 
                 print ('DEBUG:   Current Camera session data:    [{}]'.format(cam_id),sess_defaults[cam_id])
                 # print_session_data()
-        sess_defaults[cam_id][0], sess_defaults[cam_id][1], sess_defaults[cam_id][2], sess_defaults[cam_id][3], sess_defaults[cam_id][4] = str(ae_val), bpc_mode, frame_size, wb_mode, flip
+        cam_session[cam_id]['ae_level'], cam_session[cam_id]['bpc'], cam_session[cam_id]['fs_size'], cam_session[cam_id]['white_balance'], cam_session[cam_id]['flip'] = str(ae_val), bpc_mode, frame_size, wb_mode, flip
 
         if not suppress:
             if show_debug_info == 'DEBUG': 
@@ -193,7 +193,7 @@ def write_session_data(cam_id, ae_val, bpc_mode, frame_size, wb_mode, flip, show
     return write_success
 
 def get_session_data(cam_id, show_debug_info = False):      # only used with get_multi_frames
-    session.update(camera_id=cam_id,ae_direction=sess_defaults[cam_id][0],bpc=sess_defaults[cam_id][1], white_balance=sess_defaults[cam_id][3], flip = sess_defaults[cam_id][4]) 
+    session.update(camera_id=cam_id,ae_direction=cam_session[cam_id]['ae_level'],bpc=cam_session[cam_id]['bpc'], white_balance=cam_session[cam_id]['white_balance'], flip = cam_session[cam_id]['flip']) 
 
     if show_debug_info == 'DEBUG': 
         print('DEBUG:   Getting camera session values')
@@ -706,7 +706,7 @@ def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show
 
 if __name__ == '__main__':
     import sys
-    from sessions import session, sess_defaults
+    from sessions import session, sess_defaults, cam_session
     sys.path.append('config')   # allows for finding config folder
     from cameras import camera_list as cam_list
     from cameras import ae_level as ae_level_range
@@ -719,7 +719,7 @@ if __name__ == '__main__':
     print (show_debug_info, session['enabled_debug'])
 
 else:
-    from lib.sessions import session, sess_defaults
+    from lib.sessions import session, sess_defaults, cam_session
     from config.cameras import camera_list as cam_list
     from config.cameras import ae_level as ae_level_range
     from config.cameras import framesize, white_balance, dcw
