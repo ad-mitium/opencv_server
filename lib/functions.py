@@ -194,10 +194,11 @@ def write_session_data(cam_id, ae_val, bpc_mode, frame_size, wb_mode, flip, show
 
 def get_session_data(cam_id, show_debug_info = False):      # only used with get_multi_frames
     print(cam_id)
+    print (sess_defaults)
     print (session)
     session.update(camera_id=cam_id,ae_direction=sess_defaults[cam_id][0],bpc=sess_defaults[cam_id][1], white_balance=sess_defaults[cam_id][3], flip = sess_defaults[cam_id][4]) 
     # print (sess_defaults,f'\n',session)
-    # print (session)
+    print (session)
 
     if show_debug_info == 'DEBUG': 
         print('DEBUG:   Getting camera session values')
