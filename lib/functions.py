@@ -146,12 +146,13 @@ def update_cam(cam_id, reset=False, show_debug_info = False):   # Handles updati
                     if not cam_id_for == 'Multi':       # Don't overwrite default values
                         print('Cam_id_for after Multi test=',cam_id_for,'session camera id',session['camera_id'] )
                         session['camera_id']=cam_id_for     # Change camera ID or you'll overwrite the same one over and over
+                        print('Cam_id_for after reassignment=',cam_id_for,'session camera id',session['camera_id'] )
                         session.update(ae_level=sess_defaults[cam_id_for][0],bpc=sess_defaults[cam_id_for][1],fs_size=sess_defaults[cam_id_for][2],
                             white_balance=sess_defaults[cam_id_for][3],flip=sess_defaults[cam_id_for][4],ae_compensation=sess_defaults[cam_id_for][5],
                             gain_ceiling=sess_defaults[cam_id_for][6],quality=sess_defaults[cam_id_for][7])  # Change all declared values to default values 
                         if show_debug_info == 'DEBUG': 
                             print ('DEBUG:   Previous settings loaded for Cam ID: ',cam_id_for, sess_defaults[cam_id_for])
-                        print('Cam_id_for before set_ae_exp=',cam_id_for,'session camera id',session['camera_id'])
+                        # print('Cam_id_for before set_ae_exp=',cam_id_for,'session camera id',session['camera_id'])
                         set_ae_exposure(cam_id,None,int(session['ae_level']),show_debug_info,suppress,action)
                         set_black_point(cam_id, session['bpc'])
                         set_frame_size(cam_id, '11')
