@@ -588,7 +588,7 @@ def get_frames(cam_id,stop_capture=False):
                 font, 1,  
                 (255, 255, 255),  
                 2,  
-                cv2.LINE_4) 
+                cv2.LINE_AA) 
             
             ret_status, buffer = cv2.imencode('.jpg', frame)
             frame = buffer.tobytes()
@@ -650,28 +650,28 @@ def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show
                 font, 1,  
                 (255, 255, 255),  
                 2,  
-                cv2.LINE_4) 
+                cv2.LINE_AA) 
         cv2.putText(frame_2,  
                 text2,  
                 (15, 25),  
                 font, 1,  
                 (255, 255, 255),  
                 2,  
-                cv2.LINE_4) 
+                cv2.LINE_AA) 
         cv2.putText(frame_3,  
                 text3,  
                 (15, 25),  
                 font, 1,  
                 (255, 255, 255),  
                 2,  
-                cv2.LINE_4) 
+                cv2.LINE_AA) 
         cv2.putText(frame_4,  
                 text4,  
                 (15, 25),  
                 font, 1,  
                 (255, 255, 255),  
                 2,  
-                cv2.LINE_4) 
+                cv2.LINE_AA) 
             
         if not success_1 or not cam_online_status[1]:
             if frame_count < 900:
