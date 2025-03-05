@@ -644,35 +644,6 @@ def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show
         success_3, frame_3 = video3.read()
         success_4, frame_4 = video4.read()
 
-        cv2.putText(frame_1,  
-                text1,  
-                (15, 25),  
-                font, 1,  
-                (255, 255, 255),  
-                2,  
-                cv2.LINE_AA) 
-        cv2.putText(frame_2,  
-                text2,  
-                (15, 25),  
-                font, 1,  
-                (255, 255, 255),  
-                2,  
-                cv2.LINE_AA) 
-        cv2.putText(frame_3,  
-                text3,  
-                (15, 25),  
-                font, 1,  
-                (255, 255, 255),  
-                2,  
-                cv2.LINE_AA) 
-        cv2.putText(frame_4,  
-                text4,  
-                (15, 25),  
-                font, 1,  
-                (255, 255, 255),  
-                2,  
-                cv2.LINE_AA) 
-            
         if not success_1 or not cam_online_status[1]:
             if frame_count < 900:
                 if frame_count == 1:
@@ -698,14 +669,31 @@ def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show
 
             # frame_2 = numpy.zeros((720,1280,3), dtype = int)
             frame_2 = load_no_image()
-        try:
-            h_concat_row_1 = numpy.concatenate((frame_1,frame_2), axis=1)
-        except ValueError:
-            if frame_1 is None:
-                frame_1 = load_no_image()
-            if frame_2 is None:
-                frame_2 = load_no_image()
-            h_concat_row_1 = numpy.concatenate((frame_1,frame_2), axis=1)
+
+        if frame_1 is None:
+            frame_1 = load_no_image()
+        if frame_2 is None:
+            frame_2 = load_no_image()
+
+        cv2.putText(frame_1, 
+                text2, 
+                (15, 25), 
+                font, 1, 
+                (255, 255, 255), 
+                2, 
+                cv2.LINE_AA) 
+        cv2.putText(frame_2, 
+                text2, 
+                (15, 25), 
+                font, 1, 
+                (255, 255, 255), 
+                2, 
+                cv2.LINE_AA) 
+
+        # try:
+        h_concat_row_1 = numpy.concatenate((frame_1,frame_2), axis=1)
+        # except ValueError:
+        #     h_concat_row_1 = numpy.concatenate((frame_1,frame_2), axis=1)
 
         if not success_3 or not cam_online_status[3]:
             if frame_count < 900:
@@ -728,14 +716,31 @@ def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show
 
             frame_4 = load_no_image()
             # break
-        try:
-            h_concat_row_2 = numpy.concatenate((frame_3,frame_4), axis=1)
-        except ValueError:
-            if frame_3 is None:
-                frame_3 = load_no_image()
-            if frame_4 is None:
-                frame_4 = load_no_image()
-            h_concat_row_2 = numpy.concatenate((frame_3,frame_4), axis=1)
+
+        if frame_3 is None:
+            frame_3 = load_no_image()
+        if frame_4 is None:
+            frame_4 = load_no_image()
+
+        cv2.putText(frame_3, 
+                text3, 
+                (15, 25), 
+                font, 1, 
+                (255, 255, 255), 
+                2, 
+                cv2.LINE_AA) 
+        cv2.putText(frame_4, 
+                text4, 
+                (15, 25), 
+                font, 1, 
+                (255, 255, 255), 
+                2, 
+                cv2.LINE_AA) 
+
+        # try:
+        h_concat_row_2 = numpy.concatenate((frame_3,frame_4), axis=1)
+        # except ValueError:
+        #     h_concat_row_2 = numpy.concatenate((frame_3,frame_4), axis=1)
 
         v_concat = numpy.concatenate((h_concat_row_1,h_concat_row_2), axis=0)
 
