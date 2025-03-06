@@ -676,7 +676,7 @@ def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show
             frame_2 = load_no_image()
 
         cv2.putText(frame_1, 
-                text2, 
+                text1, 
                 (15, 25), 
                 font, 1, 
                 (255, 255, 255), 
