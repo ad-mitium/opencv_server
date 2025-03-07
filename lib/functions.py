@@ -586,7 +586,7 @@ def get_frames(cam_id,stop_capture=False):
     text="Cam "+cam_session[str(cam_id)]['camera_id']+" " 
     font = cv2.FONT_HERSHEY_COMPLEX
 
-    print ("Cam: ",cam_session[str(cam_id)]['camera_id']," ae:", cam_session[str(cam_id)]['ae_level']," wb:", cam_session[str(cam_id)]['white_balance']," bpc:", cam_session[str(cam_id)]['bpc'],"flip mode:", cam_session[str(cam_id)]['flip'],"status:", session['online_status']," ] ")
+    print ("[ Cam: ",cam_session[str(cam_id)]['camera_id']," ae:", cam_session[str(cam_id)]['ae_level']," wb:", cam_session[str(cam_id)]['white_balance']," bpc:", cam_session[str(cam_id)]['bpc'],"flip mode:", cam_session[str(cam_id)]['flip'],"status:", session['online_status'],"] ")
 
     try:
         video = cv2.VideoCapture(cam_list[str(cam_id)])
@@ -652,7 +652,7 @@ def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show
             # session.update(fs_size=sess_defaults[cam_id][2])        # Store original frame size setting
                 set_frame_size(cam_id,'11')
                 write_session_data(cam_session[str(cam_id)]['camera_id'], cam_session[str(cam_id)]['ae_level'], cam_session[str(cam_id)]['bpc'], cam_session[str(cam_id)]['fs_size'], cam_session[str(cam_id)]['white_balance'], cam_session[str(cam_id)]['flip'], show_debug_info)
-            print ("Cam: ",cam_session[str(cam_id)]['camera_id']," ae:", cam_session[str(cam_id)]['ae_level']," wb:", cam_session[str(cam_id)]['white_balance']," bpc:", cam_session[str(cam_id)]['bpc'],"flip mode:", cam_session[str(cam_id)]['flip'],"status:", session['online_status'], end=" ] ")
+            print ("[ Cam: ",cam_session[str(cam_id)]['camera_id']," ae:", cam_session[str(cam_id)]['ae_level']," wb:", cam_session[str(cam_id)]['white_balance']," bpc:", cam_session[str(cam_id)]['bpc'],"flip mode:", cam_session[str(cam_id)]['flip'],"status:", session['online_status'], end=" ] ")
         if show_debug_info == 'DEBUG': 
             print ('\nDEBUG:   Frame size reset for Cam ID: ',cam_id)
     print ("")      # Send newline after all camera session info is printed
