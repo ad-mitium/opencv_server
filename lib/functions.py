@@ -110,6 +110,7 @@ def update_cam(cam_id, reset=False, show_debug_info = False):   # Handles updati
     if not cam_id == '0':
         # show_debug_info = check_debug_status(False)
 
+        url_stripped = strip_url(cam_list[str(cam_id)])
         get_cam_status=send_url_command(url_stripped,show_debug_info)
         if get_cam_status == 200:
             session['online_status'] = True
@@ -149,9 +150,17 @@ def update_cam(cam_id, reset=False, show_debug_info = False):   # Handles updati
             suppress = True
             action = cam_id
             for cam_id_for in sess_defaults.keys():
+
                 # print('Cam_id_for before if 0 test=',cam_id_for)
                 if not cam_id_for == '0': 
                     if not cam_id_for == 'Multi':       # Don't overwrite default values
+                        url_stripped = strip_url(cam_list[str(cam_id_for])
+                        get_cam_status=send_url_command(url_stripped,show_debug_info)
+                        if get_cam_status == 200:
+                            session['online_status'] = True
+                        else:
+                            session['online_status'] = False
+
                         # print('Cam_id_for after Multi test=',cam_id_for,'session camera id',session['camera_id'] )
                         session['camera_id']=cam_id_for     # Change camera ID or you'll overwrite the same one over and over
                         # print('Cam_id_for after reassignment=',cam_id_for,'session camera id',session['camera_id'] )
