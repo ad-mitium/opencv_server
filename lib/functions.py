@@ -266,13 +266,14 @@ def send_url_command(url,show_debug_info = False, suppress = True):
             if show_debug_info == 'DEBUG':
                 print ('  status code: ',get_status_code)
         curr_time = strftime('%m-%d-%Y ') + strftime('%H:%M:%S')
-        print('ERROR:   GET request unable to connect to host: ',url,'at',curr_time)
+        if not suppress:
+            print('ERROR:   GET request unable to connect to host: ',url,'at',curr_time)
     finally:
         # print('Command sent')            print('here')
         pass
     return get_status_code
 
-def update_online_status(cam_id, suppress = True, show_debug_info = False): 
+def update_online_status(cam_id, suppress = False, show_debug_info = False):    # Note: order of suppression and debug info deliberately swapped
     # print('Cam_id in update_online_status=',cam_id)
     url_stripped = strip_url(cam_list[str(cam_id)])
     get_cam_status=send_url_command(url_stripped,show_debug_info,suppress)
