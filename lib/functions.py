@@ -175,16 +175,16 @@ def update_cam(cam_id, reset=False, show_debug_info = False):   # Handles updati
                             print ('DEBUG:   Previous settings loaded for Cam ID: ',cam_id_for, sess_defaults[cam_id_for])
                         # print('Cam_id_for before set_ae_exp=',cam_id_for,'session camera id',session['camera_id'], 'Cam_ID=',cam_id)
 
-                        if session['online_status'] :
-                            set_ae_exposure(cam_id_for,None,int(session['ae_level']),show_debug_info,suppress,action)
-                            set_black_point(cam_id_for, session['bpc'])
-                            set_frame_size(cam_id_for, '11')
-                            set_white_balance(cam_id_for, session['white_balance'])
-                            set_flip_image(cam_id_for, session['flip'])
-                            set_aec(cam_id_for, session['ae_compensation'])
-                            set_gain_ceiling(cam_id_for, session['gain_ceiling'])
-                            set_quality(cam_id_for, session['quality'])
-                            write_session_data(session['camera_id'], session['ae_level'], session['bpc'], session['fs_size'], session['white_balance'], session['flip'])
+                        # if session['online_status'] :
+                        #     set_ae_exposure(cam_id_for,None,int(session['ae_level']),show_debug_info,suppress,action)
+                        #     set_black_point(cam_id_for, session['bpc'])
+                        #     set_frame_size(cam_id_for, '11')
+                        #     set_white_balance(cam_id_for, session['white_balance'])
+                        #     set_flip_image(cam_id_for, session['flip'])
+                        #     set_aec(cam_id_for, session['ae_compensation'])
+                        #     set_gain_ceiling(cam_id_for, session['gain_ceiling'])
+                        #     set_quality(cam_id_for, session['quality'])
+                        #     write_session_data(session['camera_id'], session['ae_level'], session['bpc'], session['fs_size'], session['white_balance'], session['flip'])
                     if show_debug_info == 'DEBUG':
                         print ('DEBUG:   Initial writing of session defaults completed for Camera: ', cam_id_for)
             if show_debug_info == 'DEBUG':
