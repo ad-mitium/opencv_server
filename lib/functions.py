@@ -110,6 +110,12 @@ def update_cam(cam_id, reset=False, show_debug_info = False):   # Handles updati
     if not cam_id == '0':
         # show_debug_info = check_debug_status(False)
 
+        get_cam_status=send_url_command(url_stripped,show_debug_info)
+        if get_cam_status == 200:
+            session['online_status'] = True
+        else:
+            session['online_status'] = False
+
         # print ('Update Cam: ',show_debug_info)
         if show_debug_info == 'DEBUG': 
             if not cam_id == 'Multi':
@@ -127,14 +133,15 @@ def update_cam(cam_id, reset=False, show_debug_info = False):   # Handles updati
                 if not cam_id == 'Multi':
                     print ('DEBUG:     Camera session data:    [{}]'.format(cam_id),cam_session[cam_id])
 
-            set_ae_exposure(cam_id,None,int(session['ae_level']),show_debug_info) # None forces a "set level" instead of changing exposure direction
-            set_black_point(cam_id, session['bpc'],show_debug_info)
-            set_frame_size(cam_id, session['fs_size'],show_debug_info)
-            set_white_balance(cam_id, session['white_balance'],show_debug_info)
-            set_flip_image(cam_id, session['flip'],show_debug_info)
-            set_aec(cam_id, session['ae_compensation'])
-            set_gain_ceiling(cam_id, session['gain_ceiling'])
-            set_quality(cam_id, session['quality'])
+            if session['online_status'] :
+                set_ae_exposure(cam_id,None,int(session['ae_level']),show_debug_info) # None forces a "set level" instead of changing exposure direction
+                set_black_point(cam_id, session['bpc'],show_debug_info)
+                set_frame_size(cam_id, session['fs_size'],show_debug_info)
+                set_white_balance(cam_id, session['white_balance'],show_debug_info)
+                set_flip_image(cam_id, session['flip'],show_debug_info)
+                set_aec(cam_id, session['ae_compensation'])
+                set_gain_ceiling(cam_id, session['gain_ceiling'])
+                set_quality(cam_id, session['quality'])
 
             if not show_debug_info == 'DEBUG': 
                 print('INFO:    Stream for Camera {} has been updated'.format(cam_id))
@@ -154,15 +161,17 @@ def update_cam(cam_id, reset=False, show_debug_info = False):   # Handles updati
                         if show_debug_info == 'DEBUG': 
                             print ('DEBUG:   Previous settings loaded for Cam ID: ',cam_id_for, sess_defaults[cam_id_for])
                         # print('Cam_id_for before set_ae_exp=',cam_id_for,'session camera id',session['camera_id'], 'Cam_ID=',cam_id)
-                        set_ae_exposure(cam_id_for,None,int(session['ae_level']),show_debug_info,suppress,action)
-                        set_black_point(cam_id_for, session['bpc'])
-                        set_frame_size(cam_id_for, '11')
-                        set_white_balance(cam_id_for, session['white_balance'])
-                        set_flip_image(cam_id_for, session['flip'])
-                        set_aec(cam_id_for, session['ae_compensation'])
-                        set_gain_ceiling(cam_id_for, session['gain_ceiling'])
-                        set_quality(cam_id_for, session['quality'])
-                        write_session_data(session['camera_id'], session['ae_level'], session['bpc'], session['fs_size'], session['white_balance'], session['flip'])
+
+                        if session['online_status'] :
+                            set_ae_exposure(cam_id_for,None,int(session['ae_level']),show_debug_info,suppress,action)
+                            set_black_point(cam_id_for, session['bpc'])
+                            set_frame_size(cam_id_for, '11')
+                            set_white_balance(cam_id_for, session['white_balance'])
+                            set_flip_image(cam_id_for, session['flip'])
+                            set_aec(cam_id_for, session['ae_compensation'])
+                            set_gain_ceiling(cam_id_for, session['gain_ceiling'])
+                            set_quality(cam_id_for, session['quality'])
+                            write_session_data(session['camera_id'], session['ae_level'], session['bpc'], session['fs_size'], session['white_balance'], session['flip'])
                     if show_debug_info == 'DEBUG':
                         print ('DEBUG:   Initial writing of session defaults completed for Camera: ', cam_id_for)
             if show_debug_info == 'DEBUG':
@@ -563,6 +572,8 @@ def get_frames(cam_id,stop_capture=False):
     curr_time = strftime('%m-%d-%Y ') + strftime('%H:%M:%S')
     text="Cam "+cam_session[str(cam_id)]['camera_id']+" " 
     font = cv2.FONT_HERSHEY_COMPLEX
+
+    print ("Cam: ",cam_session[str(cam_id)]['camera_id']," ae:", cam_session[str(cam_id)]['ae_level']," wb:", cam_session[str(cam_id)]['white_balance']," bpc:", cam_session[str(cam_id)]['bpc'],"flip mode:", cam_session[str(cam_id)]['flip'],"status:", session['online_status'], end=" ] ")
 
     try:
         video = cv2.VideoCapture(cam_list[str(cam_id)])
