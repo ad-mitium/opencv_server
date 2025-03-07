@@ -154,7 +154,7 @@ def update_cam(cam_id, reset=False, show_debug_info = False):   # Handles updati
                 # print('Cam_id_for before if 0 test=',cam_id_for)
                 if not cam_id_for == '0': 
                     if not cam_id_for == 'Multi':       # Don't overwrite default values
-                        url_stripped = strip_url(cam_list[str(cam_id_for])
+                        url_stripped = strip_url(cam_list[str(cam_id_for)])
                         get_cam_status=send_url_command(url_stripped,show_debug_info)
                         if get_cam_status == 200:
                             session['online_status'] = True
