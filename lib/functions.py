@@ -110,13 +110,6 @@ def update_cam(cam_id, reset=False, show_debug_info = False):   # Handles updati
     if not cam_id == '0':
         # show_debug_info = check_debug_status(False)
 
-        url_stripped = strip_url(cam_list[str(cam_id)])
-        get_cam_status=send_url_command(url_stripped,show_debug_info)
-        if get_cam_status == 200:
-            session['online_status'] = True
-        else:
-            session['online_status'] = False
-
         # print ('Update Cam: ',show_debug_info)
         if show_debug_info == 'DEBUG': 
             if not cam_id == 'Multi':
@@ -125,10 +118,19 @@ def update_cam(cam_id, reset=False, show_debug_info = False):   # Handles updati
                 print ('DEBUG:   Updating multiple Cam IDs')
 
         if not cam_id == 'Multi':
+            # Test connection to see if camera is online
+            url_stripped = strip_url(cam_list[str(cam_id)])
+            get_cam_status=send_url_command(url_stripped,show_debug_info)
+            if get_cam_status == 200:
+                session['online_status'] = True
+            else:
+                session['online_status'] = False
+
             session.update(camera_id=cam_id,ae_level=cam_session[cam_id]['ae_level'],bpc=cam_session[cam_id]['bpc'],fs_size=cam_session[cam_id]['fs_size'],
                 white_balance=cam_session[cam_id]['white_balance'],flip=cam_session[cam_id]['flip'],ae_compensation=cam_session[cam_id]['ae_compensation'],
                     gain_ceiling=cam_session[cam_id]['gain_ceiling'],quality=cam_session[cam_id]['quality'])  # Change all declared values to stored values 
             if show_debug_info == 'DEBUG': 
+                print('DEBUG:   Status of camera connection is {}'.format(session['online_status']))
                 print('DEBUG:   Changing stream to previous values')
                 print_session_data()
                 if not cam_id == 'Multi':
@@ -154,6 +156,7 @@ def update_cam(cam_id, reset=False, show_debug_info = False):   # Handles updati
                 # print('Cam_id_for before if 0 test=',cam_id_for)
                 if not cam_id_for == '0': 
                     if not cam_id_for == 'Multi':       # Don't overwrite default values
+                        # Test connection to see if camera is online
                         url_stripped = strip_url(cam_list[str(cam_id_for)])
                         get_cam_status=send_url_command(url_stripped,show_debug_info)
                         if get_cam_status == 200:
@@ -168,6 +171,7 @@ def update_cam(cam_id, reset=False, show_debug_info = False):   # Handles updati
                             white_balance=sess_defaults[cam_id_for][3],flip=sess_defaults[cam_id_for][4],ae_compensation=sess_defaults[cam_id_for][5],
                             gain_ceiling=sess_defaults[cam_id_for][6],quality=sess_defaults[cam_id_for][7])  # Change all declared values to default values 
                         if show_debug_info == 'DEBUG': 
+                            print ('DEBUG:   Status of camera connection is {}'.format(session['online_status']))
                             print ('DEBUG:   Previous settings loaded for Cam ID: ',cam_id_for, sess_defaults[cam_id_for])
                         # print('Cam_id_for before set_ae_exp=',cam_id_for,'session camera id',session['camera_id'], 'Cam_ID=',cam_id)
 
