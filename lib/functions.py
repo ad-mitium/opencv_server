@@ -272,10 +272,10 @@ def send_url_command(url,show_debug_info = False, suppress = True):
         pass
     return get_status_code
 
-def update_online_status(cam_id, show_debug_info = False): 
+def update_online_status(cam_id, suppress = True, show_debug_info = False): 
     # print('Cam_id in update_online_status=',cam_id)
     url_stripped = strip_url(cam_list[str(cam_id)])
-    get_cam_status=send_url_command(url_stripped,show_debug_info)
+    get_cam_status=send_url_command(url_stripped,show_debug_info,suppress)
     return get_cam_status
 
 def set_ae_exposure(cam_id,ae_dir, ae_val = 'NaN',show_debug_info = False, suppress = False, action = ''): 
@@ -641,7 +641,7 @@ def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show
         # print(cam_id, session)
         if not cam_id == '0':       # Don't overwrite default values
             session['camera_id']=cam_id     # Change camera ID or you'll overwrite the same one over and over
-            session['online_status']=update_online_status(cam_id)
+            session['online_status']=update_online_status(cam_id,True)
             cam_online_status[int(cam_id)]=session['online_status']
             if session['online_status'] == 200:
                 get_session_data(cam_id)
