@@ -582,7 +582,7 @@ def get_frames(cam_id,stop_capture=False):
     text="Cam "+cam_session[str(cam_id)]['camera_id']+" " 
     font = cv2.FONT_HERSHEY_COMPLEX
 
-    print ("Cam: ",cam_session[str(cam_id)]['camera_id']," ae:", cam_session[str(cam_id)]['ae_level']," wb:", cam_session[str(cam_id)]['white_balance']," bpc:", cam_session[str(cam_id)]['bpc'],"flip mode:", cam_session[str(cam_id)]['flip'],"status:", session['online_status'], end=" ] ")
+    print ("Cam: ",cam_session[str(cam_id)]['camera_id']," ae:", cam_session[str(cam_id)]['ae_level']," wb:", cam_session[str(cam_id)]['white_balance']," bpc:", cam_session[str(cam_id)]['bpc'],"flip mode:", cam_session[str(cam_id)]['flip'],"status:", session['online_status']," ] ")
 
     try:
         video = cv2.VideoCapture(cam_list[str(cam_id)])
