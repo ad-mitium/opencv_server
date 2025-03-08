@@ -661,30 +661,30 @@ def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show
     if show_debug_info == 'DEBUG': 
         print (cam_online_status)
 
-    try:
-        video1 = cv2.VideoCapture(cam_list[str(cam_id_1)])
-        video1.setExceptionMode(True)
-    except Exception as except_msg:
-        success_1 = False
-        frame_1 = load_no_image()
-    try:
-        video2 = cv2.VideoCapture(cam_list[str(cam_id_2)])
-        video2.setExceptionMode(True)
-    except Exception as except_msg:
-        success_2 = False
-        frame_2 = load_no_image()
-    try:
-        video3 = cv2.VideoCapture(cam_list[str(cam_id_3)])
-        video3.setExceptionMode(True)
-    except Exception as except_msg:
-        success_3 = False
-        frame_3 = load_no_image()
-    try:
-        video4 = cv2.VideoCapture(cam_list[str(cam_id_4)])
-        video4.setExceptionMode(True)
-    except Exception as except_msg:
-        success_4 = False
-        frame_4 = load_no_image()
+    # try:
+    video1 = cv2.VideoCapture(cam_list[str(cam_id_1)])
+        # video1.setExceptionMode(True)
+    # except Exception as except_msg:
+    #     success_1 = False
+    #     frame_1 = load_no_image()
+    # try:
+    video2 = cv2.VideoCapture(cam_list[str(cam_id_2)])
+    #     video2.setExceptionMode(True)
+    # except Exception as except_msg:
+    #     success_2 = False
+    #     frame_2 = load_no_image()
+    # try:
+    video3 = cv2.VideoCapture(cam_list[str(cam_id_3)])
+    #     video3.setExceptionMode(True)
+    # except Exception as except_msg:
+    #     success_3 = False
+    #     frame_3 = load_no_image()
+    # try:
+    video4 = cv2.VideoCapture(cam_list[str(cam_id_4)])
+    #     video4.setExceptionMode(True)
+    # except Exception as except_msg:
+    #     success_4 = False
+    #     frame_4 = load_no_image()
 
     while True:
         if cam_online_status[int(cam_id_1)] == 200:
