@@ -77,7 +77,7 @@ def initialize_cams(show_debug_info=False):
             write_session_data(session['camera_id'], session['ae_level'], session['bpc'], session['fs_size'], session['white_balance'], session['flip'])
             if show_debug_info == 'DEBUG':
                 print ('DEBUG:   Initial writing of session defaults completed for Camera: ', cam_id)
-            print("[ Cam: ",cam_session[str(cam_id)]['camera_id']," ae:", cam_session[str(cam_id)]['ae_level']," wb:", cam_session[str(cam_id)]['white_balance']," bpc:", cam_session[str(cam_id)]['bpc'],"flip mode:", cam_session[str(cam_id)]['flip'],"status:", session['online_status'],"] ")
+            print("[ Cam: ",cam_session[str(cam_id)]['camera_id']," ae:", cam_session[str(cam_id)]['ae_level']," wb:", cam_session[str(cam_id)]['white_balance']," bpc:", cam_session[str(cam_id)]['bpc'],"flip mode:", cam_session[str(cam_id)]['flip'],"status:", cam_online_status[cam_id],"] ")
     if show_debug_info == 'DEBUG': 
         print ('DEBUG:   Cameras initialized',f'\n',sess_defaults)
     else:
