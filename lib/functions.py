@@ -40,11 +40,14 @@ def initialize_cams(show_debug_info=False):
             
 
     for cam_id in sess_defaults.keys():
+        print ('INFO:    Initializing camera', cam_ids)
         if not cam_id == '0':       # Don't assign '0', as it is not being written
             session['camera_id']=cam_id     # Change camera ID or you'll overwrite the same one over and over
-        session.update(ae_level=sess_defaults[cam_id][0],bpc=sess_defaults[cam_id][1],fs_size=sess_defaults[cam_id][2],
-            white_balance=sess_defaults[cam_id][3],flip=sess_defaults[cam_id][4],ae_compensation=sess_defaults[cam_id][5],
-            gain_ceiling=sess_defaults[cam_id][6],quality=sess_defaults[cam_id][7])  # Change all declared values to default values 
+            session.update(ae_level=sess_defaults[cam_id][0],bpc=sess_defaults[cam_id][1],fs_size=sess_defaults[cam_id][2],
+                white_balance=sess_defaults[cam_id][3],flip=sess_defaults[cam_id][4],ae_compensation=sess_defaults[cam_id][5],
+                gain_ceiling=sess_defaults[cam_id][6],quality=sess_defaults[cam_id][7])  # Change all declared values to default values 
+        # if not cam_id == '0':       # Don't output '0', as it is not being written
+        #     print("[ Cam: ",cam_session[str(cam_id)]['camera_id']," ae:", cam_session[str(cam_id)]['ae_level']," wb:", cam_session[str(cam_id)]['white_balance']," bpc:", cam_session[str(cam_id)]['bpc'],"flip mode:", cam_session[str(cam_id)]['flip'],"status:", session['online_status'],"] ")
         if show_debug_info == 'DEBUG': 
             if not cam_id == '0':       # Don't show '0', as it is not being written
                 print ('DEBUG:   Defaults set for Cam ID: ',cam_id)
@@ -64,6 +67,7 @@ def initialize_cams(show_debug_info=False):
                     write_session_data(session['camera_id'], session['ae_level'], session['bpc'], session['fs_size'], session['white_balance'], session['flip'])
                     if show_debug_info == 'DEBUG':
                         print ('DEBUG:   Initial writing of session defaults completed for Camera: ', cam_id)
+            print("[ Cam: ",cam_session[str(cam_id)]['camera_id']," ae:", cam_session[str(cam_id)]['ae_level']," wb:", cam_session[str(cam_id)]['white_balance']," bpc:", cam_session[str(cam_id)]['bpc'],"flip mode:", cam_session[str(cam_id)]['flip'],"status:", session['online_status'],"] ")
     if show_debug_info == 'DEBUG': 
         print ('DEBUG:   Cameras initialized',f'\n',sess_defaults)
     else:
