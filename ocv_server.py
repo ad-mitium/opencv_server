@@ -27,6 +27,8 @@ def video_feed(id='1'):
 
     if verbose == 'DEBUG':
        print('DEBUG:    Getting frames from Camera ID: ',id)
+    if isinstance(id,int):  # Reset turns id into an integer
+        id=str(id)
     if id.isdigit():
         id_int=int(id)
         if id_int==0:
