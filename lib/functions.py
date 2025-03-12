@@ -22,7 +22,8 @@ def print_session_data():
 
 def initialize_cams(show_debug_info=False):
     action = 'init'
-
+    cam_online_status={}
+ 
     if show_debug_info == 'DEBUG': 
         print ('DEBUG:   Initializing cameras...')
         # print (session,f'\n',sess_defaults)
@@ -35,14 +36,16 @@ def initialize_cams(show_debug_info=False):
         get_cam_status=send_url_command(url_stripped,show_debug_info)
         if get_cam_status == 200:
             session['online_status'] = True
-        if show_debug_info == 'DEBUG': 
-            if not cam_id == '0':       # Don't show '0', as it is not being written
-                print('DEBUG:   ',cam_ids,'session_online:',session['online_status'])
+            cam_online_status[int(cam_ids)]=get_cam_status 
+            if show_debug_info == 'DEBUG': 
+                if not cam_id == '0':       # Don't show '0', as it is not being written
+                    print('DEBUG:   ',cam_ids,'session_online:',session['online_status'])
         else:
             session['online_status'] = False
-        if show_debug_info == 'DEBUG': 
-            if not cam_id == '0':       # Don't show '0', as it is not being written
-                print('DEBUG:   ',cam_ids,'session_online:',session['online_status'])
+            cam_online_status[int(cam_ids)]=get_cam_status 
+            if show_debug_info == 'DEBUG': 
+                if not cam_id == '0':       # Don't show '0', as it is not being written
+                    print('DEBUG:   ',cam_ids,'session_online:',session['online_status'])
             
 
     for cam_id in sess_defaults.keys():
@@ -59,7 +62,7 @@ def initialize_cams(show_debug_info=False):
                 print ('DEBUG:   Defaults set for Cam ID: ',cam_id)
                 print ('DEBUG:   ',cam_ids,'session_online:',session['online_status'])
             # Initialize camera if it is online
-            if session['online_status'] :
+            if cam_online_status[cam_id] == 200 :
                 set_ae_exposure(cam_id,None,int(session['ae_level']),show_debug_info,True,action) 
                 set_black_point(cam_id, session['bpc'])
                 set_frame_size(cam_id, session['fs_size'])
