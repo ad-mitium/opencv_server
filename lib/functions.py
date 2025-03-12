@@ -34,15 +34,14 @@ def initialize_cams(show_debug_info=False):
     for cam_ids,url in cam_list.items():
         url_stripped = strip_url(cam_list[str(cam_ids)])
         get_cam_status=send_url_command(url_stripped,show_debug_info)
+        cam_online_status[int(cam_ids)]=get_cam_status
         if get_cam_status == 200:
             session['online_status'] = True
-            cam_online_status[int(cam_ids)]=get_cam_status 
             if show_debug_info == 'DEBUG': 
                 if not cam_id == '0':       # Don't show '0', as it is not being written
                     print('DEBUG:   ',cam_ids,'session_online:',session['online_status'])
         else:
             session['online_status'] = False
-            cam_online_status[int(cam_ids)]=get_cam_status 
             if show_debug_info == 'DEBUG': 
                 if not cam_id == '0':       # Don't show '0', as it is not being written
                     print('DEBUG:   ',cam_ids,'session_online:',session['online_status'])
@@ -603,6 +602,9 @@ def get_frames(cam_id,stop_capture=False):
     text="Cam "+cam_session[str(cam_id)]['camera_id']+" " 
     font = cv2.FONT_HERSHEY_COMPLEX
 
+    # Update online status of camera
+    session['online_status']=update_online_status(cam_id,True)
+
     print ("[ Cam: ",cam_session[str(cam_id)]['camera_id']," ae:", cam_session[str(cam_id)]['ae_level']," wb:", cam_session[str(cam_id)]['white_balance']," bpc:", cam_session[str(cam_id)]['bpc'],"flip mode:", cam_session[str(cam_id)]['flip'],"status:", session['online_status'],"] ")
 
     try:
@@ -660,7 +662,7 @@ def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show
             session['camera_id']=cam_id     # Change camera ID or you'll overwrite the same one over and over
             session['online_status']=update_online_status(cam_id,True)
             cam_online_status[int(cam_id)]=session['online_status']
-            if session['online_status'] == 200:
+            if  cam_online_status[int(cam_id)] == 200:
                 get_session_data(cam_id)
                 if show_debug_info == 'DEBUG': 
                     print ('DEBUG:     Camera session data:    [{}]'.format(cam_id),sess_defaults[cam_id])
@@ -669,7 +671,7 @@ def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show
             # session.update(fs_size=sess_defaults[cam_id][2])        # Store original frame size setting
                 set_frame_size(cam_id,'11')
                 write_session_data(cam_session[str(cam_id)]['camera_id'], cam_session[str(cam_id)]['ae_level'], cam_session[str(cam_id)]['bpc'], cam_session[str(cam_id)]['fs_size'], cam_session[str(cam_id)]['white_balance'], cam_session[str(cam_id)]['flip'], show_debug_info)
-            print ("[ Cam: ",cam_session[str(cam_id)]['camera_id']," ae:", cam_session[str(cam_id)]['ae_level']," wb:", cam_session[str(cam_id)]['white_balance']," bpc:", cam_session[str(cam_id)]['bpc'],"flip mode:", cam_session[str(cam_id)]['flip'],"status:", session['online_status'], end=" ] ")
+            print ("[ Cam: ",cam_session[str(cam_id)]['camera_id']," ae:", cam_session[str(cam_id)]['ae_level']," wb:", cam_session[str(cam_id)]['white_balance']," bpc:", cam_session[str(cam_id)]['bpc'],"flip mode:", cam_session[str(cam_id)]['flip'],"status:", cam_online_status[int(cam_id)], end=" ] ")
         if show_debug_info == 'DEBUG': 
             print ('\nDEBUG:   Frame size reset for Cam ID: ',cam_id)
     print ("")      # Send newline after all camera session info is printed
