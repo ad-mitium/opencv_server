@@ -35,8 +35,14 @@ def initialize_cams(show_debug_info=False):
         get_cam_status=send_url_command(url_stripped,show_debug_info)
         if get_cam_status == 200:
             session['online_status'] = True
+        if show_debug_info == 'DEBUG': 
+            if not cam_id == '0':       # Don't show '0', as it is not being written
+                print('DEBUG:   ',cam_ids,'session_online:',session['online_status'])
         else:
             session['online_status'] = False
+        if show_debug_info == 'DEBUG': 
+            if not cam_id == '0':       # Don't show '0', as it is not being written
+                print('DEBUG:   ',cam_ids,'session_online:',session['online_status'])
             
 
     for cam_id in sess_defaults.keys():
@@ -48,10 +54,10 @@ def initialize_cams(show_debug_info=False):
                 gain_ceiling=sess_defaults[cam_id][6],quality=sess_defaults[cam_id][7])  # Change all declared values to default values 
         # if not cam_id == '0':       # Don't output '0', as it is not being written
         #     print("[ Cam: ",cam_session[str(cam_id)]['camera_id']," ae:", cam_session[str(cam_id)]['ae_level']," wb:", cam_session[str(cam_id)]['white_balance']," bpc:", cam_session[str(cam_id)]['bpc'],"flip mode:", cam_session[str(cam_id)]['flip'],"status:", session['online_status'],"] ")
-        if show_debug_info == 'DEBUG': 
-            if not cam_id == '0':       # Don't show '0', as it is not being written
-                print ('DEBUG:   Defaults set for Cam ID: ',cam_id)
         if not cam_id == '0':       # Don't overwrite default values
+            if show_debug_info == 'DEBUG': 
+                print ('DEBUG:   Defaults set for Cam ID: ',cam_id)
+                print ('DEBUG:   ',cam_ids,'session_online:',session['online_status'])
             # Initialize camera if it is online
             if session['online_status'] :
                 set_ae_exposure(cam_id,None,int(session['ae_level']),show_debug_info,True,action) 
@@ -210,6 +216,7 @@ def write_session_data(cam_id, ae_val, bpc_mode, frame_size, wb_mode, flip, show
 
         if not suppress:
             if show_debug_info == 'DEBUG': 
+                print ("[ Cam: ",cam_session[str(cam_id)]['camera_id']," ae:", cam_session[str(cam_id)]['ae_level']," wb:", cam_session[str(cam_id)]['white_balance']," bpc:", cam_session[str(cam_id)]['bpc'],"flip mode:", cam_session[str(cam_id)]['flip'],"status:", session['online_status'], end=" ] ")
                 print('DEBUG:   Writing camera session values')
                 # print (f'DEBUG:     Camera session data:\n         ',sess_defaults)    
         # else:
