@@ -71,38 +71,40 @@ def initialize_cams(show_debug_info=False):
     session['camera_id']='1'     # Reassign camera ID back to 1 after initializing
 
 def set_reset(cam_id, show_debug_info = False):     # Handles initialization and reset
-    # show_debug_info = check_debug_status(False)
-    suppress = True
-    action = cam_id
+    if not cam_id == '0':
 
-    if show_debug_info == 'DEBUG': 
-        print ('DEBUG:   Resetting settings for Cam ID: ',cam_id)
-        print ('DEBUG:    Current settings for Camera session data:    [{}]'.format(cam_id),sess_defaults[cam_id])
+        # show_debug_info = check_debug_status(False)
+        suppress = True
+        action = cam_id
 
-    session.update(camera_id=cam_id,ae_level=sess_defaults['0'][0],bpc=sess_defaults['0'][1],fs_size=sess_defaults['0'][2],
-        white_balance=sess_defaults['0'][3],flip=sess_defaults[cam_id][4],ae_compensation=sess_defaults[cam_id][5],
-        gain_ceiling=sess_defaults[cam_id][6],quality=sess_defaults[cam_id][7])  # Change all declared values to default values 
-    sess_defaults[cam_id]=sess_defaults['0']
+        if show_debug_info == 'DEBUG': 
+            print ('DEBUG:   Resetting settings for Cam ID: ',cam_id)
+            print ('DEBUG:    Current settings for Camera session data:    [{}]'.format(cam_id),sess_defaults[cam_id])
 
-    if show_debug_info == 'DEBUG': 
-        print('DEBUG:    Session has been updated to default values')
-        print_session_data()
-        # print(sess_defaults)
+        session.update(camera_id=cam_id,ae_level=sess_defaults['0'][0],bpc=sess_defaults['0'][1],fs_size=sess_defaults['0'][2],
+            white_balance=sess_defaults['0'][3],flip=sess_defaults[cam_id][4],ae_compensation=sess_defaults[cam_id][5],
+            gain_ceiling=sess_defaults[cam_id][6],quality=sess_defaults[cam_id][7])  # Change all declared values to default values 
+        sess_defaults[cam_id]=sess_defaults['0']
 
-    set_ae_exposure(cam_id,None,int(session['ae_level']),show_debug_info,suppress,action) 
-    set_black_point(cam_id, session['bpc'],show_debug_info)
-    set_frame_size(cam_id, session['fs_size'],show_debug_info)
-    set_white_balance(cam_id, session['white_balance'],show_debug_info)
-    set_flip_image(cam_id, session['flip'],show_debug_info)
-    set_aec(cam_id, session['ae_compensation'],show_debug_info)
-    set_gain_ceiling(cam_id, session['gain_ceiling'],show_debug_info)
-    set_quality(cam_id, session['quality'],show_debug_info)
+        if show_debug_info == 'DEBUG': 
+            print('DEBUG:    Session has been updated to default values')
+            print_session_data()
+            # print(sess_defaults)
 
-    if show_debug_info == 'DEBUG': 
-        print ('DEBUG:   Defaults reset for Camera session data:    [{}]'.format(cam_id),sess_defaults[cam_id])
-        print(sess_defaults)
-    else:
-        print ('INFO:    Stream for Camera {} has been reset to default values'.format(cam_id))
+        set_ae_exposure(cam_id,None,int(session['ae_level']),show_debug_info,suppress,action) 
+        set_black_point(cam_id, session['bpc'],show_debug_info)
+        set_frame_size(cam_id, session['fs_size'],show_debug_info)
+        set_white_balance(cam_id, session['white_balance'],show_debug_info)
+        set_flip_image(cam_id, session['flip'],show_debug_info)
+        set_aec(cam_id, session['ae_compensation'],show_debug_info)
+        set_gain_ceiling(cam_id, session['gain_ceiling'],show_debug_info)
+        set_quality(cam_id, session['quality'],show_debug_info)
+
+        if show_debug_info == 'DEBUG': 
+            print ('DEBUG:   Defaults reset for Camera session data:    [{}]'.format(cam_id),sess_defaults[cam_id])
+            print(sess_defaults)
+        else:
+            print ('INFO:    Stream for Camera {} has been reset to default values'.format(cam_id))
 
     return show_debug_info
 
