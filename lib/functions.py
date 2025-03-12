@@ -82,8 +82,8 @@ def set_reset(cam_id, show_debug_info = False):     # Handles initialization and
             print ('DEBUG:    Current settings for Camera session data:    [{}]'.format(cam_id),sess_defaults[cam_id])
 
         session.update(camera_id=cam_id,ae_level=sess_defaults['0'][0],bpc=sess_defaults['0'][1],fs_size=sess_defaults['0'][2],
-            white_balance=sess_defaults['0'][3],flip=sess_defaults[cam_id][4],ae_compensation=sess_defaults[cam_id][5],
-            gain_ceiling=sess_defaults[cam_id][6],quality=sess_defaults[cam_id][7])  # Change all declared values to default values 
+            white_balance=sess_defaults['0'][3],flip=sess_defaults[int(cam_id)][4],ae_compensation=sess_defaults[int(cam_id)][5],
+            gain_ceiling=sess_defaults[int(cam_id)][6],quality=sess_defaults[int(cam_id)][7])  # Change all declared values to default values 
         sess_defaults[cam_id]=sess_defaults['0']
 
         if show_debug_info == 'DEBUG': 
