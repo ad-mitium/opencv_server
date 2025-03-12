@@ -91,6 +91,14 @@ def set_reset(cam_id, show_debug_info = False):     # Handles initialization and
         suppress = True
         action = cam_id
 
+        # Test connection to see if camera is online
+        url_stripped = strip_url(cam_list[str(cam_id)])
+        get_cam_status=send_url_command(url_stripped,show_debug_info)
+        if get_cam_status == 200:
+            session['online_status'] = True
+        else:
+            session['online_status'] = False
+
         if show_debug_info == 'DEBUG': 
             print ('DEBUG:   Resetting settings for Cam ID: ',cam_id)
             print ('DEBUG:    Current settings for Camera session data:    [{}]'.format(cam_id),sess_defaults[cam_id])
@@ -105,14 +113,17 @@ def set_reset(cam_id, show_debug_info = False):     # Handles initialization and
             print_session_data()
             # print(sess_defaults)
 
-        set_ae_exposure(cam_id,None,int(session['ae_level']),show_debug_info,suppress,action) 
-        set_black_point(cam_id, session['bpc'],show_debug_info)
-        set_frame_size(cam_id, session['fs_size'],show_debug_info)
-        set_white_balance(cam_id, session['white_balance'],show_debug_info)
-        set_flip_image(cam_id, session['flip'],show_debug_info)
-        set_aec(cam_id, session['ae_compensation'],show_debug_info)
-        set_gain_ceiling(cam_id, session['gain_ceiling'],show_debug_info)
-        set_quality(cam_id, session['quality'],show_debug_info)
+        if  session['online_status'] == True: 
+            set_ae_exposure(cam_id,None,int(session['ae_level']),show_debug_info,suppress,action) 
+            set_black_point(cam_id, session['bpc'],show_debug_info)
+            set_frame_size(cam_id, session['fs_size'],show_debug_info)
+            set_white_balance(cam_id, session['white_balance'],show_debug_info)
+            set_flip_image(cam_id, session['flip'],show_debug_info)
+            set_aec(cam_id, session['ae_compensation'],show_debug_info)
+            set_gain_ceiling(cam_id, session['gain_ceiling'],show_debug_info)
+            set_quality(cam_id, session['quality'],show_debug_info)
+        else:
+            print ('INFO:    Stream for Camera {} has not been reset because it is offline'.format(cam_id))
 
         if show_debug_info == 'DEBUG': 
             print ('DEBUG:   Defaults reset for Camera session data:    [{}]'.format(cam_id),sess_defaults[cam_id])
