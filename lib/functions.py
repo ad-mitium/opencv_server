@@ -71,10 +71,12 @@ def initialize_cams(show_debug_info=False):
                 set_gain_ceiling(cam_id, session['gain_ceiling'])
                 set_quality(cam_id, session['quality'])
                 set_DCW(cam_id)
-                if not cam_id == '0':
-                    write_session_data(session['camera_id'], session['ae_level'], session['bpc'], session['fs_size'], session['white_balance'], session['flip'])
-                    if show_debug_info == 'DEBUG':
-                        print ('DEBUG:   Initial writing of session defaults completed for Camera: ', cam_id)
+            else:
+                print ('INFO:    Stream for Camera {} has not been updated because it is offline'.format(cam_id))
+            # if not cam_id == '0':
+            write_session_data(session['camera_id'], session['ae_level'], session['bpc'], session['fs_size'], session['white_balance'], session['flip'])
+            if show_debug_info == 'DEBUG':
+                print ('DEBUG:   Initial writing of session defaults completed for Camera: ', cam_id)
             print("[ Cam: ",cam_session[str(cam_id)]['camera_id']," ae:", cam_session[str(cam_id)]['ae_level']," wb:", cam_session[str(cam_id)]['white_balance']," bpc:", cam_session[str(cam_id)]['bpc'],"flip mode:", cam_session[str(cam_id)]['flip'],"status:", session['online_status'],"] ")
     if show_debug_info == 'DEBUG': 
         print ('DEBUG:   Cameras initialized',f'\n',sess_defaults)
@@ -159,6 +161,8 @@ def update_cam(cam_id, reset=False, show_debug_info = False):   # Handles updati
                 set_aec(cam_id, session['ae_compensation'])
                 set_gain_ceiling(cam_id, session['gain_ceiling'])
                 set_quality(cam_id, session['quality'])
+            else:
+                print ('INFO:    Stream for Camera {} has not been updated because it is offline'.format(cam_id))
 
             if not show_debug_info == 'DEBUG': 
                 print('INFO:    Stream for Camera {} has been updated'.format(cam_id))
