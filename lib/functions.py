@@ -40,7 +40,7 @@ def initialize_cams(show_debug_info=False):
             
 
     for cam_id in sess_defaults.keys():
-        print ('INFO:    Initializing camera', cam_ids)
+        print ('INFO:    Initializing camera', cam_id)
         if not cam_id == '0':       # Don't assign '0', as it is not being written
             session['camera_id']=cam_id     # Change camera ID or you'll overwrite the same one over and over
             session.update(ae_level=sess_defaults[cam_id][0],bpc=sess_defaults[cam_id][1],fs_size=sess_defaults[cam_id][2],
