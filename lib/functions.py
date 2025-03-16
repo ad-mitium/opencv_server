@@ -53,7 +53,7 @@ def initialize_cams(show_debug_info=False):
             session['camera_id']=cam_id     # Change camera ID or you'll overwrite the same one over and over
             session.update(ae_level=sess_defaults[cam_id][0],bpc=sess_defaults[cam_id][1],fs_size=sess_defaults[cam_id][2],
                 white_balance=sess_defaults[cam_id][3],flip=sess_defaults[cam_id][4],ae_compensation=sess_defaults[cam_id][5],
-                gain_ceiling=sess_defaults[cam_id][6],quality=sess_defaults[cam_id][7])  # Change all declared values to default values 
+                ae_dsp=sess_defaults[cam_id][6],gain_ceiling=sess_defaults[cam_id][7],quality=sess_defaults[cam_id][8])  # Change all declared values to default values 
         # if not cam_id == '0':       # Don't output '0', as it is not being written
         #     print("[ Cam:",cam_session[str(cam_id)]['camera_id']," ae:", cam_session[str(cam_id)]['ae_level']," wb:", cam_session[str(cam_id)]['white_balance']," bpc:", cam_session[str(cam_id)]['bpc']," flip mode:", cam_session[str(cam_id)]['flip']," status:", session['online_status'],"] ")
         if not cam_id == '0':       # Don't overwrite default values
@@ -68,6 +68,7 @@ def initialize_cams(show_debug_info=False):
                 set_white_balance(cam_id, session['white_balance'])
                 set_flip_image(cam_id, session['flip'])
                 set_aec(cam_id, session['ae_compensation'])
+                set_aec_dsp(cam_id, session['ae_dsp'])
                 set_gain_ceiling(cam_id, session['gain_ceiling'])
                 set_quality(cam_id, session['quality'])
                 set_DCW(cam_id)
@@ -105,7 +106,7 @@ def set_reset(cam_id, show_debug_info = False):     # Handles initialization and
 
         session.update(camera_id=cam_id,ae_level=sess_defaults['0'][0],bpc=sess_defaults['0'][1],fs_size=sess_defaults['0'][2],
             white_balance=sess_defaults['0'][3],flip=sess_defaults[int(cam_id)][4],ae_compensation=sess_defaults[int(cam_id)][5],
-            gain_ceiling=sess_defaults[int(cam_id)][6],quality=sess_defaults[int(cam_id)][7])  # Change all declared values to default values 
+            ae_dsp=sess_defaults[int(cam_id)][6],gain_ceiling=sess_defaults[int(cam_id)][7],quality=sess_defaults[cam_id][8])  # Change all declared values to default values 
         sess_defaults[cam_id]=sess_defaults['0']
 
         if show_debug_info == 'DEBUG': 
@@ -120,6 +121,7 @@ def set_reset(cam_id, show_debug_info = False):     # Handles initialization and
             set_white_balance(cam_id, session['white_balance'],show_debug_info)
             set_flip_image(cam_id, session['flip'],show_debug_info)
             set_aec(cam_id, session['ae_compensation'],show_debug_info)
+            set_aec_dsp(cam_id, session['ae_dsp'])
             set_gain_ceiling(cam_id, session['gain_ceiling'],show_debug_info)
             set_quality(cam_id, session['quality'],show_debug_info)
         else:
@@ -155,7 +157,7 @@ def update_cam(cam_id, reset=False, show_debug_info = False):   # Handles updati
 
             session.update(camera_id=cam_id,ae_level=cam_session[cam_id]['ae_level'],bpc=cam_session[cam_id]['bpc'],fs_size=cam_session[cam_id]['fs_size'],
                 white_balance=cam_session[cam_id]['white_balance'],flip=cam_session[cam_id]['flip'],ae_compensation=cam_session[cam_id]['ae_compensation'],
-                    gain_ceiling=cam_session[cam_id]['gain_ceiling'],quality=cam_session[cam_id]['quality'])  # Change all declared values to stored values 
+                    ae_dsp=cam_session[cam_id]['ae_dsp'],gain_ceiling=cam_session[cam_id]['gain_ceiling'],quality=cam_session[cam_id]['quality'])  # Change all declared values to stored values 
             if show_debug_info == 'DEBUG': 
                 print('DEBUG:   Status of camera connection is {}'.format(session['online_status']))
                 print('DEBUG:   Changing stream to previous values')
@@ -170,6 +172,7 @@ def update_cam(cam_id, reset=False, show_debug_info = False):   # Handles updati
                 set_white_balance(cam_id, session['white_balance'],show_debug_info)
                 set_flip_image(cam_id, session['flip'],show_debug_info)
                 set_aec(cam_id, session['ae_compensation'])
+                set_aec_dsp(cam_id, session['ae_dsp'])
                 set_gain_ceiling(cam_id, session['gain_ceiling'])
                 set_quality(cam_id, session['quality'])
             else:
@@ -198,7 +201,7 @@ def update_cam(cam_id, reset=False, show_debug_info = False):   # Handles updati
                         # print('Cam_id_for after reassignment=',cam_id_for,'session camera id',session['camera_id'] )
                         session.update(ae_level=sess_defaults[cam_id_for][0],bpc=sess_defaults[cam_id_for][1],fs_size=sess_defaults[cam_id_for][2],
                             white_balance=sess_defaults[cam_id_for][3],flip=sess_defaults[cam_id_for][4],ae_compensation=sess_defaults[cam_id_for][5],
-                            gain_ceiling=sess_defaults[cam_id_for][6],quality=sess_defaults[cam_id_for][7])  # Change all declared values to default values 
+                            ae_dsp=sess_defaults[cam_id_for][6],gain_ceiling=sess_defaults[cam_id_for][7],quality=sess_defaults[cam_id_for][8])  # Change all declared values to default values 
                         if show_debug_info == 'DEBUG': 
                             print ('DEBUG:   Status of camera connection is {}'.format(session['online_status']))
                             print ('DEBUG:   Previous settings loaded for Cam ID: ',cam_id_for, sess_defaults[cam_id_for])
@@ -560,6 +563,27 @@ def set_aec(cam_id, ae_compensation, show_debug_info = False):
                 pass
             else:
                 print('ERROR:     Auto exposure compensation was not changed for camera {}'.format(session['camera_id']))
+
+def set_aec_dsp(cam_id, ae_dsp, show_debug_info = False): 
+    if not session['camera_id'] == '0':    # Never go to '0'
+        url_stripped = strip_url(cam_list[str(session['camera_id'])])
+
+        if not session['camera_id'] == 'stop' or not session['camera_id'] == 'reset':
+            url = url_stripped + '/control?var=aec2&val='+str(ae_dsp)
+            if not session['camera_id'] == 'Multi':
+                session['online_status']=update_online_status(cam_id)   # Check status beforehand
+            if session['online_status']:
+                status_code = send_url_command(url,show_debug_info)
+            else:
+                status_code = False
+            if show_debug_info == 'DEBUG':
+                print ("DEBUG:     Auto exposure compensation DSP set to: ",ae_dsp, end=' ')
+                print (' status code: ',status_code)
+            if status_code == 200:
+                # write_session_data(cam_session[str(cam_id)]['camera_id'], cam_session[str(cam_id)]['ae_level'], cam_session[str(cam_id)]['bpc'], cam_session[str(cam_id)]['fs_size'], cam_session[str(cam_id)]['white_balance'], cam_session[str(cam_id)]['flip'], show_debug_info)
+                pass
+            else:
+                print('ERROR:     Auto exposure compensation DSP was not changed for camera {}'.format(session['camera_id']))
 
 def set_quality(cam_id, quality, show_debug_info = False): 
     if not session['camera_id'] == '0':    # Never go to '0'
