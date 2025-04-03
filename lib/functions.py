@@ -889,13 +889,13 @@ def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show
 if __name__ == '__main__':
     import sys
     from sessions import session, sess_defaults, cam_session
-    sys.path.append('config')   # allows for finding config folder
-    from cameras import camera_list as cam_list
-    from cameras import ae_level as ae_level_range
-    from cameras import framesize, white_balance, dcw
-    from network import host
-    from network import debug_level
-    import network as network
+    # sys.path.append('config')   # allows for finding config folder
+    from ..config.cameras import camera_list as cam_list
+    from ..config.cameras import ae_level as ae_level_range
+    from ..config.cameras import framesize, white_balance, dcw
+    from ..config.network import host
+    from ..config.network import debug_level
+    # import network as network
 
     show_debug_info = check_debug_status()
     print (show_debug_info, session['enabled_debug'])
