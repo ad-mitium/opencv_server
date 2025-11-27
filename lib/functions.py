@@ -725,6 +725,7 @@ def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show
         success_1 = False
         frame_1 = load_no_image()
         video1 = (success_1,frame_1)
+        text1 = text1 + "[" + cam_online_status[int(cam_id_1)] + "]"
 
     if cam_online_status[int(cam_id_2)] == 200:
         video2 = cv2.VideoCapture(cam_list[str(cam_id_2)])
@@ -733,6 +734,7 @@ def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show
         success_2 = False
         frame_2 = load_no_image()
         video2 = (success_2,frame_2)
+        text2 = text2 + "[" + cam_online_status[int(cam_id_2)] + "]"
 
     if cam_online_status[int(cam_id_3)] == 200:
         video3 = cv2.VideoCapture(cam_list[str(cam_id_3)])
@@ -741,6 +743,7 @@ def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show
         success_3 = False
         frame_3 = load_no_image()
         video3 = (success_3,frame_3)
+        text3 = text3 + "[" + cam_online_status[int(cam_id_3)] + "]"
 
     if cam_online_status[int(cam_id_4)] == 200:
         video4 = cv2.VideoCapture(cam_list[str(cam_id_4)])
@@ -749,6 +752,7 @@ def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show
         success_4 = False
         frame_4 = load_no_image()
         video4 = (success_4,frame_4)
+        text4 = text4 + "[" + cam_online_status[int(cam_id_4)] + "]"
 
     while True:
         if cam_online_status[int(cam_id_1)] == 200:
