@@ -664,6 +664,7 @@ def get_frames(cam_id,stop_capture=False):
         frame = load_no_image()
  
     while True:
+        success, frame = video.read()
         if not success:
             if frame_count < 900:
                 if frame_count == 1:
@@ -674,8 +675,6 @@ def get_frames(cam_id,stop_capture=False):
                 frame_count = 0
 
             # frame = load_no_image()
-        else:
-            success, frame = video.read()
 
         if frame is None:
             frame = load_no_image()
