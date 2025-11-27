@@ -635,8 +635,9 @@ def load_no_image():
     return img_file
 
 def get_frames(cam_id,stop_capture=False): 
-    import cv2
+    import cv2, numpy
 
+    frame_count = 0
     curr_time = strftime('%m-%d-%Y ') + strftime('%H:%M:%S')
     text="Cam "+cam_session[str(cam_id)]['camera_id']+" " 
     font = cv2.FONT_HERSHEY_COMPLEX
@@ -648,34 +649,56 @@ def get_frames(cam_id,stop_capture=False):
 
     try:
         video = cv2.VideoCapture(cam_list[str(cam_id)])
-        video.setExceptionMode(True)
+        success, frame = video.read()
+        # video.setExceptionMode(True)
     # except cv2.error:
     except Exception as except_msg:
         print('ERROR:   An exception has occurred in opening the stream for Camera ID',cam_id)
         print(except_msg)
 
+    if session['online_status'] != 200:
+        text = text + "[" + str(session['online_status']) +"]"  # Force session['online_status'] to type str
+
+        # Failed to get video data, load image of error message instead 
+        success = False
+        frame = load_no_image()
+ 
     while True:
-        success, frame = video.read()
         if not success:
-            print('ERROR:  Error getting video frame for Camera ID',cam_id)
-            break
-        elif stop_capture:
+            if frame_count < 900:
+                if frame_count == 1:
+                    # print('ERROR:  Error getting video frame for Camera ID',cam_id)
+                    pass
+                frame_count = frame_count + 1
+            else:
+                frame_count = 0
+
+            # frame = load_no_image()
+        else:
+            success, frame = video.read()
+
+        if frame is None:
+            frame = load_no_image()
+
+        cv2.putText(frame,  
+            text,  
+            (15, 25),  
+            font, 0.75,  
+            (255, 255, 255),  
+            2,  
+            cv2.LINE_AA) 
+        
+        frame_arr = numpy.convert(frame)
+
+        if stop_capture:
             video.ReleaseCapture()
             break
-        else:
-
-            cv2.putText(frame,  
-                text,  
-                (15, 25),  
-                font, 1,  
-                (255, 255, 255),  
-                2,  
-                cv2.LINE_AA) 
-            
-            ret_status, buffer = cv2.imencode('.jpg', frame)
-            frame = buffer.tobytes()
+        else:            
+            ret_status, buffer = cv2.imencode('.jpg', frame_arr)
+            frame_arr = buffer.tobytes()
+    
             yield (b'--frame\r\n'
-                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+                    b'Content-Type: image/jpeg\r\n\r\n' + frame_arr + b'\r\n')
 
 def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show_debug_info=False): 
     import cv2, numpy
