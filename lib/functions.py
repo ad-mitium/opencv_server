@@ -665,14 +665,14 @@ def get_frames(cam_id,stop_capture=False):
  
     while True:
         success, frame = video.read()
-        if not success:
-            if frame_count < 900:
-                if frame_count == 1:
-                    # print('ERROR:  Error getting video frame for Camera ID',cam_id)
-                    pass
-                frame_count = frame_count + 1
-            else:
-                frame_count = 0
+        # if not success:
+        #     if frame_count < 900:
+        #         if frame_count == 1:
+        #             # print('ERROR:  Error getting video frame for Camera ID',cam_id)
+        #             pass
+        #         frame_count = frame_count + 1
+        #     else:
+        #         frame_count = 0
 
             # frame = load_no_image()
 
