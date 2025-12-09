@@ -799,14 +799,6 @@ def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show
             frame_4 = load_no_image()
 
         if not success_1 or not cam_online_status[1]:
-            # if frame_count < 900:
-            #     if frame_count == 1:
-            #         print('ERROR:  Error getting video frame for Camera ID',cam_id_1)
-            #     frame_count = frame_count + 1
-            # else:       # Exceeded 900 frames or 30 secs with error, reset to 0
-            #     frame_count = 0
-                # print(x)
-
             # frame_1 = numpy.zeros((720,1280,3), dtype = int)
             frame_1 = load_no_image()
             # if y == 0:
@@ -814,13 +806,6 @@ def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show
             #     y = 1
             # break
         elif not success_2 or not cam_online_status[2]:
-            # if frame_count < 900:
-            #     if frame_count == 1:
-            #         print('ERROR:  Error getting video frame for Camera ID',cam_id_2)
-            #     frame_count = frame_count + 1
-            # else:       # Exceeded 900 frames or 30 secs with error, reset to 0
-            #     frame_count = 0
-
             # frame_2 = numpy.zeros((720,1280,3), dtype = int)
             frame_2 = load_no_image()
 
@@ -850,24 +835,10 @@ def get_multi_frames(cam_id_1,cam_id_2,cam_id_3,cam_id_4,stop_capture=False,show
         #     h_concat_row_1 = numpy.concatenate((frame_1,frame_2), axis=1)
 
         if not success_3 or not cam_online_status[3]:
-            # if frame_count < 900:
-            #     if frame_count == 1:
-            #         print('ERROR:  Error getting video frame for Camera ID',cam_id_3)
-            #     frame_count = frame_count + 1
-            # else:       # Exceeded 900 frames or 30 secs with error, reset to 0
-            #     frame_count = 0
-
             # frame_3 = numpy.zeros((720,1280,3), dtype = int)
             frame_3 = load_no_image()
             # break
         elif not success_4 or not cam_online_status[4]:
-            # if frame_count < 900:
-            #     if frame_count == 1:
-            #         print('ERROR:  Error getting video frame for Camera ID',cam_id_4)
-            #     frame_count = frame_count + 1
-            # else:       # Exceeded 900 frames or 30 secs with error, reset to 0
-            #     frame_count = 0
-
             frame_4 = load_no_image()
             # break
 
